@@ -1,5 +1,6 @@
 # Django settings for quizcon project.
 import os.path
+import sys
 from ccnmtlsettings.shared import common
 from courseaffils.columbia import CourseStringMapper
 
@@ -51,6 +52,25 @@ LTI_TOOL_CONFIGURATION = {
 }
 
 COURSEAFFILS_COURSESTRING_MAPPER = CourseStringMapper
+
+if 'integrationserver' in sys.argv:
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    PASSWORD_HASHERS = (
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    )
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'HOST': '',
+            'PORT': '',
+            'USER': '',
+            'PASSWORD': '',
+            'ATOMIC_REQUESTS': True,
+        }
+    }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

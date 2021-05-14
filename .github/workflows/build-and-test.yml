@@ -24,5 +24,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build with Makefile
         run: make
-      - name: Run Integration Tests
-        run: make cypress  
+

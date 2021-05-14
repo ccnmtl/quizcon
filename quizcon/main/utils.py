@@ -1,4 +1,4 @@
-"""Locus Tempus Utility Functions"""
+"""Quizcon Utility Functions"""
 from django.conf import settings
 from django.core.mail import send_mail
 from django.core.validators import validate_email

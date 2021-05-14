@@ -95,7 +95,7 @@
     <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
         <li class="nav-item"><span class="nav-link">
             {% if request.user.is_anonymous %}
-                <a href="/accounts/login/?next=/" title="Log In">Log In</a>
+                <a href="/accounts/login/?next=/" id="login" title="Log In">Log In</a>
             {% else %}
             Logged in as
                 {% if request.user.last_name %}
@@ -103,7 +103,7 @@
                 {% else %}
                 {{ request.user.username }}
                 {% endif %}
-            (<a href="/accounts/logout/?next=/" title="Log Out">logout</a>)
+            (<a href="/accounts/logout/?next=/" id="logout" title="Log Out">logout</a>)
             {% endif %}
             </span>
         </li>

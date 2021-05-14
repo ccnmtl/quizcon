@@ -21,7 +21,7 @@
         {% endif %}
 
         {% if form.errors %}
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger" id="guest-login-error" role="alert">
                 <div><b>Invalid username or password</b></div>
             </div>
         {% endif %}
@@ -44,7 +44,7 @@
             </div>
             <input id="guest-login" class="btn btn-primary" type="button" value="Guest Log In" {% if form.errors %}style="display: none"{% endif %}
                 onclick="jQuery('.login-local-form').show(); jQuery(this).hide(); return false;"/>
-            <input class="btn btn-primary login-local-form" type="submit" value="Log In" {% if not form.errors %}style="display: none;"{% endif %} />                        
+            <input id="guest-login-submit" class="btn btn-primary login-local-form" type="submit" value="Log In" {% if not form.errors %}style="display: none;"{% endif %} />
             <input type="hidden" name="next" value="{{ next|urlencode }}" />
             <p class="small pt-2"><a href="/accounts/password_reset/" title="Reset Password">Forgot Password?</a></p>
         </form>

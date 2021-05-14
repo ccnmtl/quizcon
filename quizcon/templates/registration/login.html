@@ -9,12 +9,13 @@
             Login
         </h2>
         {% if CAS_BASE %}
-            <p>If you have a Columbia University Network ID (UNI)</p>
-            <form class="text-center" method="get" action="/cas/login">
-                <input type="hidden" name="next" value="/" />
-
-                <input class="btn btn-primary" type="submit" value="Columbia Log In" />
-                <p class="small pt-2"><a href="http://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a></p>
+            <h2 class="h6 mb-3 text-center">If you have a Columbia University Network ID (UNI)</h2>
+            <form class="text-center" method="get" action="{{CAS_BASE}}cas/login">
+                <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
+                <button class="btn btn-primary" data-cy="columbia-login" type="submit">
+                    Columbia UNI Sign In
+                </button>
+                <p class="small pt-2"><a href="https://cuit.columbia.edu/cuit/manage-my-uni" title="Learn more about UNI" target="_blank">What is a UNI?</a></p>
             </form>
             <hr class="seperator" />
         {% endif %}

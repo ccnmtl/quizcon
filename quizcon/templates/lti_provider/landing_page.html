@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}LTI Landing Page{% endblock %}
+
+{% block usernav %}
+{% endblock %}
+
+{% block content %}
+{% if not is_instructor and not is_administrator %}
+    <section class="section--hero">
+        <div class="hero-text" style="top: 2rem">
+            <h1>Quizzing with Confidence</h1>
+            <p>The Quizzing with Confidence dashboard is available to instructors only.</p>
+        </div>
+    </section>
+{% else %}
+    <section class="section--hero">
+        <div class="hero-text" style="top: 2rem">
+            <h1>Quizzing with Confidence</h1>
+            <p>Weighted Multiple Choice Questions</p>
+            <a class="btn btn-secondary btn-lg" href="{{landing_url}}" target="_blank">Launch Quizzing with Confidence</a>
+        </div>
+    </section>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

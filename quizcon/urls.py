@@ -19,6 +19,13 @@ urlpatterns = [
 
     path('accounts/', include('django.contrib.auth.urls')),
 
+    path(r'lti/', include('lti_provider.urls')),
+    path(r'course/lti/create/',
+         views.LTICourseCreate.as_view(), name='lti-course-create'),
+    url(r'^course/lti/(?P<context>\w[^/]*)/$',
+        views.LTICourseSelector.as_view(), name='lti-course-select'),
+    url(r'^course/(?P<pk>\d+)/$', views.CourseDetailView.as_view(),
+        name='course-detail-view'),
     path('_impersonate/', include('impersonate.urls')),
     path('stats/', TemplateView.as_view(template_name="stats.html")),
     path('smoketest/', include('smoketest.urls')),

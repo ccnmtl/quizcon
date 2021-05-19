@@ -31,6 +31,11 @@ urlpatterns = [
     path('smoketest/', include('smoketest.urls')),
     path('infranil/', include('infranil.urls')),
     path('uploads/<str:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^quiz/(?P<assignment_id>\d+)/', views.LTIAssignment1View.as_view(),
+        name='quiz'),
+    url(r'^assignment/success', TemplateView.as_view(
+        template_name='main/assignment_success.html'),
+        name='assignment-success')
 ]
 
 

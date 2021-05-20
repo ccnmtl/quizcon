@@ -24,7 +24,6 @@ INSTALLED_APPS += [  # noqa
     'quizcon.main',
 ]
 
-
 THUMBNAIL_SUBDIR = "thumbs"
 LOGIN_REDIRECT_URL = "/"
 
@@ -48,7 +47,11 @@ LTI_TOOL_CONFIGURATION = {
     'navigation': True,
     'new_tab': True,
     'frame_width': 1024,
-    'frame_height': 1024
+    'frame_height': 1024,
+    'assignments': {
+        '1': '/assignment/1/',
+        '2': '/assignment/2/'
+    }
 }
 
 COURSEAFFILS_COURSESTRING_MAPPER = CourseStringMapper

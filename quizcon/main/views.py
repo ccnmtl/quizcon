@@ -17,6 +17,7 @@ from django.views.generic.detail import DetailView
 from lti_provider.models import LTICourseContext
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import LoggedInCourseMixin
+from lti_provider.mixins import LTIAuthMixin
 
 
 class IndexView(TemplateView):
@@ -156,4 +157,17 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         return {
             'course': self.object,
             'is_faculty': is_faculty,
+        }
+
+
+class LTIAssignment1View(LTIAuthMixin, LoginRequiredMixin, TemplateView):
+
+    template_name = 'main/assignment.html'
+
+    def get_context_data(self, **kwargs):
+        return {
+            'is_student': self.lti.lis_result_sourcedid(self.request),
+            'course_title': self.lti.course_title(self.request),
+            'number': 1,
+            'assignment_id': kwargs.get('assignment_id')
         }

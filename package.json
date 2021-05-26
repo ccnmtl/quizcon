@@ -20,7 +20,7 @@
     "eslint-plugin-security": "~1.4.0",
     "mocha": "~8.4.0",
     "requirejs": "~2.3.2",
-    "sinon": "~10.0.0",
+    "sinon": "~11.1.0",
     "start-server-and-test": "^1.11.0"
   }
 }

@@ -35,7 +35,13 @@ urlpatterns = [
         name='quiz'),
     url(r'^assignment/success', TemplateView.as_view(
         template_name='main/assignment_success.html'),
-        name='assignment-success')
+        name='assignment-success'),
+    url(r'^course/(?P<pk>\d+)/quiz/create/$', views.CreateQuizView.as_view(),
+        name='create-quiz'),
+    url(r'^course/(?P<pk>\d+)/quiz/update/$', views.UpdateQuizView.as_view(),
+        name='update-quiz'),
+    url(r'^course/(?P<pk>\d+)/quiz/delete/$', views.DeleteQuizView.as_view(),
+        name='delete-quiz')
 ]
 
 

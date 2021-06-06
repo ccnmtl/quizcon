@@ -1,0 +1,17 @@
+<div class="row pt-3 px-0 mt-0 mx-0">
+    <div class="col-12">
+        {{course.title}}
+        {% if course.info.termyear %}<div>Semester: {{ course.info.termyear }}</div>{% endif %}
+        <div><b>Your role:</b> {% if is_faculty %}Instructor{% else %}Student{% endif %}</div>
+    </div>
+</div>
+<div>
+    {% for quiz in course.quiz_set.all %}
+        <div>
+            <a>{{quiz.title}}</a>
+            <a href="{% url 'update-quiz' course.id %}" class="btn btn-primary">Update</a>
+            <a href="{% url 'delete-quiz' course.id %}" class="btn btn-primary">Delete</a>
+        </div>
+    {% endfor %}
+</div>
+<a href="{% url 'create-quiz' course.id %}" class="btn btn-primary">Create Quiz</a>

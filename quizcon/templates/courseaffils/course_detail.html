@@ -5,12 +5,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="row pt-3 px-0 mt-0 mx-0">
-    <div class="col-12">
-        {{course.title}}
-        {% if course.info.termyear %}<div>Semester: {{ course.info.termyear }}</div>{% endif %}
-        <div><b>Your role:</b> {% if is_faculty %}Instructor{% else %}Student{% endif %}</div>
-    </div>
-</div>
+
+{% if is_faculty %}
+
+    {% include 'courseaffils/course_detail_instructor.html' %}
+
+{% else %}
+
+    {% include 'courseaffils/course_detail_student.html' %}
+
+{% endif %}
 
 {% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}{% if object %}Edit {% else %}New {% endif %} Quiz{% endblock %}
+
+{% block pagetitle %}
+    {% if object %}Edit {% else %}New {% endif %} Quiz
+{% endblock %}
+
+{% block content %}
+<div id="edit-detail-container" class="row">
+    <div class="col-md-12 order-md-1">
+        <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+
+            {% bootstrap_field form.title %}
+            {% bootstrap_field form.description %}
+            {% bootstrap_field form.multiple_attempts %}
+            {% bootstrap_field form.show_answers %}
+            {% bootstrap_field form.randomize %}
+            <input type="hidden" name="course" value="{{course.pk}}" />
+            <div class="row">
+                <div class="col-md-2 mb-1 pr-0">
+                    <button type="submit" class="btn btn-block btn-primary">Save</button>
+                </div>
+                <div class="col-md-2 mb-1 pr-0">
+                    <a class="btn btn-block btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

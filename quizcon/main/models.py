@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from courseaffils.models import Course
 
 
 class Quiz(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField()
     description = models.TextField()
     multiple_attempts = models.BooleanField(default=False)

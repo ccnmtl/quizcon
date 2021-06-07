@@ -52,7 +52,8 @@ class CourseTestMixin(object):
         self.faculty: User = UserFactory.create(
             first_name='Faculty',
             last_name='One',
-            email='facultyone@example.com'
+            email='facultyone@example.com',
+            is_staff=True
         )
 
         # Registrar Course

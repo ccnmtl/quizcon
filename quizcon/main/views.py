@@ -212,13 +212,12 @@ class UpdateQuizView(LoggedInFacultyMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        ctx['course'] = get_object_or_404(Course, pk=pk)
+        ctx['course'] = self.object.course
         return ctx
 
     def get_success_url(self):
         return reverse('course-detail-view',
-                       kwargs={'pk': self.kwargs.get('pk')})
+                       kwargs={'pk': self.object.course.pk})
 
     def form_valid(self, form):
         result = UpdateView.form_valid(self, form)

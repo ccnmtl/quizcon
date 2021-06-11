@@ -9,8 +9,8 @@
     {% for quiz in course.quiz_set.all %}
         <div>
             <a>{{quiz.title}}</a>
-            <a href="{% url 'update-quiz' course.id %}" class="btn btn-primary">Update</a>
-            <a href="{% url 'delete-quiz' course.id %}" class="btn btn-primary">Delete</a>
+            <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-primary">Update</a>
+            <a href="{% url 'delete-quiz' quiz.id %}" class="btn btn-primary">Delete</a>
         </div>
     {% endfor %}
 </div>

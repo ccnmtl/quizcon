@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.urls.base import reverse
-from quizcon.main.tests.factories import (
-    UserFactory, CourseTestMixin, RegistrarCourseFactory
-)
+from quizcon.main.tests.factories import CourseTestMixin
+
 # from lti_provider.tests.factories import LTICourseContextFactory
 # from quizcon.main.views import CreateQuizView, UpdateQuizView, DeleteQuizView
 
@@ -19,19 +18,18 @@ class BasicTest(TestCase):
 
 
 class CreateQuizTest(CourseTestMixin, TestCase):
+
     def setUp(self):
-        self.course = RegistrarCourseFactory()
+        self.setup_course()
 
     def test_create_quiz_student(self):
         url = reverse('create-quiz', kwargs={'pk': self.course.pk})
 
-        student = UserFactory()
-        self.client.login(username=student.username, password='test')
+        self.client.login(username=self.student.username, password='test')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 403)
 
     def test_create_flow(self):
-        self.setup_course()
         url = reverse('create-quiz', kwargs={'pk': self.course.pk})
 
         self.client.login(username=self.faculty.username, password='test')

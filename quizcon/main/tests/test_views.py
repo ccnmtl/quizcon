@@ -69,7 +69,11 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'title': 'Alpha'})
+        self.assertTrue(
+            'This field is required' in
+            response.context_data['form'].errors['description'][0])
         self.assertEqual(response.status_code, 200)
+
         self.quiz.refresh_from_db()
         self.assertEqual(self.quiz.title, 'Alpha')
 

@@ -72,7 +72,7 @@ class LoggedInSuperUserMixinTest(CourseTestMixin, TestCase):
         self.assertTrue(mixin.test_func())
 
 
-class UpdateQuizPermissionUpdateTest(CourseTestMixin, TestCase):
+class UpdateQuizPermissionMixinTest(CourseTestMixin, TestCase):
 
     def test_permissions(self):
         self.setup_course()

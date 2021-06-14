@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls.base import reverse
-from quizcon.main.tests.factories import CourseTestMixin
+from quizcon.main.tests.factories import CourseTestMixin, QuizFactory
 
 # from lti_provider.tests.factories import LTICourseContextFactory
 # from quizcon.main.views import CreateQuizView, UpdateQuizView, DeleteQuizView
@@ -52,3 +52,26 @@ class CreateQuizTest(CourseTestMixin, TestCase):
 
         self.assertTrue('<strong>Lorem Ipsum</strong> quiz created'
                         in response.cookies['messages'].value)
+
+
+class UpdateQuizTest(CourseTestMixin, TestCase):
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course = self.course)
+
+    def test_update_title(self):
+        url = reverse('update-quiz', kwargs={'pk': self.quiz.pk})
+
+        self.client.login(username=self.faculty.username, password='test')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            url,
+            {'title': 'Alpha'})
+        self.assertEqual(response.status_code, 200)
+        self.quiz.refresh_from_db()
+        self.assertEqual(self.quiz.title, 'Alpha')
+
+class DeleteQuizTest(CourseTestMixin, TestCase):
+    pass

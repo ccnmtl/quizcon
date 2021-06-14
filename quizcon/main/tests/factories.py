@@ -37,11 +37,15 @@ class CourseFactory(factory.django.DjangoModelFactory):
 
 
 class QuizFactory(factory.django.DjangoModelFactory):
-
     class Meta:
         model = Quiz
 
     course = factory.SubFactory(CourseFactory)
+    title = 'Lorem Ipsum'
+    description = 'dolor sit amet'
+    multiple_attempts = True
+    show_answers = False
+    randomize = True
 
 
 class CourseTestMixin(object):

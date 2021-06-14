@@ -73,9 +73,19 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
             'This field is required' in
             response.context_data['form'].errors['description'][0])
         self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            url,
+            {'title': 'Alpha',
+            'description': 'Quiz updated.',
+            'multiple_attempts': True, 'show_answers': False,
+            'randomize': True })
 
         self.quiz.refresh_from_db()
         self.assertEqual(self.quiz.title, 'Alpha')
+        self.assertEqual(self.quiz.description, 'Quiz updated.')
+        self.assertTrue(self.quiz.multiple_attempts)
+        self.assertTrue(self.quiz.randomize)
+        self.assertFalse(self.quiz.show_answers)
 
 class DeleteQuizTest(CourseTestMixin, TestCase):
     pass

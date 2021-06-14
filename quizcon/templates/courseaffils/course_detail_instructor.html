@@ -9,6 +9,8 @@
     {% for quiz in course.quiz_set.all %}
         <div>
             <a>{{quiz.title}}</a>
+            <p>{{quiz.created_by}}</p>
+            <p>{{quiz.modified_by}}</p>
             <a href="{% url 'update-quiz' course.id %}" class="btn btn-primary">Update</a>
             <a href="{% url 'delete-quiz' course.id %}" class="btn btn-primary">Delete</a>
         </div>

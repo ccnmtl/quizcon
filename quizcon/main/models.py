@@ -17,6 +17,13 @@ class Quiz(models.Model):
         default=False,
         help_text="Randomize the quiz questions")
 
+    created_by = models.ForeignKey(
+        User, null=True, on_delete=models.SET_NULL,
+        related_name='quiz_created_by')
+    modified_by = models.ForeignKey(
+        User, null=True, on_delete=models.SET_NULL,
+        related_name='quiz_modified_by')
+
     display_name = "Quiz"
 
 

@@ -46,6 +46,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
 
         self.assertEqual(self.course.quiz_set.count(), 1)
         quiz = self.course.quiz_set.first()
+        self.assertEqual(quiz.created_by, self.faculty)
         self.assertEqual(quiz.title, 'Lorem Ipsum')
         self.assertEqual(quiz.description, 'dolor sit amet')
         self.assertTrue(quiz.multiple_attempts)

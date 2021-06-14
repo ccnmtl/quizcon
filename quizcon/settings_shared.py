@@ -24,6 +24,10 @@ INSTALLED_APPS += [  # noqa
     'quizcon.main',
 ]
 
+MIDDLEWARE += [ # noqa
+    'quizcon.main.middleware.WhoDidItMiddleware'
+]
+
 THUMBNAIL_SUBDIR = "thumbs"
 LOGIN_REDIRECT_URL = "/"
 

@@ -57,7 +57,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
 class UpdateQuizTest(CourseTestMixin, TestCase):
     def setUp(self):
         self.setup_course()
-        self.quiz = QuizFactory(course = self.course)
+        self.quiz = QuizFactory(course=self.course)
 
     def test_update_title(self):
         url = reverse('update-quiz', kwargs={'pk': self.quiz.pk})
@@ -76,9 +76,9 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'title': 'Alpha',
-            'description': 'Quiz updated.',
-            'multiple_attempts': True, 'show_answers': False,
-            'randomize': True })
+                'description': 'Quiz updated.',
+                'multiple_attempts': True, 'show_answers': False,
+                'randomize': True})
 
         self.quiz.refresh_from_db()
         self.assertEqual(self.quiz.title, 'Alpha')
@@ -86,6 +86,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         self.assertTrue(self.quiz.multiple_attempts)
         self.assertTrue(self.quiz.randomize)
         self.assertFalse(self.quiz.show_answers)
+
 
 class DeleteQuizTest(CourseTestMixin, TestCase):
     pass

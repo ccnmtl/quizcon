@@ -1,9 +1,7 @@
 from django.test import TestCase
 from django.urls.base import reverse
 from quizcon.main.tests.factories import CourseTestMixin, QuizFactory
-
-# from lti_provider.tests.factories import LTICourseContextFactory
-# from quizcon.main.views import CreateQuizView, UpdateQuizView, DeleteQuizView
+from quizcon.main.models import Quiz
 
 
 class BasicTest(TestCase):
@@ -60,7 +58,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         self.setup_course()
         self.quiz = QuizFactory(course=self.course)
 
-    def test_update_title(self):
+    def test_update_quiz(self):
         url = reverse('update-quiz', kwargs={'pk': self.quiz.pk})
 
         self.client.login(username=self.faculty.username, password='test')
@@ -90,4 +88,20 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
 
 
 class DeleteQuizTest(CourseTestMixin, TestCase):
-    pass
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course=self.course)
+
+    def test_delete_quiz(self):
+        url = reverse('delete-quiz', kwargs={'pk': self.quiz.pk})
+
+        self.client.login(username=self.faculty.username, password='test')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(url)
+        self.assertRedirects(response, '/course/' + str(self.course.pk) + '/')
+        with self.assertRaises(Quiz.DoesNotExist):
+            Quiz.objects.get(id=self.quiz.id)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.course.quiz_set.count(), 0)

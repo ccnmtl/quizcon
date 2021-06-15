@@ -21,15 +21,15 @@ class LTICourseSelectorTest(CourseTestMixin, TestCase):
 
     def test_get(self):
         ctx = LTICourseContextFactory(
-            group=self.registrar_course.group,
-            faculty_group=self.registrar_course.faculty_group)
+            group=self.course.group,
+            faculty_group=self.course.faculty_group)
 
         url = reverse('lti-course-select', args=[ctx.lms_course_context])
 
         self.client.login(username=self.faculty.username, password='test')
         response = self.client.get(url, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['course'], self.registrar_course)
+        self.assertEqual(response.context['course'], self.course)
 
 
 class LTICourseCreateTest(TestCase):

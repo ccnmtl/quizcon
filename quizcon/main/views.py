@@ -11,17 +11,18 @@ from django.contrib.auth.models import Group
 from django.http import (
     HttpResponseRedirect
 )
+from django.shortcuts import get_object_or_404
 from django.urls.base import reverse
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-from lti_provider.models import LTICourseContext
-from quizcon.main.utils import send_template_email
-from quizcon.mixins import LoggedInCourseMixin, LoggedInFacultyMixin
-from lti_provider.mixins import LTIAuthMixin
 from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
+from lti_provider.mixins import LTIAuthMixin
+from lti_provider.models import LTICourseContext
 from quizcon.main.models import Quiz
-from django.shortcuts import get_object_or_404
+from quizcon.main.utils import send_template_email
+from quizcon.mixins import (
+    LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin)
 
 
 class IndexView(TemplateView):
@@ -205,20 +206,19 @@ class CreateQuizView(LoggedInFacultyMixin, CreateView):
         return result
 
 
-class UpdateQuizView(LoggedInFacultyMixin, UpdateView):
+class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
     model = Quiz
     fields = ['title', 'description', 'multiple_attempts',
               'show_answers', 'randomize']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        ctx['course'] = get_object_or_404(Course, pk=pk)
+        ctx['course'] = self.object.course
         return ctx
 
     def get_success_url(self):
         return reverse('course-detail-view',
-                       kwargs={'pk': self.kwargs.get('pk')})
+                       kwargs={'pk': self.object.course.pk})
 
     def form_valid(self, form):
         result = UpdateView.form_valid(self, form)
@@ -233,13 +233,12 @@ class UpdateQuizView(LoggedInFacultyMixin, UpdateView):
         return result
 
 
-class DeleteQuizView(LoggedInFacultyMixin, DeleteView):
+class DeleteQuizView(UpdateQuizPermissionMixin, DeleteView):
     model = Quiz
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        pk = self.kwargs.get('pk')
-        ctx['course'] = get_object_or_404(Course, pk=pk)
+        ctx['course'] = self.object.course
         return ctx
 
     def get_success_url(self):
@@ -251,4 +250,4 @@ class DeleteQuizView(LoggedInFacultyMixin, DeleteView):
         )
 
         return reverse('course-detail-view',
-                       kwargs={'pk': self.kwargs.get('pk')})
+                       kwargs={'pk': self.object.course.pk})

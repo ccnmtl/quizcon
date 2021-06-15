@@ -4,9 +4,10 @@ from random import randrange
 from courseaffils.models import Course
 from django.contrib.auth.models import User, Group
 import factory
+from quizcon.main.models import Quiz
 
 
-class UserFactory(factory.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
     username = factory.Sequence('user{}'.format)
@@ -14,13 +15,13 @@ class UserFactory(factory.DjangoModelFactory):
     email = 'foo@bar.com'
 
 
-class GroupFactory(factory.DjangoModelFactory):
+class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Group
     name = factory.Sequence('group {}'.format)
 
 
-class RegistrarCourseFactory(factory.DjangoModelFactory):
+class CourseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Course
     title = factory.Sequence('course {}'.format)
@@ -33,6 +34,18 @@ class RegistrarCourseFactory(factory.DjangoModelFactory):
         current_year = datetime.datetime.now().year
         obj.info.year = randrange(current_year, current_year + 5)
         obj.info.save()
+
+
+class QuizFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Quiz
+
+    course = factory.SubFactory(CourseFactory)
+    title = 'Lorem Ipsum'
+    description = 'dolor sit amet'
+    multiple_attempts = True
+    show_answers = False
+    randomize = True
 
 
 class CourseTestMixin(object):
@@ -52,12 +65,11 @@ class CourseTestMixin(object):
         self.faculty: User = UserFactory.create(
             first_name='Faculty',
             last_name='One',
-            email='facultyone@example.com',
-            is_staff=True
+            email='facultyone@example.com'
         )
 
         # Registrar Course
-        self.registrar_course = RegistrarCourseFactory.create()
-        self.registrar_course.group.user_set.add(self.student)
-        self.registrar_course.group.user_set.add(self.faculty)
-        self.registrar_course.faculty_group.user_set.add(self.faculty)
+        self.course = CourseFactory.create()
+        self.course.group.user_set.add(self.student)
+        self.course.group.user_set.add(self.faculty)
+        self.course.faculty_group.user_set.add(self.faculty)

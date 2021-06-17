@@ -97,7 +97,7 @@ nameparser==1.0.6
 oauth2==1.9.0.post1
 oauthlib==3.1.1
 pylti==0.7.0
-django-lti-provider==0.4.0
+django-lti-provider==0.4.2
 
 pyparsing==2.4.7
 edtf==4.0.1 # pyup: <4.0.0
@@ -113,4 +113,4 @@ django-contact-us==0.4.4
 entrypoints==0.3
 
 django-courseaffils==2.2.5
-django-lti-provider==0.4.0
+django-lti-provider==0.4.2

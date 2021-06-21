@@ -4,7 +4,7 @@ from random import randrange
 from courseaffils.models import Course
 from django.contrib.auth.models import User, Group
 import factory
-from quizcon.main.models import Quiz
+from quizcon.main.models import Quiz, Question
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -46,6 +46,16 @@ class QuizFactory(factory.django.DjangoModelFactory):
     multiple_attempts = True
     show_answers = False
     randomize = True
+
+class QuestionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Question
+
+    quiz = factory.SubFactory(QuizFactory)
+    text = 'Lorem Ipsum'
+    description = 'dolor sit amet'
+    explanation = 'consectetur adipiscing elit'
+    ordinality = -1
 
 
 class CourseTestMixin(object):

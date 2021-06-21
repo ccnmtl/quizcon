@@ -35,13 +35,21 @@ urlpatterns = [
         name='update-quiz'),
     url(r'^quiz/(?P<pk>\d+)/delete/$', views.DeleteQuizView.as_view(),
         name='delete-quiz'),
+    url(r'^quiz/(?P<pk>\d+)/question/create/$',
+        views.CreateQuestionView.as_view(), name='create-question'),
+    url(r'^quiz/(?P<pk>\d+)/question/list/$', views.QuizDetailView.as_view(),
+        name='quiz-detail'),
     url(r'^quiz/(?P<assignment_id>\d+)/', views.LTIAssignment1View.as_view(),
         name='quiz'),
     url(r'^assignment/success', TemplateView.as_view(
         template_name='main/assignment_success.html'),
         name='assignment-success'),
     url(r'^course/(?P<pk>\d+)/quiz/create/$', views.CreateQuizView.as_view(),
-        name='create-quiz')
+        name='create-quiz'),
+    url(r'^question/(?P<pk>\d+)/update/$', views.UpdateQuestionView.as_view(),
+        name='update-question'),
+    url(r'^question/(?P<pk>\d+)/delete/$', views.DeleteQuestionView.as_view(),
+        name='delete-question')
 ]
 
 

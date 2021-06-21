@@ -63,3 +63,4 @@ class UpdateQuizPermissionMixin(UserPassesTestMixin):
             return False
 
         return quiz.course.is_true_faculty(self.request.user)
+

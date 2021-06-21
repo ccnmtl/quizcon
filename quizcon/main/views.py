@@ -165,7 +165,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         }
 
 
-class LTIAssignment1View(LTIAuthMixin, LoginRequiredMixin, TemplateView):
+class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
     template_name = 'main/assignment.html'
 
@@ -320,7 +320,7 @@ class DeleteQuestionView(UpdateQuizPermissionMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['course'] = self.object.course
+        ctx['course'] = self.object.quiz.course
         return ctx
 
     def get_success_url(self):

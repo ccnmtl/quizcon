@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.urls.base import reverse
+from quizcon.main.models import Quiz, Question
 from quizcon.main.tests.factories import (
     CourseTestMixin, QuizFactory, QuestionFactory
 )
-from quizcon.main.models import Quiz
 
 
 class BasicTest(TestCase):

@@ -47,6 +47,7 @@ class QuizFactory(factory.django.DjangoModelFactory):
     show_answers = False
     randomize = True
 
+
 class QuestionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Question

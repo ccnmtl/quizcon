@@ -146,37 +146,31 @@ class CreateQuestionView(CourseTestMixin, TestCase):
                         in response.cookies['messages'].value)
 
 
-# class UpdateQuestionTest(CourseTestMixin, TestCase):
-#     def setUp(self):
-#         self.setup_course()
-#         self.quiz = QuizFactory(course=self.course)
-#         self.question = QuestionFactory(quiz=self.quiz)
-#
-#     def test_update_question(self):
-#         url = reverse('update-question', kwargs={'pk': self.question.pk})
-#
-#         self.client.login(username=self.faculty.username, password='test')
-#         response = self.client.get(url)
-#         self.assertEqual(response.status_code, 200)
-#
-#         response = self.client.post(
-#             url,
-#             {'title': 'Alpha'})
-#         self.assertTrue(
-#             'This field is required' in
-#             response.context_data['form'].errors['description'][0])
-#         self.assertEqual(response.status_code, 200)
-#         response = self.client.post(
-#             url,
-#             {'text': 'Alpha',
-#                 'description': 'Quiz updated.',
-#                 'explanation': 'Ch-ch-changes', 'ordinality': 0})
-#
-#         self.question.refresh_from_db()
-#         self.assertEqual(self.question.text, 'Alpha')
-#         self.assertEqual(self.question.description, 'Quiz updated.')
-#         self.assertEqual(self.question.explanation, 'Ch-ch-changes')
-#         self.assertEqual(self.question.ordinality, 0)
+class UpdateQuestionTest(CourseTestMixin, TestCase):
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course=self.course)
+        self.question = QuestionFactory(quiz=self.quiz)
+
+    def test_update_question(self):
+        url = reverse('update-question', kwargs={'pk': self.question.pk})
+
+        self.client.login(username=self.faculty.username, password='test')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            url,
+            {'text': 'Alpha',
+                'description': 'Quiz updated.',
+                'explanation': 'Ch-ch-changes', 'ordinality': 0})
+
+        self.question.refresh_from_db()
+        self.assertEqual(self.question.text, 'Alpha')
+        self.assertEqual(self.question.description, 'Quiz updated.')
+        self.assertEqual(self.question.explanation, 'Ch-ch-changes')
+        self.assertEqual(self.question.ordinality, 0)
 
 
 class DeleteQuestionTest(CourseTestMixin, TestCase):
@@ -193,7 +187,7 @@ class DeleteQuestionTest(CourseTestMixin, TestCase):
         self.assertEqual(response.status_code, 200)
 
         response = self.client.post(url)
-        self.assertRedirects(response, '/quiz/' + str(self.quiz.pk) + '/list/')
+        self.assertRedirects(response, '/quiz/' + str(self.quiz.pk) + '/')
         with self.assertRaises(Question.DoesNotExist):
             Question.objects.get(id=self.question.id)
         self.assertEqual(response.status_code, 302)

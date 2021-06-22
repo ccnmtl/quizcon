@@ -22,7 +22,8 @@ from lti_provider.models import LTICourseContext
 from quizcon.main.models import Quiz, Question
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
-    LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin)
+    LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
+    UpdateQuestionPermissionMixin)
 
 
 class IndexView(TemplateView):
@@ -289,23 +290,23 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
         return result
 
 
-class UpdateQuestionView(UpdateQuizPermissionMixin, UpdateView):
+class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
     model = Question
     fields = ['description', 'text', 'explanation', 'ordinality']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['course'] = self.object.course
+        ctx['course'] = self.object.quiz.course
         return ctx
 
     def get_success_url(self):
         return reverse('quiz-detail',
-                       kwargs={'pk': self.kwargs.get('pk')})
+                       kwargs={'pk': self.object.quiz.pk})
 
     def form_valid(self, form):
         result = CreateView.form_valid(self, form)
 
-        text = form.cleaned_data['title']
+        text = form.cleaned_data['text']
         messages.add_message(
             self.request, messages.SUCCESS,
             '<strong>{}</strong> question updated.'.format(text),
@@ -315,7 +316,7 @@ class UpdateQuestionView(UpdateQuizPermissionMixin, UpdateView):
         return result
 
 
-class DeleteQuestionView(UpdateQuizPermissionMixin, DeleteView):
+class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
     model = Question
 
     def get_context_data(self, **kwargs):
@@ -332,4 +333,4 @@ class DeleteQuestionView(UpdateQuizPermissionMixin, DeleteView):
         )
 
         return reverse('quiz-detail',
-                       kwargs={'pk': self.kwargs.get('pk')})
+                       kwargs={'pk': self.object.quiz.pk})

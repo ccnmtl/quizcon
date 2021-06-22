@@ -1,7 +1,7 @@
 from courseaffils.lib import in_course
 from courseaffils.models import Course
 from django.contrib.auth.mixins import UserPassesTestMixin
-from quizcon.main.models import Quiz
+from quizcon.main.models import Quiz, Question
 
 
 class LoggedInCourseMixin(UserPassesTestMixin):
@@ -64,3 +64,14 @@ class UpdateQuizPermissionMixin(UserPassesTestMixin):
 
         return quiz.course.is_true_faculty(self.request.user)
 
+
+class UpdateQuestionPermissionMixin(UserPassesTestMixin):
+
+    def test_func(self):
+        try:
+            question_pk = self.kwargs.get('pk')
+            question = Question.objects.get(pk=question_pk)
+        except Question.DoesNotExist:
+            return False
+
+        return question.quiz.course.is_true_faculty(self.request.user)

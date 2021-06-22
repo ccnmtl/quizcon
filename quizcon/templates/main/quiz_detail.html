@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ quiz.title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="row pt-3 px-0 mt-0 mx-0">
+    <div class="col-12">
+        {{quiz.title}}
+    </div>
+</div>
+<div>
+    {% for question in quiz.question_set.all %}
+        <div>
+            <a>{{question.text}}</a>
+            <p>{{question.description}}</p>
+            <p>{{question.explanation}}</p>
+            <a href="{% url 'update-question' question.id %}" class="btn btn-primary">Update</a>
+            <a href="{% url 'delete-question' question.id %}" class="btn btn-primary">Delete</a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

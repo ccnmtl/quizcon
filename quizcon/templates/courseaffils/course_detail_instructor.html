@@ -11,6 +11,7 @@
             <a>{{quiz.title}}</a>
             <p>{{quiz.created_by}}</p>
             <p>{{quiz.modified_by}}</p>
+            <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary">Add Question</a>
             <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-primary">Update</a>
             <a href="{% url 'delete-quiz' quiz.id %}" class="btn btn-primary">Delete</a>
         </div>

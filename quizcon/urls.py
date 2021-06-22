@@ -31,17 +31,27 @@ urlpatterns = [
     path('smoketest/', include('smoketest.urls')),
     path('infranil/', include('infranil.urls')),
     path('uploads/<str:path>', serve, {'document_root': settings.MEDIA_ROOT}),
+
     url(r'^quiz/(?P<pk>\d+)/update/$', views.UpdateQuizView.as_view(),
         name='update-quiz'),
     url(r'^quiz/(?P<pk>\d+)/delete/$', views.DeleteQuizView.as_view(),
         name='delete-quiz'),
-    url(r'^quiz/(?P<assignment_id>\d+)/', views.LTIAssignment1View.as_view(),
+    url(r'^quiz/(?P<pk>\d+)/question/create/$',
+        views.CreateQuestionView.as_view(), name='create-question'),
+    url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),
+        name='quiz-detail'),
+    url(r'^assignment/(?P<assignment_id>\d+)/',
+        views.LTIAssignmentView.as_view(),
         name='quiz'),
     url(r'^assignment/success', TemplateView.as_view(
         template_name='main/assignment_success.html'),
         name='assignment-success'),
     url(r'^course/(?P<pk>\d+)/quiz/create/$', views.CreateQuizView.as_view(),
-        name='create-quiz')
+        name='create-quiz'),
+    url(r'^question/(?P<pk>\d+)/update/$', views.UpdateQuestionView.as_view(),
+        name='update-question'),
+    url(r'^question/(?P<pk>\d+)/delete/$', views.DeleteQuestionView.as_view(),
+        name='delete-question')
 ]
 
 

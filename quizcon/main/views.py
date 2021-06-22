@@ -19,10 +19,11 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
-from quizcon.main.models import Quiz
+from quizcon.main.models import Quiz, Question
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
-    LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin)
+    LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
+    UpdateQuestionPermissionMixin)
 
 
 class IndexView(TemplateView):
@@ -165,7 +166,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         }
 
 
-class LTIAssignment1View(LTIAuthMixin, LoginRequiredMixin, TemplateView):
+class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
     template_name = 'main/assignment.html'
 
@@ -251,3 +252,85 @@ class DeleteQuizView(UpdateQuizPermissionMixin, DeleteView):
 
         return reverse('course-detail-view',
                        kwargs={'pk': self.object.course.pk})
+
+
+class QuizDetailView(UpdateQuizPermissionMixin, DetailView):
+    model = Quiz
+
+    def get_context_data(self, **kwargs):
+        return {
+            'quiz': self.object
+        }
+
+
+class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
+    model = Question
+    fields = ['quiz', 'description', 'text', 'explanation', 'ordinality']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        pk = self.kwargs.get('pk')
+        ctx['quiz'] = get_object_or_404(Quiz, pk=pk)
+        return ctx
+
+    def get_success_url(self):
+        return reverse('quiz-detail',
+                       kwargs={'pk': self.kwargs.get('pk')})
+
+    def form_valid(self, form):
+        result = CreateView.form_valid(self, form)
+
+        text = form.cleaned_data['text']
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            '<strong>{}</strong> question created.'.format(text),
+            extra_tags='safe'
+        )
+
+        return result
+
+
+class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
+    model = Question
+    fields = ['description', 'text', 'explanation', 'ordinality']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['course'] = self.object.quiz.course
+        return ctx
+
+    def get_success_url(self):
+        return reverse('quiz-detail',
+                       kwargs={'pk': self.object.quiz.pk})
+
+    def form_valid(self, form):
+        result = CreateView.form_valid(self, form)
+
+        text = form.cleaned_data['text']
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            '<strong>{}</strong> question updated.'.format(text),
+            extra_tags='safe'
+        )
+
+        return result
+
+
+class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
+    model = Question
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['course'] = self.object.quiz.course
+        return ctx
+
+    def get_success_url(self):
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            '<strong>{}</strong> question deleted.'.format(
+                self.object.text),
+            extra_tags='safe'
+        )
+
+        return reverse('quiz-detail',
+                       kwargs={'pk': self.object.quiz.pk})

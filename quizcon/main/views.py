@@ -2,7 +2,7 @@ import re
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
 from courseaffils.models import Course
-from courseaffils.views import get_courses_for_user, get_courses_for_instructor
+from courseaffils.views import get_courses_for_instructor
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import (

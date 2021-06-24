@@ -1,20 +1,30 @@
-<div class="row pt-3 px-0 mt-0 mx-0">
-    <div class="col-12">
-        {{course.title}}
-        {% if course.info.termyear %}<div>Semester: {{ course.info.termyear }}</div>{% endif %}
-        <div><b>Your role:</b> {% if is_faculty %}Instructor{% else %}Student{% endif %}</div>
-    </div>
+<div class="container container-content">
+<!-- My Quizzes -->
+	<h1>
+		{{course.title}} Quizzes
+	</h1>
+	<div class="table-responsive">
+		<a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary float-end">Create Quiz</a>
+		<table class="table table-striped">
+			<col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
+			<thead>
+				<tr>
+					<th scope="col">Quiz Title</th>
+					<th scope="col">Quiz Description</th>
+					<th scope="col">URL</th>
+					<th scope="col">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+                {% for quiz in course.quiz_set.all %}
+				<tr>
+					<th scope="row"><a href="{% url 'quiz-detail' quiz.id %}">{{quiz.title}}</a></th>
+					<td>{{quiz.description}}</td>
+					<td class="text-muted">http://ctl.columbia.edu</td>
+					<td><a href="{% url 'quiz-detail' quiz.id %}" class="btn btn-sm btn-success">View<a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit</a><a href="{% url 'delete-quiz' quiz.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+				</tr>
+                {% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
-<div>
-    {% for quiz in course.quiz_set.all %}
-        <div>
-            <a>{{quiz.title}}</a>
-            <p>{{quiz.created_by}}</p>
-            <p>{{quiz.modified_by}}</p>
-            <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary">Add Question</a>
-            <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-primary">Update</a>
-            <a href="{% url 'delete-quiz' quiz.id %}" class="btn btn-primary">Delete</a>
-        </div>
-    {% endfor %}
-</div>
-<a href="{% url 'create-quiz' course.id %}" class="btn btn-primary">Create Quiz</a>

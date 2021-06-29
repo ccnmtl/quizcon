@@ -2,6 +2,7 @@ import re
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
 from courseaffils.models import Course
+from courseaffils.views import get_courses_for_instructor
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import (
@@ -9,9 +10,9 @@ from django.contrib.auth.mixins import (
 )
 from django.contrib.auth.models import Group
 from django.http import (
-    HttpResponseRedirect
+    HttpResponseRedirect, HttpResponse
 )
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls.base import reverse
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
@@ -28,6 +29,30 @@ from quizcon.mixins import (
 
 class IndexView(TemplateView):
     template_name = "main/index.html"
+
+
+class DashboardView(LoginRequiredMixin, View):
+    template_name = 'main/course_list.html'
+    http_method_names = ['get', 'post']
+
+    def post(self, request, *args, **kwargs) -> HttpResponse:
+
+        ctx = {
+            'user': request.user,
+            'courses': get_courses_for_instructor(
+                self.request.user).order_by('title'),
+            'page_type': 'dashboard'
+        }
+        return render(request, self.template_name, ctx)
+
+    def get(self, request, *args, **kwargs) -> HttpResponse:
+        ctx = {
+            'user': request.user,
+            'courses': get_courses_for_instructor(
+                self.request.user).order_by('title'),
+            'page_type': 'dashboard'
+        }
+        return render(request, self.template_name, ctx)
 
 
 class LTICourseCreate(LoginRequiredMixin, View):

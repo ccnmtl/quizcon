@@ -1,14 +1,55 @@
 {% extends 'base.html' %}
 
-{% block title %}Splash{% endblock %}
+{% block title %}Sign In | QuizCon{% endblock %}
+{% block topnavbar %}
+{% endblock %}
+{% block css %}
+<style>
+    html,body {
+        height: 100%;
+    }
+
+    body, .container
+    {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #032b50;
+        justify-content: center;
+    }
+
+    #signin {
+        width: 100%;
+        max-width: 350px;
+        padding: 15px;
+        margin: auto;
+    }
+    h1 {
+        color: #0E78DB;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="alert alert-success">
-<h1>It works</h1>
-<p>Congratulations! Now start coding.</p>
-</div>
+<body id="splash" class="text-center">
+    <div id="signin">
+    	<h1 class="logo display-1" style="border: 0; font-weight: 700;">
+    		QuizCon
+    	</h1>
+    	<p class="lead text-light">
+    		Built for creating confident choices<br />
+    		for testing in CourseWorks.
+    	</p>
+    	<div style="margin: 2em 0 2em 0;">
+    		<a href="/accounts/login/?next=/dashboard/" class="btn btn-lg btn-light" id="cy-login">Sign In</a>
+    	</div>
+        <p class="text-muted">
+                More text here.
+    	</p>
+    <div>
+</body>
+{% endblock %}
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non urna sed odio placerat condimentum. Morbi mauris magna, malesuada ut tellus nec, vulputate placerat neque. Donec quis lobortis est. Nunc quis massa nec augue pulvinar pretium a id dui. Proin nec ornare enim. In commodo pretium ex ac tempus. Phasellus tristique vel est nec mattis.</p>
-<p>Mauris et dolor vitae dolor ullamcorper elementum eu eget turpis. Integer cursus pharetra odio, eu rutrum velit facilisis sit amet. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam sagittis fermentum justo ut fermentum. Aliquam eu tincidunt lacus. Nullam sit amet elit ac lectus volutpat efficitur. Maecenas dapibus mauris at felis cursus convallis.</p>
-
+{% block footer %}
 {% endblock %}

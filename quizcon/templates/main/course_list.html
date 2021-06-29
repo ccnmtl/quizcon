@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load course_description course_faculty_string from course_tools %}
+
+{% block title %}
+Courses
+{% endblock %}
+
+{% block content %}
+<div class="container container-content">
+	<h1>
+		My Courses
+	</h1>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
+			<thead>
+				<tr>
+					<th scope="col">Title</th>
+					<th scope="col">Description</th>
+					<th scope="col">Semester</th>
+					<th scope="col">Authors</th>
+				</tr>
+			</thead>
+			<tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></td>
+                    <td>{% if course|course_description %}
+                        {{ course|course_description }}
+                    {% else %}
+                        <span class="text-muted font-italic">There’s no description for this Course.</span>
+                    {% endif %}</td>
+                    <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
+                    <td>{{ course|course_faculty_string }}</td>
+                </tr>
+                {% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@
 		{{course.title}} Quizzes
 	</h1>
 	<div class="table-responsive">
-		<a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary float-end">Create Quiz</a>
+		<a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
 		<table class="table table-striped">
 			<col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
 			<thead>
@@ -18,10 +18,13 @@
 			<tbody>
                 {% for quiz in course.quiz_set.all %}
 				<tr>
-					<th scope="row"><a href="{% url 'quiz-detail' quiz.id %}">{{quiz.title}}</a></th>
+					<th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
 					<td>{{quiz.description}}</td>
 					<td class="text-muted">http://ctl.columbia.edu</td>
-					<td><a href="{% url 'quiz-detail' quiz.id %}" class="btn btn-sm btn-success">View<a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit</a><a href="{% url 'delete-quiz' quiz.id %}" class="btn btn-sm btn-danger">Delete</a></td>
+					<td>
+						<a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
+						<a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
+					</td>
 				</tr>
                 {% endfor %}
 			</tbody>

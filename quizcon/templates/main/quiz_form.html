@@ -1,32 +1,67 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 
-{% block title %}{% if object %}Edit {% else %}New {% endif %} Quiz{% endblock %}
-
-{% block pagetitle %}
-    {% if object %}Edit {% else %}New {% endif %} Quiz
-{% endblock %}
+{% block title %}Create Quiz{% endblock %}
 
 {% block content %}
-<div id="edit-detail-container" class="row">
-    <div class="col-md-12 order-md-1">
-        <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+<div class="container container-content">
+<!-- Create Quiz -->
+	<h1>
+        Create Quiz
+	</h1>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item active" aria-current="page">My Quizzes</li>
+		</ol>
+	</nav>
 
-            {% bootstrap_field form.title %}
-            {% bootstrap_field form.description %}
-            {% bootstrap_field form.multiple_attempts %}
-            {% bootstrap_field form.show_answers %}
-            {% bootstrap_field form.randomize %}
-            <input type="hidden" name="course" value="{{course.pk}}" />
-            <div class="row">
-                <div class="col-md-2 mb-1 pr-0">
-                    <button type="submit" class="btn btn-block btn-primary">Save</button>
-                </div>
-                <div class="col-md-2 mb-1 pr-0">
-                    <a class="btn btn-block btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
-                </div>
+    <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+        <div class="row mb-3">
+            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="title" name="title">
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="row mb-3">
+            <label for="description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+			<label for="dropdown" class="col-sm-2 col-form-label">Level of Difficulty</label>
+			<div class="col-sm-10">
+				<select class="form-select" aria-label="Default select example" id="dropdown">
+					<option selected>Select One</option>
+					<option value="1">Easy</option>
+					<option value="2">Medium</option>
+					<option value="3">Hard</option>
+					<option value="4">Custom</option>
+				</select>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="options" class="col-sm-2 col-form-label">Question Settings</label>
+			<div class="col-sm-10">
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="multiple_attempts" name="multiple_attempts">
+					<label class="form-check-label" for="multiple_attempts">Allow multiple attempts</label>
+				</div>
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="show_answers" name="show_answers">
+					<label class="form-check-label" for="show_answers">Show the correct answers on submission</label>
+				</div>
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="randomize" name="randomize">
+					<label class="form-check-label" for="randomize">Randomize the quiz questions</label>
+				</div>
+			</div>
+		</div>
+
+        <input type="hidden" name="course" value="{{course.pk}}" />
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
+    </form>
+
 </div>
 {% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Edit Quiz{% endblock %}
+
+{% block content %}
+
+<div class="container container-content">
+<!-- Edit Quiz -->
+	<h1>
+		Edit Quiz
+	</h1>
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="my-quizzes.html">My Quizzes</a></li>
+			<li class="breadcrumb-item active" aria-current="page">{{quiz.title}}</li>
+		</ol>
+	</nav>
+	<form>
+		<div class="row mb-3">
+			<label for="title" class="col-sm-2 col-form-label">Title</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="title" name="title" value="{{object.title}}">
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="description" class="col-sm-2 col-form-label">Description</label>
+			<div class="col-sm-10">
+				<textarea class="form-control" id="description" name="description">{{object.description}}</textarea>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="dropdown" class="col-sm-2 col-form-label">Level of Difficulty</label>
+			<div class="col-sm-10">
+				<select class="form-select" aria-label="Default select example" id="dropdown">
+					<option selected>Select One</option>
+					<option value="1">Easy</option>
+					<option value="2" selected>Medium</option>
+					<option value="3">Hard</option>
+					<option value="4">Custom</option>
+				</select>
+			</div>
+		</div>
+		<div class="row mb-3">
+			<label for="options" class="col-sm-2 col-form-label">Question Settings</label>
+			<div class="col-sm-10">
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="multiple_attempts" name="multiple_attempts" {% if object.multiple_attempts %} checked {% endif %}>
+					<label class="form-check-label" for="multiple_attempts">Allow multiple attempts</label>
+				</div>
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="show_answers" name="show_answers" {% if object.show_answers %} checked {% endif %}>
+					<label class="form-check-label" for="show_answers">Show the correct answers on submission</label>
+				</div>
+				<div class="form-check form-switch">
+					<input class="form-check-input" type="checkbox" id="randomize" name="randomize" {% if object.randomize %} checked {% endif %}>
+					<label class="form-check-label" for="randomize">Randomize the quiz questions</label>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="table-responsive">
+            <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a> <a href="{% url 'create-question' quiz.id %}" class="btn btn-sm btn-primary">Create Question</a>
+			<table class="table table-striped">
+				<col width="1%"> <col width="4%"> <col width="40%"> <col width="40%"> <col width="15%">
+				<thead>
+					<tr>
+						<th scope="col">Sort</th>
+						<th scope="col">#</th>
+						<th scope="col">Question</th>
+						<th scope="col">Answers</th>
+						<th scope="col">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+
+                    {% for question in quiz.question_set.all %}
+					<tr>
+						<td><img class="sort" src="{{STATIC_URL}}img/icon-sort.svg" class="img-fluid" /></td>
+						<th scope="row">{{question.ordinality}}</th>
+						<td>{{question.text}}</td>
+						<td>
+						<ol>
+							<li>answer:placeholder</li>
+							<li>answer:placeholder</li>
+							<li>answer:placeholder <span class="badge rounded-pill bg-secondary">Correct</span></li>
+						</ol>
+						</td>
+						<td><a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning">Edit Question</a> </td>
+					</tr>
+                    {% endfor %}
+
+				</tbody>
+			</table>
+		</div>
+        <input type="hidden" name="course" value="{{course.pk}}" />
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
+        <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Quiz</a>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">
+					Delete
+				</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				Are you sure that you want to permanently delete this quiz?
+			</div>
+			<div class="modal-footer">
+                <form method="POST" action="{% url 'delete-quiz' quiz.id %}">
+                {% csrf_token %}
+                <input class="btn btn-danger" type="submit" value="Delete">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

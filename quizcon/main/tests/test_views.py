@@ -98,8 +98,6 @@ class DeleteQuizTest(CourseTestMixin, TestCase):
         url = reverse('delete-quiz', kwargs={'pk': self.quiz.pk})
 
         self.client.login(username=self.faculty.username, password='test')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
 
         response = self.client.post(url)
         self.assertRedirects(response, '/course/' + str(self.course.pk) + '/')
@@ -179,15 +177,13 @@ class DeleteQuestionTest(CourseTestMixin, TestCase):
         self.quiz = QuizFactory(course=self.course)
         self.question = QuestionFactory(quiz=self.quiz)
 
-    def test_delete_quiz(self):
+    def test_delete_question(self):
         url = reverse('delete-question', kwargs={'pk': self.question.pk})
 
         self.client.login(username=self.faculty.username, password='test')
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post(url)
-        self.assertRedirects(response, '/quiz/' + str(self.quiz.pk) + '/')
+        self.assertRedirects(response, '/quiz/' + str(self.quiz.pk)
+                             + '/update/')
         with self.assertRaises(Question.DoesNotExist):
             Question.objects.get(id=self.question.id)
         self.assertEqual(response.status_code, 302)

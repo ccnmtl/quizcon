@@ -32,7 +32,7 @@ class IndexView(TemplateView):
 
 
 class DashboardView(LoginRequiredMixin, View):
-    template_name = 'main/course_list.html'
+    template_name = 'main/courses.html'
     http_method_names = ['get', 'post']
 
     def post(self, request, *args, **kwargs) -> HttpResponse:
@@ -236,6 +236,7 @@ class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
     model = Quiz
     fields = ['title', 'description', 'multiple_attempts',
               'show_answers', 'randomize']
+    template_name = "main/quiz_form_edit.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -261,6 +262,7 @@ class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
 
 class DeleteQuizView(UpdateQuizPermissionMixin, DeleteView):
     model = Quiz
+    http_method_names = ['post']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -299,7 +301,7 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
         return ctx
 
     def get_success_url(self):
-        return reverse('quiz-detail',
+        return reverse('update-quiz',
                        kwargs={'pk': self.kwargs.get('pk')})
 
     def form_valid(self, form):
@@ -318,6 +320,7 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
 class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
     model = Question
     fields = ['description', 'text', 'explanation', 'ordinality']
+    template_name = "main/question_form_edit.html"
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -325,7 +328,7 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
         return ctx
 
     def get_success_url(self):
-        return reverse('quiz-detail',
+        return reverse('update-quiz',
                        kwargs={'pk': self.object.quiz.pk})
 
     def form_valid(self, form):
@@ -343,6 +346,7 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
 
 class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
     model = Question
+    http_method_names = ['post']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -357,5 +361,5 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
             extra_tags='safe'
         )
 
-        return reverse('quiz-detail',
+        return reverse('update-quiz',
                        kwargs={'pk': self.object.quiz.pk})

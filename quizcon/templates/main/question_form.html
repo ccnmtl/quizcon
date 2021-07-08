@@ -15,9 +15,9 @@
 	</h1>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="my-quizzes.html">My Quizzes</a></li>
-			<li class="breadcrumb-item"><a href="edit-quiz.html">{{quiz.title}}</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Question 4</li>
+            <li class="breadcrumb-item"><a href="{% url 'course-detail-view' quiz.course.pk %}">My Quizzes</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'update-quiz' quiz.pk %}">{{quiz.title}}</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
 		</ol>
 	</nav>
 	<form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}

@@ -39,17 +39,18 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'title': 'Lorem Ipsum', 'description': 'dolor sit amet',
-             'multiple_attempts': True, 'show_answers': False,
-             'randomize': True, 'course': self.course.pk})
+             'multiple_attempts': 1, 'show_answers': False,
+             'randomize': True, 'course': self.course.pk, 'scoring_scheme': 2})
 
         self.assertEqual(self.course.quiz_set.count(), 1)
         quiz = self.course.quiz_set.first()
         self.assertEqual(quiz.created_by, self.faculty)
         self.assertEqual(quiz.title, 'Lorem Ipsum')
         self.assertEqual(quiz.description, 'dolor sit amet')
-        self.assertTrue(quiz.multiple_attempts)
+        self.assertEqual(quiz.multiple_attempts, 1)
         self.assertFalse(quiz.show_answers)
         self.assertTrue(quiz.randomize)
+        self.assertEqual(quiz.scoring_scheme, 2)
 
         self.assertTrue('<strong>Lorem Ipsum</strong> quiz created'
                         in response.cookies['messages'].value)
@@ -78,15 +79,16 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
             url,
             {'title': 'Alpha',
                 'description': 'Quiz updated.',
-                'multiple_attempts': True, 'show_answers': False,
-                'randomize': True})
+                'multiple_attempts': 3, 'show_answers': False,
+                'randomize': True, 'scoring_scheme': 3})
 
         self.quiz.refresh_from_db()
         self.assertEqual(self.quiz.title, 'Alpha')
         self.assertEqual(self.quiz.description, 'Quiz updated.')
-        self.assertTrue(self.quiz.multiple_attempts)
+        self.assertEqual(self.quiz.multiple_attempts, 3)
         self.assertTrue(self.quiz.randomize)
         self.assertFalse(self.quiz.show_answers)
+        self.assertEqual(self.quiz.scoring_scheme, 3)
 
 
 class DeleteQuizTest(CourseTestMixin, TestCase):

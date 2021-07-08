@@ -12,11 +12,11 @@
 	</h1>
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="my-quizzes.html">My Quizzes</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'course-detail-view' quiz.course.pk%}">My Quizzes</a></li>
 			<li class="breadcrumb-item active" aria-current="page">{{quiz.title}}</li>
 		</ol>
 	</nav>
-	<form>
+	<form action="." method="post">{% csrf_token %}
 		<div class="row mb-3">
 			<label for="title" class="col-sm-2 col-form-label">Title</label>
 			<div class="col-sm-10">
@@ -30,23 +30,23 @@
 			</div>
 		</div>
 		<div class="row mb-3">
-			<label for="dropdown" class="col-sm-2 col-form-label">Level of Difficulty</label>
+			<label for="scoring_scheme" class="col-sm-2 col-form-label">Level of Difficulty</label>
 			<div class="col-sm-10">
-				<select class="form-select" aria-label="Default select example" id="dropdown">
-					<option selected>Select One</option>
-					<option value="1">Easy</option>
-					<option value="2" selected>Medium</option>
-					<option value="3">Hard</option>
-					<option value="4">Custom</option>
+				<select class="form-select" aria-label="Default select example" id="scoring_scheme" name="scoring_scheme">
+					<option>Select One</option>
+					<option value="1" {% if object.scoring_scheme == 1 %} selected {% endif %}>Easy</option>
+					<option value="2" {% if object.scoring_scheme == 2 %} selected {% endif %}>Medium</option>
+					<option value="3" {% if object.scoring_scheme == 3 %} selected {% endif %}>Hard</option>
+					<option value="4" {% if object.scoring_scheme == 4 %} selected {% endif %}>Custom</option>
 				</select>
 			</div>
 		</div>
 		<div class="row mb-3">
 			<label for="options" class="col-sm-2 col-form-label">Question Settings</label>
 			<div class="col-sm-10">
-				<div class="form-check form-switch">
-					<input class="form-check-input" type="checkbox" id="multiple_attempts" name="multiple_attempts" {% if object.multiple_attempts %} checked {% endif %}>
-					<label class="form-check-label" for="multiple_attempts">Allow multiple attempts</label>
+				<div>
+					<input type="number" id="multiple_attempts" name="multiple_attempts" min="1" max="4" value="{{object.multiple_attempts}}">
+					<label for="multiple_attempts">Allow multiple attempts</label>
 				</div>
 				<div class="form-check form-switch">
 					<input class="form-check-input" type="checkbox" id="show_answers" name="show_answers" {% if object.show_answers %} checked {% endif %}>

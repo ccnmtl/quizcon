@@ -7,7 +7,7 @@ class Quiz(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField()
     description = models.TextField()
-    multiple_attempts = models.BooleanField(default=False)
+    multiple_attempts = models.IntegerField(default=0)
     show_answers = models.BooleanField(
         default=True,
         help_text="Show the correct answers and explanation on submission.")
@@ -16,7 +16,7 @@ class Quiz(models.Model):
     randomize = models.BooleanField(
         default=False,
         help_text="Randomize the quiz questions")
-
+    scoring_scheme = models.IntegerField(default=1)
     created_by = models.ForeignKey(
         User, null=True, on_delete=models.SET_NULL,
         related_name='quiz_created_by')

@@ -1,7 +1,7 @@
 /* global requirejs: true */
 
 requirejs.config({
-    baseUrl: '../../media/js/',
+    baseUrl: '/media/js/',
     paths: {
         'jquery': 'lib/jquery-3.3.1.min',
         'domReady': 'lib/require/domReady',

@@ -4,10 +4,16 @@ from courseaffils.models import Course
 
 
 class Quiz(models.Model):
+    SCORING_SCHEMES = [
+        (1, 'Easy'),
+        (2, 'Medium'),
+        (3, 'Hard'),
+        (4, 'Custom')
+    ]
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField()
     description = models.TextField()
-    multiple_attempts = models.BooleanField(default=False)
+    multiple_attempts = models.IntegerField(default=0)
     show_answers = models.BooleanField(
         default=True,
         help_text="Show the correct answers and explanation on submission.")
@@ -16,7 +22,10 @@ class Quiz(models.Model):
     randomize = models.BooleanField(
         default=False,
         help_text="Randomize the quiz questions")
-
+    scoring_scheme = models.PositiveSmallIntegerField(
+        choices=SCORING_SCHEMES,
+        default=1
+    )
     created_by = models.ForeignKey(
         User, null=True, on_delete=models.SET_NULL,
         related_name='quiz_created_by')

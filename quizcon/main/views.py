@@ -218,7 +218,7 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 class CreateQuizView(LoggedInFacultyMixin, CreateView):
     model = Quiz
     fields = ['title', 'description', 'multiple_attempts',
-              'show_answers', 'randomize', 'course']
+              'show_answers', 'randomize', 'course', 'scoring_scheme']
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -246,7 +246,7 @@ class CreateQuizView(LoggedInFacultyMixin, CreateView):
 class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
     model = Quiz
     fields = ['title', 'description', 'multiple_attempts',
-              'show_answers', 'randomize']
+              'show_answers', 'randomize', 'scoring_scheme']
     template_name = "main/quiz_form_edit.html"
 
     def get_context_data(self, **kwargs):

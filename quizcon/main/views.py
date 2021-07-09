@@ -30,6 +30,17 @@ from quizcon.mixins import (
 class IndexView(TemplateView):
     template_name = "main/index.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_anonymous:
+            return super(IndexView, self).dispatch(request, *args, *kwargs)
+
+        qs = Course.objects.filter(group__user=request.user)
+        if qs.count() == 1:
+            course_url = reverse('course-detail-view', args=[qs.first().id])
+            return HttpResponseRedirect(course_url)
+        else:
+            return HttpResponseRedirect(reverse('course-list-view'))
+
 
 class DashboardView(LoginRequiredMixin, View):
     template_name = 'main/courses.html'

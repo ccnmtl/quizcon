@@ -43,9 +43,10 @@ class QuizFactory(factory.django.DjangoModelFactory):
     course = factory.SubFactory(CourseFactory)
     title = 'Lorem Ipsum'
     description = 'dolor sit amet'
-    multiple_attempts = True
+    multiple_attempts = 2
     show_answers = False
     randomize = True
+    scoring_scheme = 2
 
 
 class QuestionFactory(factory.django.DjangoModelFactory):

@@ -20,6 +20,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
+from quizcon.main.forms import QuizForm
 from quizcon.main.models import Quiz, Question
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
@@ -217,8 +218,7 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
 class CreateQuizView(LoggedInFacultyMixin, CreateView):
     model = Quiz
-    fields = ['title', 'description', 'multiple_attempts',
-              'show_answers', 'randomize', 'course', 'scoring_scheme']
+    form_class = QuizForm
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -245,8 +245,7 @@ class CreateQuizView(LoggedInFacultyMixin, CreateView):
 
 class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
     model = Quiz
-    fields = ['title', 'description', 'multiple_attempts',
-              'show_answers', 'randomize', 'scoring_scheme']
+    form_class = QuizForm
     template_name = "main/quiz_form_edit.html"
 
     def get_context_data(self, **kwargs):

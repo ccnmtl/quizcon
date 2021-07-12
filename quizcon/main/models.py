@@ -1,6 +1,6 @@
-from django.db import models
-from django.contrib.auth.models import User
 from courseaffils.models import Course
+from django.contrib.auth.models import User
+from django.db import models
 
 
 class Quiz(models.Model):
@@ -15,13 +15,13 @@ class Quiz(models.Model):
     description = models.TextField()
     multiple_attempts = models.IntegerField(default=0)
     show_answers = models.BooleanField(
-        default=True,
-        help_text="Show the correct answers and explanation on submission.")
+        default=False,
+        verbose_name="Show the correct answers on submission")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     randomize = models.BooleanField(
         default=False,
-        help_text="Randomize the quiz questions")
+        verbose_name="Randomize the quiz questions")
     scoring_scheme = models.PositiveSmallIntegerField(
         choices=SCORING_SCHEMES,
         default=1

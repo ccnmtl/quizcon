@@ -1,7 +1,7 @@
 *
 {
-	font-family: 'Lato', sans-serif;
-	color: #222d35;
+    font-family: 'Lato', sans-serif;
+    color: #222d35;
 }
 
 body { background-color: #f2f2f2; }
@@ -9,28 +9,28 @@ body { background-color: #f2f2f2; }
 
 .container-content
 {
-	background-color: #ffffff;
-	padding: 1em;
+    background-color: #ffffff;
+    padding: 1em;
 }
 
 nav.navbar { background-color: #032b50; }
 
 a
 {
-	color: #0e78db;
-	text-decoration: none;
+    color: #0e78db;
+    text-decoration: none;
 }
 
 a:hover
 {
-	color: #0e78db;
-	text-decoration: underline;
+    color: #0e78db;
+    text-decoration: underline;
 }
 
 h1
 {
-	border-bottom: 1px solid #bbc2c7;
-	padding-bottom: .25em;
+    border-bottom: 1px solid #bbc2c7;
+    padding-bottom: .25em;
 }
 
 ol { list-style-type: upper-alpha; }
@@ -38,95 +38,100 @@ ol { list-style-type: upper-alpha; }
 img.sort { cursor: move; }
 
 #signin {
-	width: 100%;
-	max-width: 350px;
-	padding: 15px;
-	margin: auto;
+    width: 100%;
+    max-width: 350px;
+    padding: 15px;
+    margin: auto;
 }
 
 /* Quiz view */
 #answer01-01, #answer01-02, #answer01-03
 {
-	right: 160px;
-	top: 74px;
+    right: 160px;
+    top: 74px;
 }
 
 #answer02-01, #answer02-02, #answer02-03
 {
-	right: 130px;
-	top: 120px;
+    right: 130px;
+    top: 120px;
 }
 
 #answer03-01, #answer03-02, #answer03-03
 {
-	right: 188px;
-	top: 120px;
+    right: 188px;
+    top: 120px;
 }
 
 #answer04-01, #answer04-02, #answer04-03
 {
-	right: 215px;
-	top: 166px;
+    right: 215px;
+    top: 166px;
 }
 
 #answer05-01, #answer05-02, #answer05-03
 {
-	right: 103px;
-	top: 166px;
+    right: 103px;
+    top: 166px;
 }
 
 #answer06-01, #answer06-02, #answer06-03
 {
-	right: 160px;
-	top: 204px;
+    right: 160px;
+    top: 204px;
 }
 
 #answer07-01, #answer07-02, #answer07-03
 {
-	right: 78px;
-	top: 211px;
+    right: 78px;
+    top: 211px;
 }
 
 #answer08-01, #answer08-02, #answer08-03
 {
-	right: 240px;
-	top: 211px;
+    right: 240px;
+    top: 211px;
 }
 
 #answer09-01, #answer09-02, #answer09-03
 {
-	right: 269px;
-	top: 257px;
+    right: 269px;
+    top: 257px;
 }
 
 #answer10-01, #answer10-02, #answer10-03
 {
-	right: 214px;
-	top: 257px;
+    right: 214px;
+    top: 257px;
 }
 
 #answer11-01, #answer11-02, #answer11-03
 {
-	right: 160px;
-	top: 257px;
+    right: 160px;
+    top: 257px;
 }
 
 #answer12-01, #answer12-02, #answer12-03
 {
-	right: 102px;
-	top: 257px;
+    right: 102px;
+    top: 257px;
 }
 
 #answer13-01, #answer13-02, #answer13-03
 {
-	right: 50px;
-	top: 257px;
+    right: 50px;
+    top: 257px;
 }
 
 .choicebox
 {
-	background-image: url(../img/triangle.svg);
-	width: 350px;
-	height: 350px;
-	position: relative;
+    background-image: url(../img/triangle.svg);
+    width: 350px;
+    height: 350px;
+    position: relative;
+}
+
+.form-switch {
+    /* Overriding for our horizontal layout in quiz & question */
+    padding-left: 1em !important;
 }

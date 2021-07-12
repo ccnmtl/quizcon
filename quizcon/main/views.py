@@ -20,8 +20,8 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
-from quizcon.main.forms import QuizForm
-from quizcon.main.models import Quiz, Question
+from quizcon.main.forms import QuizForm, QuestionForm
+from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
     LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
@@ -302,7 +302,7 @@ class QuizDetailView(UpdateQuizPermissionMixin, DetailView):
 
 class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
     model = Question
-    fields = ['quiz', 'description', 'text', 'explanation', 'ordinality']
+    form_class = QuestionForm
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -316,6 +316,19 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
 
     def form_valid(self, form):
         result = CreateView.form_valid(self, form)
+
+        Marker.objects.create(question=form.instance,
+                              label=form.cleaned_data['answer_label_1'],
+                              correct=form.cleaned_data['correct'] == 1,
+                              value=1)
+        Marker.objects.create(question=form.instance,
+                              label=form.cleaned_data['answer_label_2'],
+                              correct=form.cleaned_data['correct'] == 2,
+                              value=1)
+        Marker.objects.create(question=form.instance,
+                              label=form.cleaned_data['answer_label_3'],
+                              correct=form.cleaned_data['correct'] == 3,
+                              value=1)
 
         text = form.cleaned_data['text']
         messages.add_message(

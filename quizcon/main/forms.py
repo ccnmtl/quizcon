@@ -13,6 +13,7 @@ class QuizForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3})
         }
 
+
 class QuestionForm(forms.ModelForm):
 
     answer_label_1 = forms.CharField(

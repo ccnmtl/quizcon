@@ -355,7 +355,12 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
                        kwargs={'pk': self.object.quiz.pk})
 
     def form_valid(self, form):
-        result = CreateView.form_valid(self, form)
+        result = UpdateView.form_valid(self, form)
+
+        # @todo - Update the markers rather than creating them
+        # update text
+        # update correct
+        # for all of them
 
         text = form.cleaned_data['text']
         messages.add_message(

@@ -78,9 +78,10 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'title': 'Alpha',
-                'description': 'Quiz updated.',
-                'multiple_attempts': 3, 'show_answers': False,
-                'randomize': True, 'scoring_scheme': 3})
+             'description': 'Quiz updated.',
+             'multiple_attempts': 3, 'show_answers': False,
+             'randomize': True, 'scoring_scheme': 3,
+             'course': self.quiz.course.pk})
 
         self.quiz.refresh_from_db()
         self.assertEqual(self.quiz.title, 'Alpha')

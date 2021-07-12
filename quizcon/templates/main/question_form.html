@@ -10,47 +10,48 @@
 {% block content %}
 <div class="container container-content">
 <!-- Create Question -->
-	<h1>
-		Create Question
-	</h1>
-	<nav aria-label="breadcrumb">
-		<ol class="breadcrumb">
+    <h1>
+        Create Question
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'course-detail-view' quiz.course.pk %}">My Quizzes</a></li>
-			<li class="breadcrumb-item"><a href="{% url 'update-quiz' quiz.pk %}">{{quiz.title}}</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
-		</ol>
-	</nav>
-	<form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
-		<div class="row mb-3">
-			<label for="text" class="col-sm-2 col-form-label">Question</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="text" name="text"></textarea>
-			</div>
-		</div>
-		<div class="row mb-3">
-			<label for="thetextarea-a" class="col-sm-2 col-form-label">Answer A</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-a"></textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-a">
-				<label class="form-check-label" for="flexRadio-correct-a"> Correct </label>
-			</div>
-		</div>
-		<div class="row mb-3">
-			<label for="thetextarea-b" class="col-sm-2 col-form-label">Answer B</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-b"></textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-b">
-				<label class="form-check-label" for="flexRadio-correct-b"> Correct </label>
-			</div>
-		</div>
-		<div class="row mb-3">
-			<label for="thetextarea-c" class="col-sm-2 col-form-label">Answer C</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-c"></textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-c">
-				<label class="form-check-label" for="flexRadio-correct-c"> Correct </label>
-			</div>
-		</div>
+            <li class="breadcrumb-item"><a href="{% url 'update-quiz' quiz.pk %}">{{quiz.title}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
+        </ol>
+    </nav>
+    <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+        {% bootstrap_form_errors form %}
+        <div class="row mb-3">
+            <label for="text" class="col-sm-2 col-form-label">Question</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="text" name="text"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="thetextarea-a" class="col-sm-2 col-form-label">Answer A</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="thetextarea-a"></textarea>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-a">
+                <label class="form-check-label" for="flexRadio-correct-a"> Correct </label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="thetextarea-b" class="col-sm-2 col-form-label">Answer B</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="thetextarea-b"></textarea>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-b">
+                <label class="form-check-label" for="flexRadio-correct-b"> Correct </label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="thetextarea-c" class="col-sm-2 col-form-label">Answer C</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="thetextarea-c"></textarea>
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-c">
+                <label class="form-check-label" for="flexRadio-correct-c"> Correct </label>
+            </div>
+        </div>
         <div class="row mb-3">
             <label for="explanation" class="col-sm-2 col-form-label">Explanation</label>
             <div class="col-sm-10">
@@ -60,6 +61,6 @@
         {% bootstrap_field form.ordinality %}
         <input type="hidden" name="quiz" value="{{quiz.pk}}" />
         <button type="submit" class="btn btn-block btn-primary">Save</button> <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-secondary">Cancel</a>
-	</form>
+    </form>
 </div>
 {% endblock %}

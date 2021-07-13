@@ -82,9 +82,10 @@
                     <td>{{question.text}}</td>
                     <td>
                     <ol>
-                        <li>answer:placeholder</li>
-                        <li>answer:placeholder</li>
-                        <li>answer:placeholder <span class="badge rounded-pill bg-secondary">Correct</span></li>
+                        {% for marker in question.marker_set.all %}
+                        <li>{{marker.label}}
+                            {% if marker.correct %}<span class="badge rounded-pill bg-secondary">Correct</span>{% endif %}</li>
+                        {% endfor %}
                     </ol>
                     </td>
                     <td><a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning">Edit Question</a> </td>

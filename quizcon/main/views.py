@@ -342,7 +342,7 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
 
 class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
     model = Question
-    fields = ['description', 'text', 'explanation', 'ordinality']
+    form_class = QuestionForm
     template_name = "main/question_form_edit.html"
 
     def get_context_data(self, **kwargs):
@@ -357,10 +357,10 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
     def form_valid(self, form):
         result = UpdateView.form_valid(self, form)
 
-        # @todo - Update the markers rather than creating them
-        # update text
-        # update correct
-        # for all of them
+        for idx, marker in enumerate(self.object.marker_set.all()):
+            marker.correct = form.cleaned_data['correct'] == (idx + 1)
+            marker.label = form.cleaned_data['answer_label_' + str(idx + 1)]
+            marker.save()
 
         text = form.cleaned_data['text']
         messages.add_message(

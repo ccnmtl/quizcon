@@ -26,7 +26,6 @@ class QuestionForm(forms.ModelForm):
     correct = forms.IntegerField(required=True)
 
     def __init__(self, *args, **kwargs):
-        super(QuestionForm, self).__init__(*args, **kwargs)
 
         if kwargs.get('instance'):
             question = kwargs.get('instance')
@@ -34,13 +33,16 @@ class QuestionForm(forms.ModelForm):
 
             initial = kwargs.setdefault('initial', {})
             for idx, marker in enumerate(markers):
-                initial['answer_label_' + idx] = marker.text
+                initial['answer_label_' + str(idx + 1)] = marker.label
                 if marker.correct:
-                    initial['correct'] = idx
+                    initial['correct'] = idx + 1
+
+            kwargs.update({'initial': initial})
+        super(QuestionForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Question
-        fields = ['quiz', 'description', 'text', 'explanation']
+        fields = ['quiz', 'text', 'explanation']
 
         widgets = {
             'title': forms.TextInput(),

@@ -4,7 +4,7 @@ from random import randrange
 from courseaffils.models import Course
 from django.contrib.auth.models import User, Group
 import factory
-from quizcon.main.models import Quiz, Question
+from quizcon.main.models import Quiz, Question, Marker
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -55,9 +55,25 @@ class QuestionFactory(factory.django.DjangoModelFactory):
 
     quiz = factory.SubFactory(QuizFactory)
     text = 'Lorem Ipsum'
-    description = 'dolor sit amet'
     explanation = 'consectetur adipiscing elit'
     ordinality = -1
+
+    @factory.post_generation
+    def create_marker(obj, create, extracted, **kwargs):
+
+        obj.marker_set.add(MarkerFactory(question=obj))
+        obj.marker_set.add(MarkerFactory(question=obj))
+        obj.marker_set.add(MarkerFactory(question=obj))
+
+
+class MarkerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Marker
+
+    question = factory.SubFactory(QuestionFactory)
+    label = factory.Sequence(lambda n: "Marker%03d" % n)
+    correct = False
+    value = -1
 
 
 class CourseTestMixin(object):

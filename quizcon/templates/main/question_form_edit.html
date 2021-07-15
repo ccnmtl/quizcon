@@ -21,44 +21,55 @@
 		</ol>
 	</nav>
 	<form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+        {% if form.errors|length %}
+            <div class="alert alert-danger">
+              <strong>Please correct errors before continuing</strong><br /><br />
+              {% if form.non_field_errors %}
+                <div>{{ form.non_field_errors}}</div>
+              {% endif %}
+            </div>
+        {% endif %}
+        {% bootstrap_form_errors form %}
 		<div class="row mb-3">
-			<label for="thetextarea-q" class="col-sm-2 col-form-label">Question</label>
+			<label for="text" class="col-sm-2 col-form-label">Question</label>
 			<div class="col-sm-10">
-				<textarea class="form-control" id="edit-text" name="text">{{object.text}}</textarea>
+				{% bootstrap_field form.text show_label=False %}
 			</div>
 		</div>
 		<div class="row mb-3">
-			<label for="thetextarea-a" class="col-sm-2 col-form-label">Answer A</label>
+			<label for="id_answer_label_one" class="col-sm-2 col-form-label">Answer A</label>
 			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-a">Jupiter</textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-a">
-				<label class="form-check-label" for="flexRadio-correct-a"> Correct </label>
+                {% bootstrap_field form.answer_label_1 show_label=False %}
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-one" value="1"
+                    {% if form.initial.correct == 1 %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-one"> Correct </label>
 			</div>
 		</div>
 		<div class="row mb-3">
-			<label for="thetextarea-b" class="col-sm-2 col-form-label">Answer B</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-b">Mercury</textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-b">
-				<label class="form-check-label" for="flexRadio-correct-b"> Correct </label>
-			</div>
+            <label for="id_answer_label_two" class="col-sm-2 col-form-label">Answer B</label>
+            <div class="col-sm-10">
+                {% bootstrap_field form.answer_label_2 show_label=False %}
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-two" value="2"
+                    {% if form.initial.correct == 2 %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-two"> Correct </label>
+            </div>
 		</div>
 		<div class="row mb-3">
-			<label for="thetextarea-c" class="col-sm-2 col-form-label">Answer C</label>
-			<div class="col-sm-10">
-				<textarea class="form-control" id="thetextarea-c">Venus</textarea>
-				<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadio-correct-c" checked>
-				<label class="form-check-label" for="flexRadio-correct-c"> Correct </label>
-			</div>
+            <label for="id_answer_label_three" class="col-sm-2 col-form-label">Answer C</label>
+            <div class="col-sm-10">
+                {% bootstrap_field form.answer_label_3 show_label=False %}
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-three" value="3"
+                    {% if form.initial.correct == 3 %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-three"> Correct </label>
+            </div>
 		</div>
         <div class="row mb-3">
             <label for="explanation" class="col-sm-2 col-form-label">Explanation</label>
             <div class="col-sm-10">
-                <textarea class="form-control" id="explanation" name="explanation">{{object.explanation}}</textarea>
+                {% bootstrap_field form.explanation show_label=False %}
             </div>
         </div>
-        {% bootstrap_field form.ordinality %}
-        <input type="hidden" name="quiz" value="{{quiz.pk}}" />
+        <input type="hidden" name="quiz" value="{{question.quiz.pk}}" />
         <button type="submit" class="btn btn-block btn-primary">Save</button> <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Question</a>
 	</form>
 </div>

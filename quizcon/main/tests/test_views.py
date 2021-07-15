@@ -110,7 +110,7 @@ class DeleteQuizTest(CourseTestMixin, TestCase):
         self.assertEqual(self.course.quiz_set.count(), 0)
 
 
-class CreateQuestionView(CourseTestMixin, TestCase):
+class CreateQuestionViewTest(CourseTestMixin, TestCase):
 
     def setUp(self):
         self.setup_course()
@@ -132,16 +132,22 @@ class CreateQuestionView(CourseTestMixin, TestCase):
 
         response = self.client.post(
             url,
-            {'text': 'Lorem Ipsum', 'description': 'dolor sit amet',
-             'explanation': 'consectetur adipiscing elit', 'ordinality': -1,
-             'quiz': self.quiz.pk})
+            {'text': 'Lorem Ipsum',
+             'explanation': 'consectetur adipiscing elit',
+             'quiz': self.quiz.pk, 'answer_label_1': 'Thor',
+             'answer_label_2': 'Loki', 'answer_label_3': 'Odin', 'correct': 2})
 
         self.assertEqual(self.quiz.question_set.count(), 1)
         question = self.quiz.question_set.first()
         self.assertEqual(question.text, 'Lorem Ipsum')
-        self.assertEqual(question.description, 'dolor sit amet')
         self.assertEqual(question.explanation, 'consectetur adipiscing elit')
-        self.assertEqual(question.ordinality, -1)
+        self.assertEqual(question.marker_set.count(), 3)
+        self.assertEqual(question.marker_set.all()[0].label, 'Thor')
+        self.assertEqual(question.marker_set.all()[1].label, 'Loki')
+        self.assertEqual(question.marker_set.all()[2].label, 'Odin')
+        self.assertFalse(question.marker_set.all()[0].correct)
+        self.assertTrue(question.marker_set.all()[1].correct)
+        self.assertFalse(question.marker_set.all()[2].correct)
 
         self.assertTrue('<strong>Lorem Ipsum</strong> question created'
                         in response.cookies['messages'].value)
@@ -164,14 +170,21 @@ class UpdateQuestionTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'text': 'Alpha',
-                'description': 'Quiz updated.',
-                'explanation': 'Ch-ch-changes', 'ordinality': 0})
+                'explanation': 'Ch-ch-changes',
+                'quiz': self.quiz.pk, 'answer_label_1': 'Thor',
+                'answer_label_2': 'Loki', 'answer_label_3': 'Odin',
+                'correct': 2})
 
         self.question.refresh_from_db()
         self.assertEqual(self.question.text, 'Alpha')
-        self.assertEqual(self.question.description, 'Quiz updated.')
         self.assertEqual(self.question.explanation, 'Ch-ch-changes')
-        self.assertEqual(self.question.ordinality, 0)
+        self.assertEqual(self.question.marker_set.count(), 3)
+        self.assertEqual(self.question.marker_set.all()[0].label, 'Thor')
+        self.assertEqual(self.question.marker_set.all()[1].label, 'Loki')
+        self.assertEqual(self.question.marker_set.all()[2].label, 'Odin')
+        self.assertFalse(self.question.marker_set.all()[0].correct)
+        self.assertTrue(self.question.marker_set.all()[1].correct)
+        self.assertFalse(self.question.marker_set.all()[2].correct)
 
 
 class DeleteQuestionTest(CourseTestMixin, TestCase):

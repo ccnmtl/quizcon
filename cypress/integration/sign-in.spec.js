@@ -37,7 +37,7 @@ describe('Sign-In Stories', function() {
         // Invalid credentials
         cy.get('#id_username').type('faculty_one').blur();
         cy.get('#id_password').type('wrong').blur();
-        cy.get('#guest-login-submit').click();
+        cy.get('#guest-login-submit').click({force: true});
         cy.get('#guest-login-error').should('be.visible');
         cy.get('#guest-login-error').should(
             'contain', 'Invalid username or password');
@@ -45,16 +45,16 @@ describe('Sign-In Stories', function() {
         // Valid credentials
         cy.get('#id_username').type('faculty_one').blur();
         cy.get('#id_password').type('test').blur();
-        cy.get('#guest-login-submit').click();
+        cy.get('#guest-login-submit').click({force: true});
 
         // Navigate to the dashboard
         cy.title().should(
-            'equal', 'Quizzing With Confidence: Courses');
+            'equal', 'Quizzing With Confidence: My Courses | QuizCon');
         cy.get('#cy-login').should('not.exist');
         cy.get('#logout').should('exist');
 
         // Sign out
-        cy.get('#logout').click();
+        cy.get('#logout').click({force: true});
 
         // Verify signed out state
         cy.title().should(

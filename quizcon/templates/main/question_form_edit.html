@@ -10,17 +10,18 @@
 {% block content %}
 <div class="container container-content">
 <!-- Edit Question -->
-	<h1>
-		Edit Question
-	</h1>
-	<nav aria-label="breadcrumb">
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="{% url 'course-detail-view' question.quiz.course.pk %}">My Quizzes</a></li>
-			<li class="breadcrumb-item"><a href="{% url 'update-quiz' question.quiz.pk %}">{{question.quiz.title}}</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
-		</ol>
-	</nav>
-	<form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+    <h1>
+        Edit Question
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'course-list-view' %}">My Courses</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course-detail-view' question.quiz.course.pk %}">My Quizzes</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'update-quiz' question.quiz.pk %}">{{question.quiz.title}}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
+        </ol>
+    </nav>
+    <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
         {% if form.errors|length %}
             <div class="alert alert-danger">
               <strong>Please correct errors before continuing</strong><br /><br />
@@ -30,22 +31,22 @@
             </div>
         {% endif %}
         {% bootstrap_form_errors form %}
-		<div class="row mb-3">
-			<label for="text" class="col-sm-2 col-form-label">Question</label>
-			<div class="col-sm-10">
-				{% bootstrap_field form.text show_label=False %}
-			</div>
-		</div>
-		<div class="row mb-3">
-			<label for="id_answer_label_one" class="col-sm-2 col-form-label">Answer A</label>
-			<div class="col-sm-10">
+        <div class="row mb-3">
+            <label for="text" class="col-sm-2 col-form-label">Question</label>
+            <div class="col-sm-10">
+                {% bootstrap_field form.text show_label=False %}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="id_answer_label_one" class="col-sm-2 col-form-label">Answer A</label>
+            <div class="col-sm-10">
                 {% bootstrap_field form.answer_label_1 show_label=False %}
                 <input class="form-check-input" type="radio" name="correct" id="answer-label-one" value="1"
                     {% if form.initial.correct == 1 %}checked{% endif %}>
                 <label class="form-check-label" for="answer-label-one"> Correct </label>
-			</div>
-		</div>
-		<div class="row mb-3">
+            </div>
+        </div>
+        <div class="row mb-3">
             <label for="id_answer_label_two" class="col-sm-2 col-form-label">Answer B</label>
             <div class="col-sm-10">
                 {% bootstrap_field form.answer_label_2 show_label=False %}
@@ -53,8 +54,8 @@
                     {% if form.initial.correct == 2 %}checked{% endif %}>
                 <label class="form-check-label" for="answer-label-two"> Correct </label>
             </div>
-		</div>
-		<div class="row mb-3">
+        </div>
+        <div class="row mb-3">
             <label for="id_answer_label_three" class="col-sm-2 col-form-label">Answer C</label>
             <div class="col-sm-10">
                 {% bootstrap_field form.answer_label_3 show_label=False %}
@@ -62,7 +63,7 @@
                     {% if form.initial.correct == 3 %}checked{% endif %}>
                 <label class="form-check-label" for="answer-label-three"> Correct </label>
             </div>
-		</div>
+        </div>
         <div class="row mb-3">
             <label for="explanation" class="col-sm-2 col-form-label">Explanation</label>
             <div class="col-sm-10">
@@ -71,29 +72,29 @@
         </div>
         <input type="hidden" name="quiz" value="{{question.quiz.pk}}" />
         <button type="submit" class="btn btn-block btn-primary">Save</button> <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Question</a>
-	</form>
+    </form>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">
-					Delete
-				</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				Are you sure that you want to permanently delete this question?
-			</div>
-			<div class="modal-footer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure that you want to permanently delete this question?
+            </div>
+            <div class="modal-footer">
                 <form method="POST" action="{% url 'delete-question' question.id %}">
                 {% csrf_token %}
                     <input class="btn btn-danger" type="submit" value="Delete">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </form>
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

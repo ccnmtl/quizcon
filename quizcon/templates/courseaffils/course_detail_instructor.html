@@ -1,33 +1,42 @@
 <div class="container container-content">
 <!-- My Quizzes -->
-	<h1>
-		{{course.title}} Quizzes
-	</h1>
-	<div class="table-responsive">
-		<a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
-		<table class="table table-striped">
-			<col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
-			<thead>
-				<tr>
-					<th scope="col">Quiz Title</th>
-					<th scope="col">Quiz Description</th>
-					<th scope="col">URL</th>
-					<th scope="col">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
+    <h1>
+        My Quizzes
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'course-list-view' %}">My Courses</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Quizzes</li>
+        </ol>
+    </nav>
+    <div class="table-responsive">
+        <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
+        <table class="table table-striped">
+            <col width="15%"> <col width="20%"> <col width="10%"> <col width="30%"> <col width="25%">
+            <thead>
+                <tr>
+                    <th scope="col">Quiz Title</th>
+                    <th scope="col">Quiz Description</th>
+                    <th scope="col">Due Date</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for quiz in course.quiz_set.all %}
-				<tr>
-					<th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
-					<td>{{quiz.description}}</td>
-					<td class="text-muted">http://ctl.columbia.edu</td>
-					<td>
-						<a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
-						<a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
-					</td>
-				</tr>
+                <tr>
+                    <th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
+                    <td>{{quiz.description}}</td>
+                    <td>08.31.2021</td>
+                    <td class="text-muted">http://ctl.columbia.edu</td>
+                    <td>
+                        <a href="edit-quiz.html" class="btn btn-sm btn-info">Clone Quiz</a>
+                        <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
+                        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
+                    </td>
+                </tr>
                 {% endfor %}
-			</tbody>
-		</table>
-	</div>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -2,29 +2,38 @@
 {% load course_description course_faculty_string from course_tools %}
 
 {% block title %}
-Courses
+My Courses | QuizCon
 {% endblock %}
 
 {% block content %}
 <div class="container container-content">
-	<h1>
-		My Courses
-	</h1>
-	<div class="table-responsive">
-		<table class="table table-striped">
-			<col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
-			<thead>
-				<tr>
-					<th scope="col">Title</th>
-					<th scope="col">Description</th>
-					<th scope="col">Semester</th>
-					<th scope="col">Authors</th>
-				</tr>
-			</thead>
-			<tbody>
+    <h1>
+        My Courses
+    </h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
+            <thead>
+                <tr>
+                    <th scope="col">Course Title</th>
+                    <th scope="col">Course Quiz(zes)</th>
+                    <th scope="col">Course Description</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Author(s)</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for course in courses %}
                 <tr>
-                    <td><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></td>
+                    <th scope="row">{{ course.title }}</th>
+                    <td>{% if course.quiz_set %}
+                            <ul>
+                                {% for quiz in course.quiz_set.all %}
+                                    <li><a href="{% url 'course-detail-view' course.pk %}">{{quiz.title}}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </td>
                     <td>{% if course|course_description %}
                         {{ course|course_description }}
                     {% else %}
@@ -34,8 +43,8 @@ Courses
                     <td>{{ course|course_faculty_string }}</td>
                 </tr>
                 {% endfor %}
-			</tbody>
-		</table>
-	</div>
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

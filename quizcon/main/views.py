@@ -26,6 +26,8 @@ from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
     LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
     UpdateQuestionPermissionMixin)
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.utils.decorators import method_decorator
 
 
 class IndexView(TemplateView):
@@ -203,6 +205,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         }
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
     template_name = 'main/assignment.html'

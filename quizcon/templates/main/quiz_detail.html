@@ -4,102 +4,48 @@
 {{ quiz.title }}
 {% endblock %}
 
-{% block css %}
-<style>
-    ol { list-style-type: upper-alpha; }
-
-    .row
-    {
-        margin: 2rem;
-        padding: 2rem;
-    }
-
-    * { font-family: 'Lato', sans-serif; }
-
-    .form-check
-    {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="alert alert-warning" role="alert">
-    <button onclick="javascript:window.close('','_parent','');" class="btn btn-warning btn-sm float-end">Close</button>
-    This is a preview of what your students will see.
-</div>
-<div>
-<h1>
-    {{quiz.title}}
-</h1>
+<div class="quiz-container">
+    <div class="alert alert-warning" role="alert">
+        <button onclick="javascript:window.close('','_parent','');" class="btn btn-warning btn-sm float-end">Close</button>
+        This is a preview of what your students will see.
+    </div>
+    <div>
+    <h1>
+        {{quiz.title}}
+    </h1>
 
-<p class="lead">{{quiz.description}}</p>
-<div class="alert alert-danger" role="alert">
-    <strong>00:00:00</strong> remaining to complete quiz.
-</div>
-{% for question in quiz.question_set.all %}
-    <form>
-        <div class="row bg-light">
-            <div class="col-md-6">
-                <p>
-                    <strong>{{question.text}}</strong>
-                </p>
-                <p>
-                    {{question.description}}
-                </p>
-                <ol>
-                    <li class="border-top p-2">Jupiter</li>
-                    <li class="border-top p-2">Mercury</li>
-                    <li class="border-top p-2">Venus</li>
-                    <li class="border-top p-2">I don't know.</li>
-                </ol>
-            </div>
-            <div class="col-md-6">
-                <div class="choicebox float-end">
-                    <div class="form-check" id="answer01-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer02-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer03-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer04-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer05-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer06-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer07-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer08-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer09-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer10-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer11-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer12-01">
-                        <input class="form-check-input" type="radio" name="radiodefault">
-                    </div>
-                    <div class="form-check" id="answer13-01">
-                        <input class="form-check-input" type="radio" name="radiodefault" checked>
+    <p class="lead">{{quiz.description}}</p>
+    <div class="alert alert-danger" role="alert">
+        <strong>00:00:00</strong> remaining to complete quiz.
+    </div>
+    {% for question in quiz.question_set.all %}
+        {% with markers=question.random_markers %}
+        <form>
+            <div class="row bg-light">
+                <div class="col-md-6">
+                    <p>
+                        <strong>{{question.text}}</strong>
+                    </p>
+                    <ol>
+                        {% for marker in markers %}
+                        <li class="border-top p-2">{{marker.label}}</li>
+                        {% endfor %}
+                        <li class="border-top p-2">I don't know.</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <div class="choicebox float-end">
+                        {% for x in num_markers %}
+                        <div class="form-check answer{{x}}">
+                            <input class="form-check-input" type="radio" name="radiodefault" value="{{x}}">
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-{% endfor %}
+        </form>
+        {% endwith %}
+    {% endfor %}
+</div>
 {% endblock %}

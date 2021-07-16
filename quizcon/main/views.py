@@ -2,7 +2,7 @@ import re
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
 from courseaffils.models import Course
-from courseaffils.views import get_courses_for_instructor
+from courseaffils.views import get_courses_for_user
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import (
@@ -51,7 +51,7 @@ class DashboardView(LoginRequiredMixin, View):
 
         ctx = {
             'user': request.user,
-            'courses': get_courses_for_instructor(
+            'courses': get_courses_for_user(
                 self.request.user).order_by('title'),
             'page_type': 'dashboard'
         }
@@ -60,7 +60,7 @@ class DashboardView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs) -> HttpResponse:
         ctx = {
             'user': request.user,
-            'courses': get_courses_for_instructor(
+            'courses': get_courses_for_user(
                 self.request.user).order_by('title'),
             'page_type': 'dashboard'
         }
@@ -205,7 +205,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
 
 class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
-    template_name = 'main/assignment.html'
+    template_name = 'main/lti_assignment.html'
 
     def get_context_data(self, **kwargs):
         return {
@@ -213,6 +213,20 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
             'course_title': self.lti.course_title(self.request),
             'number': 1,
             'assignment_id': kwargs.get('assignment_id')
+        }
+
+
+class StandAloneAssignmentView(LoggedInCourseMixin, TemplateView):
+    template_name = 'main/standalone_assignment.html'
+
+    def get_context_data(self, **kwargs):
+        assignment_id = self.kwargs.get('assignment_id')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
+
+        return {
+            'is_faculty': quiz.course.is_true_faculty(self.request.user),
+            'quiz': quiz,
+            'num_markers': range(13)
         }
 
 
@@ -295,8 +309,10 @@ class QuizDetailView(UpdateQuizPermissionMixin, DetailView):
     model = Quiz
 
     def get_context_data(self, **kwargs):
+
         return {
-            'quiz': self.object
+            'quiz': self.object,
+            'num_markers': range(13)
         }
 
 

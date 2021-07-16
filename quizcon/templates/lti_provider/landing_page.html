@@ -4,23 +4,58 @@
 
 {% block usernav %}
 {% endblock %}
+{% block topnavbar %}
+{% endblock %}
+{% block css %}
+<style>
+    html,body {
+        height: 100%;
+    }
+
+    body, .container
+    {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #032b50;
+        justify-content: center;
+    }
+
+    h1 {
+        color: #0E78DB;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 {% if not is_instructor and not is_administrator %}
-    <section class="section--hero">
-        <div class="hero-text" style="top: 2rem">
-            <h1>Quizzing with Confidence</h1>
-            <p>The Quizzing with Confidence dashboard is available to instructors only.</p>
-        </div>
-    </section>
+    <body id="splash" class="text-center">
+        <div id="signin">
+            <h1 class="logo display-1" style="border: 0; font-weight: 700;">
+                QuizCon
+            </h1>
+            <p class="lead text-light">
+                The Quizzing with Confidence<br /> dashboard
+                is available to instructors only.
+            </p>
+        <div>
+    </body>
 {% else %}
-    <section class="section--hero">
-        <div class="hero-text" style="top: 2rem">
-            <h1>Quizzing with Confidence</h1>
-            <p>Weighted Multiple Choice Questions</p>
-            <a class="btn btn-secondary btn-lg" href="{{landing_url}}" target="_blank">Launch Quizzing with Confidence</a>
-        </div>
-    </section>
+    <body id="splash" class="text-center">
+        <div id="signin">
+            <h1 class="logo display-1" style="border: 0; font-weight: 700;">
+                QuizCon
+            </h1>
+            <p class="lead text-light">
+                Built for creating confident choices<br />
+                for testing in CourseWorks.
+            </p>
+            <div style="margin: 2em 0 2em 0;">
+                <a href="{{landing_url}}" class="btn btn-lg btn-light">Launch</a>
+            </div>
+        <div>
+    </body>
 {% endif %}
 {% endblock %}
 

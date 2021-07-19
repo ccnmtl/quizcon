@@ -149,26 +149,12 @@
 		    </section>
 		</main>
 		{% block footer %}
-		<footer class="bg-light text-dark pt-2 pb-5">
-		    <ul class="nav d-flex justify-content-center">
-		        <li class="nav-item">
-		            <a class="nav-link" href="/about/" title="About">About</a>
-		        </li>
-		        <li class="nav-item">
-		            <a class="nav-link" href="#" title="Help">Help</a>
-		        </li>
-		        <li class="nav-item">
-		            <a class="nav-link" href="#" title="Contact">Contact</a>
-		        </li>
-		    </ul>
-
-		    <span itemscope itemtype="http://schema.org/EducationalOrganization">
-		        <a href="http://ctl.columbia.edu" target="_blank" itemprop="url" title="Center for Teaching and Learning at Columbia University">
-		            <img src="{{STATIC_URL}}img/logo-ctl-color.png" class="mx-auto d-block img-fluid mt-3" alt="" itemprop="logo" width="290" /><span class="sr-only" itemprop="name">
-		            Center for Teaching and Learning at Columbia University
-		        </span></a>
-		    </span>
-
+		<footer class="footer mt-auto py-3 text-center">
+			<div class="container">
+		      <a href="https://ctl.columbia.edu" target="_blank">
+				  <img id="footer-logo" src="{{STATIC_URL}}img/logo-black-ctl.svg" alt="CTL logo" />
+			  </a>
+		    </div>
 		</footer>
 		{% endblock %}
 

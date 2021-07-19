@@ -45,6 +45,9 @@ class Question(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     ordinality = models.IntegerField(default=-1)
 
+    def random_markers(self):
+        return self.marker_set.all().order_by('?')
+
 
 class Marker(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

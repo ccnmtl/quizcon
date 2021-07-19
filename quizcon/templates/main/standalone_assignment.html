@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
+
+{% load coursetags static %}
+
+{% block content %}
+<div class="quiz-container">
+    <h1>
+        {{quiz.title}}
+    </h1>
+    {% if is_faculty %}
+        <p>Instructors cannot submit an assignment</p>
+    {% else %}
+        <p class="lead">{{quiz.description}}</p>
+        <div class="alert alert-danger" role="alert">
+            <strong>00:00:00</strong> remaining to complete quiz.
+        </div>
+        <form action="{% url 'lti-post-grade' %}" method="post">
+            {% for question in quiz.question_set.all %}
+                {% with markers=question.random_markers %}
+                    <div class="row bg-light">
+                        <div class="col-md-6">
+                            <p>
+                                <strong>{{question.text}}</strong>
+                            </p>
+                            <ol>
+                                {% for marker in markers %}
+                                <li class="border-top p-2">{{marker.label}}</li>
+                                {% endfor %}
+                                <li class="border-top p-2">I don't know.</li>
+                            </ol>
+                            <input type="hidden" name="question-{{question.pk}}-markers" value="[{% for marker in markers %}{{marker.pk}},{% endfor %}]" />
+                        </div>
+                        <div class="col-md-6">
+                            <div class="choicebox float-end">
+                                {% for x in num_markers %}
+                                <div class="form-check answer{{x}}">
+                                    <input class="form-check-input" type="radio" name="{{question.pk}}" value="{{x}}">
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endfor %}
+            <input class="btn btn-primary" type="submit" value="submit" />
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

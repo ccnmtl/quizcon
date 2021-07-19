@@ -1,6 +1,7 @@
 from courseaffils.models import Course
 from django.contrib.auth.models import User
 from django.db import models
+import copy
 
 
 class Quiz(models.Model):
@@ -34,6 +35,18 @@ class Quiz(models.Model):
         related_name='quiz_modified_by')
 
     display_name = "Quiz"
+
+    def clone(self):
+        c = copy.copy(self)
+        c.save()
+        # Clone the questions.
+        for question in self.question_set.all():
+            cloned_question = Question.objects.create(quiz=c)
+
+            for marker in question.marker_set.all():
+                cloned_marker = marker.clone()
+                cloned_marker.save()
+        return c
 
 
 class Question(models.Model):

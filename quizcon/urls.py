@@ -38,6 +38,8 @@ urlpatterns = [
         name='update-quiz'),
     url(r'^quiz/(?P<pk>\d+)/delete/$', views.DeleteQuizView.as_view(),
         name='delete-quiz'),
+    url(r'^quiz/(?P<pk>\d+)/clone/$', views.CloneQuizView.as_view(),
+        name='clone-quiz'),
     url(r'^quiz/(?P<pk>\d+)/question/create/$',
         views.CreateQuestionView.as_view(), name='create-question'),
     url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),

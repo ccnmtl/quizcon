@@ -14,6 +14,22 @@ class QuizForm(forms.ModelForm):
         }
 
 
+class QuizCloneForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['title', 'description', 'multiple_attempts',
+                  'show_answers', 'randomize', 'course', 'scoring_scheme']
+
+        widgets = {
+            'title': forms.TextInput(),
+            'description': forms.Textarea(attrs={'rows': 3})
+        }
+
+        def __init__(self, user, *args, **kwargs):
+            r = super(QuizCloneForm, self).__init__(*args, **kwargs)
+            return r
+
+
 class QuestionForm(forms.ModelForm):
 
     answer_label_1 = forms.CharField(

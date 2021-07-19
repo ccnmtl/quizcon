@@ -20,7 +20,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
-from quizcon.main.forms import QuizForm, QuestionForm
+from quizcon.main.forms import QuizForm, QuestionForm, QuizCloneForm
 from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
@@ -407,3 +407,30 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
 
         return reverse('update-quiz',
                        kwargs={'pk': self.object.quiz.pk})
+
+
+class CloneQuizView(UpdateQuizPermissionMixin, CreateView):
+    model = Quiz
+    form_class = QuizCloneForm
+    template_name = "main/quiz_clone.html"
+
+    # def get_context_data(self, **kwargs):
+    #     ctx = super().get_context_data(**kwargs)
+    #     ctx['course'] = self.object.course
+    #     return ctx
+
+    def form_valid(self, form):
+        result = CreateView.form_valid(self, form)
+
+        self.object.authors.add(self.request.user)
+
+        self.clone()
+
+        title = form.cleaned_data['title']
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            '<strong>{}</strong> quiz created.'.format(title),
+            extra_tags='safe'
+        )
+
+        return result

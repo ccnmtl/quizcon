@@ -148,3 +148,13 @@ img.sort { cursor: move; }
     width: 1px;
     height: 1px;
 }
+
+img.sort
+{
+    cursor: move;
+}
+
+#footer-logo
+{
+    width: 300px;
+}

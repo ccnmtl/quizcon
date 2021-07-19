@@ -35,9 +35,20 @@
             Built for creating confident choices<br />
             for testing in CourseWorks.
         </p>
-        <div style="margin: 2em 0 2em 0;">
-            <a href="/accounts/login/?next=/dashboard/" class="btn btn-lg btn-light" id="cy-login">Sign In</a>
-        </div>
+        {% if CAS_BASE %}
+
+            <form class="text-center" method="get" action="{{CAS_BASE}}cas/login">
+
+                    <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
+                    <div style="margin: 2em 0 2em 0;">
+                    <a href="" class="btn btn-lg btn-light" id="cy-login" data-cy="columbia-login" type="submit">
+                        Sign In With Columbia UNI
+                    </a>
+                    <input type="hidden" name="next" value="{{ next|urlencode }}" />
+                    <p class="small pt-2"><a href="/accounts/password_reset/" title="Reset Password">Forgot Password?</a></p>
+                </div>
+            </form>
+        {% endif %}
         <p class="text-muted">
                 More text here.
         </p>

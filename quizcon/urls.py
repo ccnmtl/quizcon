@@ -23,7 +23,7 @@ urlpatterns = [
          views.LTICourseCreate.as_view(), name='lti-course-create'),
     url(r'^course/lti/(?P<context>\w[^/]*)/$',
         views.LTICourseSelector.as_view(), name='lti-course-select'),
-    url('', views.DashboardView.as_view(),
+    url('^$', views.DashboardView.as_view(),
         name='course-list-view'),
     url(r'^course/(?P<pk>\d+)/$', views.CourseDetailView.as_view(),
         name='course-detail-view'),

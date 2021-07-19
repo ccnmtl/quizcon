@@ -14,7 +14,6 @@ if hasattr(settings, 'CAS_BASE'):
 
 urlpatterns = [
     auth_urls,
-    path('', views.IndexView.as_view()),
     path('admin/', admin.site.urls),
 
     path('accounts/', include('django.contrib.auth.urls')),
@@ -24,7 +23,7 @@ urlpatterns = [
          views.LTICourseCreate.as_view(), name='lti-course-create'),
     url(r'^course/lti/(?P<context>\w[^/]*)/$',
         views.LTICourseSelector.as_view(), name='lti-course-select'),
-    url(r'^dashboard/$', views.DashboardView.as_view(),
+    url('^$', views.DashboardView.as_view(),
         name='course-list-view'),
     url(r'^course/(?P<pk>\d+)/$', views.CourseDetailView.as_view(),
         name='course-detail-view'),

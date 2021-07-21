@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load quiz_tools %}
 
 {% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
 
@@ -13,12 +14,52 @@
         <p>Instructors cannot submit an assignment</p>
     {% else %}
         <p class="lead">{{quiz.description}}</p>
-        <div class="alert alert-danger" role="alert">
-            <strong>00:00:00</strong> remaining to complete quiz.
-        </div>
-        <form action="{% url 'lti-post-grade' %}" method="post">
+        {% if submission %}
+            <!-- Submitted Interface -->
+            <div class="alert alert-info" role="alert">
+                <strong>Congratulations!</strong> You've completed the quiz.
+            </div>
+
             {% for question in quiz.question_set.all %}
-                {% with markers=question.random_markers %}
+                {% question_response question submission as response %}
+                <div class="row bg-light">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>{{question.text}}</strong>
+                        </p>
+                        <ol>
+                            {% for marker in response.questionresponsemarker_set.all %}
+                                <li class="border-top p-2">{{marker.marker.label}}</li>
+                            {% endfor %}
+                            <li class="border-top p-2">I don't know.</li>
+                        </ol>
+                        <div>
+                            {% if quiz.show_answers %}
+                                {{question.explanation}}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="choicebox float-end">
+                            {% for x in num_markers %}
+                            <div class="form-check answer{{x}}">
+                                <input disabled="disabled" class="form-check-input" type="radio"
+                                    name="{{question.pk}}" value="{{x}}"
+                                    {% if x == response.selected_position %}checked{% endif %}/>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Quiz Response Interface -->
+            <div class="alert alert-danger" role="alert">
+                <strong>00:00:00</strong> remaining to complete quiz.
+            </div>
+            <form action="." method="post">
+                {% for question in quiz.question_set.all %}
+                    {% with markers=question.random_markers %}
                     <div class="row bg-light">
                         <div class="col-md-6">
                             <p>
@@ -26,26 +67,28 @@
                             </p>
                             <ol>
                                 {% for marker in markers %}
-                                <li class="border-top p-2">{{marker.label}}</li>
+                                    <li class="border-top p-2">{{marker.label}}</li>
                                 {% endfor %}
                                 <li class="border-top p-2">I don't know.</li>
                             </ol>
-                            <input type="hidden" name="question-{{question.pk}}-markers" value="[{% for marker in markers %}{{marker.pk}},{% endfor %}]" />
+                            <input type="hidden" name="question-{{question.pk}}-markers"
+                                value="[{% for marker in markers %}{{marker.pk}}{% if not forloop.last %},{% endif %}{% endfor %}]" />
                         </div>
                         <div class="col-md-6">
                             <div class="choicebox float-end">
                                 {% for x in num_markers %}
                                 <div class="form-check answer{{x}}">
-                                    <input class="form-check-input" type="radio" name="{{question.pk}}" value="{{x}}">
+                                    <input class="form-check-input" type="radio" name="{{question.pk}}" value="{{x}}" />
                                 </div>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
-                {% endwith %}
-            {% endfor %}
-            <input class="btn btn-primary" type="submit" value="submit" />
-        </form>
+                    {% endwith %}
+                {% endfor %}
+                <input class="btn btn-primary" type="submit" {% if submission %}disabled="disabled" value="submitted"{% else %}value="submit" {% endif %} />
+            </form>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}

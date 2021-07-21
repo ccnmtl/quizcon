@@ -25,11 +25,11 @@ My Courses | QuizCon
             <tbody>
                 {% for course in courses %}
                 <tr>
-                    <th scope="row">{{ course.title }}</th>
+                    <th scope="row"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
                     <td>{% if course.quiz_set %}
                             <ul>
                                 {% for quiz in course.quiz_set.all %}
-                                    <li><a href="{% url 'course-detail-view' course.pk %}">{{quiz.title}}</a></li>
+                                    <li>{{quiz.title}}</li>
                                 {% endfor %}
                             </ul>
                         {% endif %}

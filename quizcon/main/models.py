@@ -68,6 +68,16 @@ class QuizSubmission(models.Model):
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     submission = models.ForeignKey(QuizSubmission, on_delete=models.CASCADE)
-    marker = models.ForeignKey(Marker, on_delete=models.CASCADE)
+    selected_position = models.IntegerField()
+
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+
+class QuestionResponseMarker(models.Model):
+    response = models.ForeignKey(QuestionResponse, on_delete=models.CASCADE)
+    marker = models.ForeignKey(Marker, on_delete=models.CASCADE)
+    ordinal = models.IntegerField()
+
+    class Meta:
+        ordering = ['ordinal']

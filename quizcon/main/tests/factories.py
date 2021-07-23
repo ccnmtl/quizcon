@@ -62,7 +62,7 @@ class QuestionFactory(factory.django.DjangoModelFactory):
     @factory.post_generation
     def create_marker(obj, create, extracted, **kwargs):
         obj.marker_set.add(MarkerFactory(question=obj))
-        obj.marker_set.add(MarkerFactory(question=obj))
+        obj.marker_set.add(MarkerFactory(question=obj, correct=True))
         obj.marker_set.add(MarkerFactory(question=obj))
 
 
@@ -91,6 +91,7 @@ class QuestionResponseFactory(factory.django.DjangoModelFactory):
         model = QuestionResponse
 
     selected_position = 0
+    submission = factory.SubFactory(QuizSubmissionFactory)
 
     @factory.post_generation
     def create_marker_responses(obj, create, extracted, **kwargs):

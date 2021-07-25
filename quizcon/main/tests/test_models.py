@@ -25,10 +25,9 @@ class QuestionResponseTest(CourseTestMixin, TestCase):
             marker__correct=True)
         correct_marker.ordinal = 0
         correct_marker.save()
-        # selected = response.selected_position
 
         # Easy Scoring Scheme
-        response.question.quiz.scoring_scheme = 1
+        response.question.quiz.scoring_scheme = 0
         response.save()
         self.assertEqual(response.score_question(), 5)
         correct_marker.ordinal = 1
@@ -36,7 +35,7 @@ class QuestionResponseTest(CourseTestMixin, TestCase):
         self.assertEqual(response.score_question(), 0)
 
         # Medium Scoring Scheme
-        response.question.quiz.scoring_scheme = 2
+        response.question.quiz.scoring_scheme = 1
         response.save()
         self.assertEqual(response.score_question(), -2)
         correct_marker.ordinal = 0
@@ -44,7 +43,7 @@ class QuestionResponseTest(CourseTestMixin, TestCase):
         self.assertEqual(response.score_question(), 3)
 
         # Hard Scoring Scheme
-        response.question.quiz.scoring_scheme = 3
+        response.question.quiz.scoring_scheme = 2
         response.save()
         self.assertEqual(response.score_question(), 3)
         correct_marker.ordinal = 2

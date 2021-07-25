@@ -2,7 +2,6 @@ from courseaffils.models import Course
 from django.contrib.auth.models import User
 from django.db import models
 
-
 TRIANGLE_SIDE = 4
 
 EASY = {
@@ -52,17 +51,13 @@ HARD = {
     }
 
 SCORING_SCHEMES = [
-    (1, 'Easy'),
-    (2, 'Medium'),
-    (3, 'Hard'),
-    (4, 'Custom')
+    (0, 'Easy'),
+    (1, 'Medium'),
+    (2, 'Hard'),
+    (3, 'Custom')
 ]
 
-LEVELS = {
-    "Easy": EASY,
-    "Medium": MEDIUM,
-    "Hard": HARD
-}
+LEVELS = [EASY, MEDIUM, HARD]
 
 
 class Quiz(models.Model):
@@ -142,11 +137,8 @@ class QuestionResponse(models.Model):
 
     def score_question(self):
         correct_marker = self.correct_marker_position()
-        selected_position = self.selected_position
-        distance = abs(selected_position - correct_marker)
-        scoring_level = SCORING_SCHEMES[
-            self.question.quiz.scoring_scheme - 1][1]
-        scheme = LEVELS[scoring_level]
+        distance = abs(self.selected_position - correct_marker)
+        scheme = LEVELS[self.question.quiz.scoring_scheme]
         return scheme[str(distance)]
 
     def correct_marker_position(self):

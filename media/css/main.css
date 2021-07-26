@@ -59,38 +59,38 @@ img.sort { cursor: move; }
 
 .answer2
 {
-    right: 188px;
-    top: 120px;
-}
-
-.answer3
-{
-    right: 215px;
-    top: 166px;
-}
-
-.answer4
-{
     right: 103px;
     top: 166px;
 }
 
-.answer5
-{
-    right: 160px;
-    top: 204px;
-}
-
-.answer6
+.answer3
 {
     right: 78px;
     top: 211px;
 }
 
+.answer4
+{
+    right: 50px;
+    top: 257px;
+}
+
+.answer5
+{
+    right: 102px;
+    top: 257px;
+}
+
+.answer6
+{
+    right: 160px;
+    top: 257px;
+}
+
 .answer7
 {
-    right: 240px;
-    top: 211px;
+    right: 214px;
+    top: 257px;
 }
 
 .answer8
@@ -101,26 +101,26 @@ img.sort { cursor: move; }
 
 .answer9
 {
-    right: 214px;
-    top: 257px;
+    right: 240px;
+    top: 211px;
 }
 
 .answer10
 {
-    right: 160px;
-    top: 257px;
+    right: 215px;
+    top: 166px;
 }
 
 .answer11
 {
-    right: 102px;
-    top: 257px;
+    right: 188px;
+    top: 120px;
 }
 
 .answer12
 {
-    right: 50px;
-    top: 257px;
+    right: 160px;
+    top: 204px;
 }
 
 .choicebox

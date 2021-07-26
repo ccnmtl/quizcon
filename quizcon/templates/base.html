@@ -1,226 +1,226 @@
 {% load compress %}
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Quizzing With Confidence: {% block title %}{% endblock %}</title>
+    <head>
+        <title>Quizzing With Confidence: {% block title %}{% endblock %}</title>
 
-	    <!-- Required meta tags -->
-	    <meta charset="utf-8">
-	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	    <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	    <!-- Bootstrap CSS -->
-	    <!-- CSS only -->
-	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <!-- Bootstrap CSS -->
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-	    <!-- Local CSS -->
-	    {% compress css %}
-	    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
-	    {% endcompress %}
-	    {% block css %}{% endblock %}
+        <!-- Local CSS -->
+        {% compress css %}
+        <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
+        {% endcompress %}
+        {% block css %}{% endblock %}
 
-	    <!-- Standard Meta Data -->
-	    <meta name="description" content="Quizzing With Confidence" />
-	    <meta name="keywords" content="" />
-	    <meta name="author" content="Columbia University CTL" />
-	    <meta name="copyright" content="">
+        <!-- Standard Meta Data -->
+        <meta name="description" content="Quizzing With Confidence" />
+        <meta name="keywords" content="" />
+        <meta name="author" content="Columbia University CTL" />
+        <meta name="copyright" content="">
 
-	    <!-- Dublin Core Metadata -->
-	    <meta name="DC.Title" content="Quizzing With Confidence" />
-	    <meta name="DC.Description" content="" />
+        <!-- Dublin Core Metadata -->
+        <meta name="DC.Title" content="Quizzing With Confidence" />
+        <meta name="DC.Description" content="" />
 
-	    <!-- Open Graph -->
-	    <meta property="og:title" content="Quizzing With Confidence" />
-	    <meta property="og:type" content="" />
-	    <meta property="og:image" content="" />
-	    <meta property="og:description" content="" />
-	    <meta property="og:url" content="" />
-	    <meta property="og:site_name" content="Quizzing With Confidence" />
+        <!-- Open Graph -->
+        <meta property="og:title" content="Quizzing With Confidence" />
+        <meta property="og:type" content="" />
+        <meta property="og:image" content="" />
+        <meta property="og:description" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:site_name" content="Quizzing With Confidence" />
 
-	    <!-- Twitter -->
-	    <meta name="twitter:card" content="summary" />
-	    <meta name="twitter:site" content="@ccnmtl" />
-	    <meta name="twitter:title" content="Quizzing With Confidence" />
-	    <meta name="twitter:description" content="" />
-	    <meta name="twitter:image" content="{{STATIC_URL}}img/favicon.png" />
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@ccnmtl" />
+        <meta name="twitter:title" content="Quizzing With Confidence" />
+        <meta name="twitter:description" content="" />
+        <meta name="twitter:image" content="{{STATIC_URL}}img/favicon.png" />
 
-		<!-- JSON Structured data -->
-	    <script type="application/ld+json">
-	    {
-	        "@context": "http://schema.org",
-	        "@type": "WebSite",
-	        "url": "",
-	        "name": "",
-	        "about": "",
-	        "keywords": ""
-	    }
-	    </script>
+        <!-- JSON Structured data -->
+        <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "url": "",
+            "name": "",
+            "about": "",
+            "keywords": ""
+        }
+        </script>
 
-		<!-- Tiny MCE -->
-	    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-	    <script>
-	      tinymce.init({
-	        selector: '#edit-text',
-			mode: 'textareas',
-			force_p_newlines: false,
-			force_br_newlines: false,
-			forced_root_block: ''
-	      });
-	    </script>
+        <!-- Tiny MCE -->
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+          tinymce.init({
+            selector: '#edit-text',
+            mode: 'textareas',
+            force_p_newlines: false,
+            force_br_newlines: false,
+            forced_root_block: ''
+          });
+        </script>
 
-	    <!-- Favicons -->
-	    <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png">
-	    <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
-	    <link rel="icon" href="{{STATIC_URL}}img/favicon.ico">
-	    <link rel="icon" type="image/png" href="{{STATIC_URL}}img/favicon.png">
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png">
+        <link rel="shortcut icon" href="{{STATIC_URL}}img/favicon.ico">
+        <link rel="icon" href="{{STATIC_URL}}img/favicon.ico">
+        <link rel="icon" type="image/png" href="{{STATIC_URL}}img/favicon.png">
 
-		<script>
-			window.quizcon = {
-				staticUrl: '{{ STATIC_URL }}',
-				baseUrl: '//{{ request.get_host }}',
-				{% if not request.user.is_anonymous %}
-				currentUser: {
-					id: '{{ request.user.id }}',
-					isFaculty: '{% if is_faculty %}true{% else %}false{% endif %}'
-				},
-				{% endif %}
-			}
-		</script>
+        <script>
+            window.quizcon = {
+                staticUrl: '{{ STATIC_URL }}',
+                baseUrl: '//{{ request.get_host }}',
+                {% if not request.user.is_anonymous %}
+                currentUser: {
+                    id: '{{ request.user.id }}',
+                    isFaculty: '{% if is_faculty %}true{% else %}false{% endif %}'
+                },
+                {% endif %}
+            }
+        </script>
 
-	    <link rel="stylesheet" href="https://search.sites.columbia.edu/cu-privacy-notice/cu-privacy-notice.css" />
-	    <script src="https://search.sites.columbia.edu/cu-privacy-notice/cu-privacy-notice.js"></script>
-	</head>
-	<body>
+        <link rel="stylesheet" href="https://search.sites.columbia.edu/cu-privacy-notice/cu-privacy-notice.css" />
+        <script src="https://search.sites.columbia.edu/cu-privacy-notice/cu-privacy-notice.js"></script>
+    </head>
+    <body>
 
-		<a id="skippy" class="sr-only sr-only-focusable" href="#content">
-		    <div class="container">
-		        <span class="skiplink-text">Skip to main content</span>
-		    </div>
-		</a>
+        <a id="skippy" class="sr-only sr-only-focusable" href="#content">
+            <div class="container">
+                <span class="skiplink-text">Skip to main content</span>
+            </div>
+        </a>
 
 
-		{% block topnavbar %}
-		<nav class="navbar navbar-expand-lg navbar-dark">
-			<div class="container-fluid">
-			    <a class="navbar-brand" href="/course/1" title="Home"><strong><span class="text-light">QuizCon</span></strong> </a>
-			    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			        <span class="navbar-toggler-icon"></span>
-			    </button>
-			    <div class="collapse navbar-collapse" id="nabarNav">
-			        <ul class="navbar-nav">
-						<li class="nav-item"> <a class="nav-link active" aria-current="page" href="/dashboard/">My Courses</a></li>
-						<li class="nav-item"> <a class="nav-link disabled" href="#">Reports</a> </li>
-						<li class="nav-item"> <a class="nav-link" href="/about/">About QuizCon</a></li>
-			        </ul>
-			    </div>
+        {% block topnavbar %}
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/course/1" title="Home"><strong><span class="text-light">QuizCon</span></strong> </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="nabarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"> <a class="nav-link active" aria-current="page" href="{% url 'course-list-view'%}">My Courses</a></li>
+                        <li class="nav-item"> <a class="nav-link disabled" href="#">Reports</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="/about/">About QuizCon</a></li>
+                    </ul>
+                </div>
 
-		    {% block usernav %}
-			    <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
-			        <li class="nav-item"><span class="nav-link">
-			            {% if request.user.is_anonymous %}
-			                <a href="/accounts/login/?next=/dashboard/" id="login" title="Log In">Log In</a>
-			            {% else %}
-			            Logged in as
-			                {% if request.user.last_name %}
-			                {{request.user.first_name}} {{request.user.last_name}}
-			                {% else %}
-			                {{ request.user.username }}
-			                {% endif %}
-			            (<a href="/accounts/logout/?next=/" id="logout" title="Log Out">logout</a>)
-			            {% endif %}
-			            </span>
-			        </li>
-			        {% if request.user.is_superuser %}
-			        <li class="nav-item">
-			            <a href="{% url 'impersonate-list' %}" title="Impersonate" class="nav-link">impersonate</a>
-			        </li>
-			        {% endif %}
-			    </ul>
-		    {% endblock %}
-			</div>
-		</nav>
-		{% endblock %}
+            {% block usernav %}
+                <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
+                    <li class="nav-item"><span class="nav-link">
+                        {% if request.user.is_anonymous %}
+                            <a href="/accounts/login/?next=/dashboard/" id="login" title="Log In">Log In</a>
+                        {% else %}
+                        Logged in as
+                            {% if request.user.last_name %}
+                            {{request.user.first_name}} {{request.user.last_name}}
+                            {% else %}
+                            {{ request.user.username }}
+                            {% endif %}
+                        (<a href="/accounts/logout/?next=/" id="logout" title="Log Out">logout</a>)
+                        {% endif %}
+                        </span>
+                    </li>
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'impersonate-list' %}" title="Impersonate" class="nav-link">impersonate</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            {% endblock %}
+            </div>
+        </nav>
+        {% endblock %}
 
-		<main role="main" class="pb-4">
-		    <section id="content">
-		        <div class="container">
-		        {% block content %}{% endblock %}
-		        </div>
-		    </section>
-		</main>
-		{% block footer %}
-		<footer class="footer mt-auto py-3 text-center">
-			<div class="container">
-		      <a href="https://ctl.columbia.edu" target="_blank">
-				  <img id="footer-logo" src="{{STATIC_URL}}img/logo-black-ctl.svg" alt="CTL logo" />
-			  </a>
-		    </div>
-		</footer>
-		{% endblock %}
+        <main role="main" class="pb-4">
+            <section id="content">
+                <div class="container">
+                {% block content %}{% endblock %}
+                </div>
+            </section>
+        </main>
+        {% block footer %}
+        <footer class="footer mt-auto py-3 text-center">
+            <div class="container">
+              <a href="https://ctl.columbia.edu" target="_blank">
+                  <img id="footer-logo" src="{{STATIC_URL}}img/logo-black-ctl.svg" alt="CTL logo" />
+              </a>
+            </div>
+        </footer>
+        {% endblock %}
 
-		<script src="{{STATIC_URL}}js/lib/jquery-3.3.1.min.js"></script>
-		<!-- JavaScript Bundle with Popper -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        <script src="{{STATIC_URL}}js/lib/jquery-3.3.1.min.js"></script>
+        <!-- JavaScript Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
-		<script
-		     data-main="{{STATIC_URL}}js/src/main.js"
-		     src="{{STATIC_URL}}js/lib/require/require.js"></script>
+        <script
+             data-main="{{STATIC_URL}}js/src/main.js"
+             src="{{STATIC_URL}}js/lib/require/require.js"></script>
 
-		{% if SENTRY_PUBLIC_DSN %}
-		<script
-		    src="https://browser.sentry-cdn.com/5.7.1/bundle.min.js"
-		    integrity="sha384-KMv6bBTABABhv0NI+rVWly6PIRvdippFEgjpKyxUcpEmDWZTkDOiueL5xW+cztZZ"
-		    crossorigin="anonymous"></script>
+        {% if SENTRY_PUBLIC_DSN %}
+        <script
+            src="https://browser.sentry-cdn.com/5.7.1/bundle.min.js"
+            integrity="sha384-KMv6bBTABABhv0NI+rVWly6PIRvdippFEgjpKyxUcpEmDWZTkDOiueL5xW+cztZZ"
+            crossorigin="anonymous"></script>
 
-		<script>
-		Sentry.init({
-		    dsn: '{{ SENTRY_PUBLIC_DSN }}'
-		});
+        <script>
+        Sentry.init({
+            dsn: '{{ SENTRY_PUBLIC_DSN }}'
+        });
 
-		{% if user.is_anonymous %}
-		Sentry.setUser({
-		    email: 'none',
-		    id: 'anonymous'
-		});
-		{% else %}
-		Sentry.setUser({
-		    email: '{{ user.email }}',
-		    id: '{{ user.username }}'
-		});
-		{% endif %}
-		</script>
-		{% endif %}
+        {% if user.is_anonymous %}
+        Sentry.setUser({
+            email: 'none',
+            id: 'anonymous'
+        });
+        {% else %}
+        Sentry.setUser({
+            email: '{{ user.email }}',
+            id: '{{ user.username }}'
+        });
+        {% endif %}
+        </script>
+        {% endif %}
 
-		{% block js %}{% endblock %}
+        {% block js %}{% endblock %}
 
-		{% if STAGING_ENV %}
-		<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; bottom: 0px;">
-		    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		    <h4 class="alert-heading">Warning: Staging Site</h4>
-		    <p>You are viewing a staging version of this site, not the production site.</p>
-		    <p>This site was last updated on: <strong>{{STAGING_DEPLOY_TIME}}</strong></p>
-		</div>
-		{% endif %}
+        {% if STAGING_ENV %}
+        <div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; bottom: 0px;">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4 class="alert-heading">Warning: Staging Site</h4>
+            <p>You are viewing a staging version of this site, not the production site.</p>
+            <p>This site was last updated on: <strong>{{STAGING_DEPLOY_TIME}}</strong></p>
+        </div>
+        {% endif %}
 
-		{% if request.user.is_impersonate %}
-		<div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; left: 0px; top: 75px">
-		    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		    You are impersonating.<br />
-		    <a class="btn" href="{% url 'impersonate-stop' %}" title="Stop impersonate">stop</a>
-		</div>
-		{% endif %}
+        {% if request.user.is_impersonate %}
+        <div class="alert alert-danger alert-dismissible" role="alert" style="position: fixed; left: 0px; top: 75px">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            You are impersonating.<br />
+            <a class="btn" href="{% url 'impersonate-stop' %}" title="Stop impersonate">stop</a>
+        </div>
+        {% endif %}
 
-		{% if GA_CODE %}
-		<script type="text/javascript">
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        {% if GA_CODE %}
+        <script type="text/javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-		  ga('create', '{{GA_CODE}}', 'columbia.edu');
-		  ga('set', 'anonymizeIp', true);
-		  ga('send', 'pageview');
-		</script>
-		{% endif %}
-	</body>
+          ga('create', '{{GA_CODE}}', 'columbia.edu');
+          ga('set', 'anonymizeIp', true);
+          ga('send', 'pageview');
+        </script>
+        {% endif %}
+    </body>
 </html>

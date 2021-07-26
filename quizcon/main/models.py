@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 TRIANGLE_SIDE = 4
+I_DONT_KNOW_POSITION = 12
 
 EASY = {
     "0": 5,
@@ -136,10 +137,14 @@ class QuestionResponse(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def score_question(self):
-        correct_marker = self.correct_marker_position()
-        distance = abs(self.selected_position - correct_marker)
         scheme = LEVELS[self.question.quiz.scoring_scheme]
-        return scheme[str(distance)]
+
+        if self.selected_position == I_DONT_KNOW_POSITION:
+            return scheme[str(self.selected_position)]
+        else:
+            correct_marker = self.correct_marker_position()
+            distance = abs(self.selected_position - correct_marker)
+            return scheme[str(distance)]
 
     def correct_marker_position(self):
         correct_marker = self.question.correct_marker()
@@ -147,6 +152,9 @@ class QuestionResponse(models.Model):
         triangle_position = qrm.ordinal * TRIANGLE_SIDE
 
         return triangle_position
+
+    def is_correct(self):
+        return self.correct_marker_position() == self.selected_position
 
 
 class QuestionResponseMarker(models.Model):

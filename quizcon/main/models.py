@@ -2,14 +2,66 @@ from courseaffils.models import Course
 from django.contrib.auth.models import User
 from django.db import models
 
+TRIANGLE_SIDE = 4
+
+EASY = {
+    "0": 5,
+    "1": 4,
+    "2": 3,
+    "3": 1,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0,
+    "9": 1,
+    "10": 3,
+    "11": 4,
+    "12": 2
+    }
+MEDIUM = {
+    "0": 3,
+    "1": 2,
+    "2": 1,
+    "3": -1,
+    "4": -2,
+    "5": -2,
+    "6": -2,
+    "7": -2,
+    "8": -2,
+    "9": -1,
+    "10": 1,
+    "11": 2,
+    "12": 0
+    }
+HARD = {
+    "0": 3,
+    "1": 2,
+    "2": 1,
+    "3": -1,
+    "4": -5,
+    "5": -5,
+    "6": -5,
+    "7": -5,
+    "8": -5,
+    "9": -1,
+    "10": 1,
+    "11": 2,
+    "12": 0
+    }
+
+SCORING_SCHEMES = [
+    (0, 'Easy'),
+    (1, 'Medium'),
+    (2, 'Hard'),
+    (3, 'Custom')
+]
+
+LEVELS = [EASY, MEDIUM, HARD]
+
 
 class Quiz(models.Model):
-    SCORING_SCHEMES = [
-        (1, 'Easy'),
-        (2, 'Medium'),
-        (3, 'Hard'),
-        (4, 'Custom')
-    ]
+
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField()
     description = models.TextField()
@@ -48,6 +100,9 @@ class Question(models.Model):
     def random_markers(self):
         return self.marker_set.all().order_by('?')
 
+    def correct_marker(self):
+        return self.marker_set.get(correct=True)
+
 
 class Marker(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -64,6 +119,13 @@ class QuizSubmission(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
+    def score_quiz(self):
+        score = 0
+        for questionresponse in self.questionresponse_set.all():
+            score += questionresponse.score_question()
+
+        return score
+
 
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -72,6 +134,19 @@ class QuestionResponse(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def score_question(self):
+        correct_marker = self.correct_marker_position()
+        distance = abs(self.selected_position - correct_marker)
+        scheme = LEVELS[self.question.quiz.scoring_scheme]
+        return scheme[str(distance)]
+
+    def correct_marker_position(self):
+        correct_marker = self.question.correct_marker()
+        qrm = self.questionresponsemarker_set.get(marker=correct_marker)
+        triangle_position = qrm.ordinal * TRIANGLE_SIDE
+
+        return triangle_position
 
 
 class QuestionResponseMarker(models.Model):

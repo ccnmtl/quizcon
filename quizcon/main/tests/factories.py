@@ -4,7 +4,8 @@ from random import randrange
 from courseaffils.models import Course
 from django.contrib.auth.models import User, Group
 import factory
-from quizcon.main.models import Quiz, Question, Marker
+from quizcon.main.models import Quiz, Question, Marker, QuizSubmission, \
+    QuestionResponse, QuestionResponseMarker
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -60,9 +61,8 @@ class QuestionFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def create_marker(obj, create, extracted, **kwargs):
-
         obj.marker_set.add(MarkerFactory(question=obj))
-        obj.marker_set.add(MarkerFactory(question=obj))
+        obj.marker_set.add(MarkerFactory(question=obj, correct=True))
         obj.marker_set.add(MarkerFactory(question=obj))
 
 
@@ -74,6 +74,35 @@ class MarkerFactory(factory.django.DjangoModelFactory):
     label = factory.Sequence(lambda n: "Marker%03d" % n)
     correct = False
     value = -1
+
+
+class QuizSubmissionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = QuizSubmission
+
+    @factory.post_generation
+    def create_question_responses(obj, create, extracted, **kwargs):
+        for question in obj.quiz.question_set.all():
+            QuestionResponseFactory(submission=obj, question=question)
+
+
+class QuestionResponseFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = QuestionResponse
+
+    selected_position = 0
+    submission = factory.SubFactory(QuizSubmissionFactory)
+
+    @factory.post_generation
+    def create_marker_responses(obj, create, extracted, **kwargs):
+        for idx, marker in enumerate(obj.question.random_markers()):
+            QuestionResponseMarkerFactory(
+                response=obj, marker=marker, ordinal=idx)
+
+
+class QuestionResponseMarkerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = QuestionResponseMarker
 
 
 class CourseTestMixin(object):

@@ -1,15 +1,20 @@
+import json
+
+from django.http import Http404
 from django.test import TestCase
+from django.test.client import RequestFactory
 from django.urls.base import reverse
-from quizcon.main.models import Quiz, Question
+from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.tests.factories import (
-    CourseTestMixin, QuizFactory, QuestionFactory
+    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory
 )
+from quizcon.main.views import StandAloneAssignmentView
 
 
 class BasicTest(TestCase):
     def test_root(self):
         response = self.client.get("/")
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 302)
 
     def test_smoketest(self):
         response = self.client.get("/smoketest/")
@@ -204,3 +209,113 @@ class DeleteQuestionTest(CourseTestMixin, TestCase):
             Question.objects.get(id=self.question.id)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.quiz.question_set.count(), 0)
+
+
+class StandAloneAssignmentViewTest(CourseTestMixin, TestCase):
+
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course=self.course)
+        self.question1 = QuestionFactory(quiz=self.quiz)
+        self.question2 = QuestionFactory(quiz=self.quiz)
+
+        self.view = StandAloneAssignmentView()
+        self.view.request = RequestFactory().get('/', {})
+        self.view.request.user = self.student
+        self.view.kwargs = {}
+
+    def test_get_context_data_invalid_kwargs(self):
+        # no course or assignment specified
+        with self.assertRaises(Http404):
+            self.view.get_context_data()
+
+        # no assignment specified
+        self.view.kwargs['pk'] = self.course.pk
+        with self.assertRaises(Http404):
+            self.view.get_context_data()
+
+    def test_get_context_data(self):
+        self.view.kwargs['pk'] = self.course.pk
+        self.view.kwargs['assignment_id'] = self.quiz.id
+
+        ctx = self.view.get_context_data()
+        self.assertFalse(ctx['is_faculty'])
+        self.assertEqual(ctx['quiz'], self.quiz)
+        self.assertEqual(ctx['submission'], None)
+
+    def test_get_context_data_submitted(self):
+        self.view.kwargs['pk'] = self.course.pk
+        self.view.kwargs['assignment_id'] = self.quiz.id
+
+        # Create a submission
+        submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
+        self.view.kwargs['submission_id'] = submission.id
+
+        ctx = self.view.get_context_data()
+        self.assertFalse(ctx['is_faculty'])
+        self.assertEqual(ctx['quiz'], self.quiz)
+        self.assertEqual(ctx['submission'], submission)
+
+    def test_post_invalid_kwargs(self):
+        # no course or assignment specified
+        with self.assertRaises(Http404):
+            self.view.post()
+
+        # no assignment specified
+        self.view.kwargs['pk'] = self.course.pk
+        with self.assertRaises(Http404):
+            self.view.post()
+
+    def test_post(self):
+        self.view.kwargs['pk'] = self.course.pk
+        self.view.kwargs['assignment_id'] = self.quiz.id
+
+        # setup the post data
+        # two keys that indicate the original order of the markers
+        # one key with the user's answer
+        data = {}
+        qmarkers = {}
+        for idx, question in enumerate(self.quiz.question_set.all()):
+            key = 'question-{}-markers'.format(question.pk)
+            markers = []
+            for m in question.random_markers():
+                markers.append(m.id)
+            data[key] = json.dumps(markers)
+            data[str(question.pk)] = idx
+            qmarkers[question.pk] = markers
+
+        self.view.request = RequestFactory().post('/', data)
+        self.view.request.user = self.student
+
+        response = self.view.post()
+        self.assertEqual(response.status_code, 302)
+
+        submission = self.quiz.quizsubmission_set.first()
+        self.assertEqual(submission.user, self.student)
+        self.assertEqual(submission.quiz, self.quiz)
+
+        url = reverse('standalone-submission',
+                      kwargs={'pk': self.course.id,
+                              'assignment_id': self.quiz.id,
+                              'submission_id': submission.id})
+        self.assertEqual(url, response.url)
+
+        # check the response for the first question
+        qr = submission.questionresponse_set.get(question=self.question1)
+        self.assertEqual(qr.selected_position, 0)
+        qr = submission.questionresponse_set.get(question=self.question2)
+        self.assertEqual(qr.selected_position, 1)
+
+        # check that the order was saved as expected for question 1
+        qr = self.question1.questionresponse_set.get(submission=submission)
+        for idx, pk in enumerate(qmarkers[self.question1.pk]):
+            marker = Marker.objects.get(pk=pk)
+            qrm = qr.questionresponsemarker_set.get(marker=marker)
+            self.assertEqual(qrm.ordinal, idx)
+
+        # check that the order was saved as expected for question 2
+        qr = self.question2.questionresponse_set.get(submission=submission)
+        for idx, pk in enumerate(qmarkers[self.question2.pk]):
+            marker = Marker.objects.get(pk=pk)
+            qrm = qr.questionresponsemarker_set.get(marker=marker)
+            self.assertEqual(qrm.ordinal, idx)

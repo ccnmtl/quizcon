@@ -14,7 +14,6 @@ if hasattr(settings, 'CAS_BASE'):
 
 urlpatterns = [
     auth_urls,
-    path('', views.IndexView.as_view()),
     path('admin/', admin.site.urls),
 
     path('accounts/', include('django.contrib.auth.urls')),
@@ -24,7 +23,7 @@ urlpatterns = [
          views.LTICourseCreate.as_view(), name='lti-course-create'),
     url(r'^course/lti/(?P<context>\w[^/]*)/$',
         views.LTICourseSelector.as_view(), name='lti-course-select'),
-    url(r'^dashboard/$', views.DashboardView.as_view(),
+    url('^$', views.DashboardView.as_view(),
         name='course-list-view'),
     url(r'^course/(?P<pk>\d+)/$', views.CourseDetailView.as_view(),
         name='course-detail-view'),
@@ -44,17 +43,23 @@ urlpatterns = [
         views.CreateQuestionView.as_view(), name='create-question'),
     url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),
         name='quiz-detail'),
+
     url(r'^assignment/(?P<assignment_id>\d+)/',
         views.LTIAssignmentView.as_view(),
         name='quiz'),
+    url(r'^course/(?P<pk>\d+)/assignment/(?P<assignment_id>\d+)/'
+        r'(?P<submission_id>\d+)/$',
+        views.StandAloneAssignmentView.as_view(),
+        name='standalone-submission'),
+    url(r'^course/(?P<pk>\d+)/assignment/(?P<assignment_id>\d+)/$',
+        views.StandAloneAssignmentView.as_view(),
+        name='standalone-assignment'),
+
     url(r'^assignment/success', TemplateView.as_view(
         template_name='main/assignment_success.html'),
         name='assignment-success'),
     url(r'^course/(?P<pk>\d+)/quiz/create/$', views.CreateQuizView.as_view(),
         name='create-quiz'),
-    url(r'^course/(?P<pk>\d+)/assignment/(?P<assignment_id>\d+)/$',
-        views.StandAloneAssignmentView.as_view(),
-        name='standalone-assignment'),
     url(r'^question/(?P<pk>\d+)/update/$', views.UpdateQuestionView.as_view(),
         name='update-question'),
     url(r'^question/(?P<pk>\d+)/delete/$', views.DeleteQuestionView.as_view(),

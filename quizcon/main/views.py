@@ -1,3 +1,4 @@
+import json
 import re
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
@@ -14,6 +15,8 @@ from django.http import (
 )
 from django.shortcuts import get_object_or_404, render
 from django.urls.base import reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (
@@ -21,7 +24,9 @@ from django.views.generic.edit import (
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
 from quizcon.main.forms import QuizForm, QuestionForm, QuizCloneForm
-from quizcon.main.models import Quiz, Question, Marker
+from quizcon.main.models import (
+    Quiz, Question, Marker, QuizSubmission,
+    QuestionResponse, QuestionResponseMarker)
 from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
     LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
@@ -203,6 +208,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         }
 
 
+@method_decorator(xframe_options_exempt, name='dispatch')
 class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
 
     template_name = 'main/lti_assignment.html'
@@ -223,11 +229,43 @@ class StandAloneAssignmentView(LoggedInCourseMixin, TemplateView):
         assignment_id = self.kwargs.get('assignment_id')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
+        submission_id = self.kwargs.get('submission_id', -1)
+        try:
+            submission = QuizSubmission.objects.get(id=int(submission_id))
+        except QuizSubmission.DoesNotExist:
+            submission = None
+
         return {
             'is_faculty': quiz.course.is_true_faculty(self.request.user),
             'quiz': quiz,
-            'num_markers': range(13)
+            'num_markers': range(13),
+            'submission': submission
         }
+
+    def post(self, *args, **kwargs):
+        assignment_id = self.kwargs.get('assignment_id')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
+
+        submission = QuizSubmission.objects.create(
+            quiz=quiz, user=self.request.user)
+
+        for question in quiz.question_set.all():
+            response = QuestionResponse.objects.create(
+                question=question, submission=submission,
+                selected_position=self.request.POST.get(str(question.pk)))
+
+            key = 'question-{}-markers'.format(question.pk)
+            markers = json.loads(self.request.POST.get(key))
+            for idx, marker_id in enumerate(markers):
+                marker = get_object_or_404(Marker, pk=marker_id)
+                QuestionResponseMarker.objects.create(
+                    response=response, marker=marker, ordinal=idx)
+
+        data = {'pk': self.kwargs.get('pk'),
+                'assignment_id': self.kwargs.get('assignment_id'),
+                'submission_id': submission.id}
+        url = reverse('standalone-submission', kwargs=data)
+        return HttpResponseRedirect(url)
 
 
 class CreateQuizView(LoggedInFacultyMixin, CreateView):

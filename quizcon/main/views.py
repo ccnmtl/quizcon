@@ -214,12 +214,48 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
     template_name = 'main/lti_assignment.html'
 
     def get_context_data(self, **kwargs):
+        assignment_id = self.kwargs.get('assignment_id')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
+
+        submission_id = self.kwargs.get('submission_id', -1)
+        try:
+            submission = QuizSubmission.objects.get(id=int(submission_id))
+        except QuizSubmission.DoesNotExist:
+            submission = None
+
         return {
             'is_student': self.lti.lis_result_sourcedid(self.request),
             'course_title': self.lti.course_title(self.request),
-            'number': 1,
-            'assignment_id': kwargs.get('assignment_id')
+            'assignment_id': assignment_id,
+            'is_faculty': quiz.course.is_true_faculty(self.request.user),
+            'quiz': quiz,
+            'num_markers': range(13),
+            'submission': submission
         }
+
+    def post(self, *args, **kwargs):
+        assignment_id = self.kwargs.get('assignment_id')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
+
+        submission = QuizSubmission.objects.create(
+            quiz=quiz, user=self.request.user)
+
+        for question in quiz.question_set.all():
+            response = QuestionResponse.objects.create(
+                question=question, submission=submission,
+                selected_position=self.request.POST.get(str(question.pk)))
+
+            key = 'question-{}-markers'.format(question.pk)
+            markers = json.loads(self.request.POST.get(key))
+            for idx, marker_id in enumerate(markers):
+                marker = get_object_or_404(Marker, pk=marker_id)
+                QuestionResponseMarker.objects.create(
+                    response=response, marker=marker, ordinal=idx)
+
+        data = {'assignment_id': self.kwargs.get('assignment_id'),
+                'submission_id': submission.id}
+        url = reverse('quiz-submission', kwargs=data)
+        return HttpResponseRedirect(url)
 
 
 class StandAloneAssignmentView(LoggedInCourseMixin, TemplateView):

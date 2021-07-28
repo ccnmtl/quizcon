@@ -91,10 +91,11 @@ class Quiz(models.Model):
 
     def clone(self):
         c = copy.copy(self)
+        c.pk = None
         c.save()
         # Clone the questions.
         for question in self.question_set.all():
-            cloned_question = Question.objects.create(quiz=c)
+            Question.objects.create(quiz=c)
 
             for marker in question.marker_set.all():
                 cloned_marker = marker.clone()

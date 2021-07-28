@@ -17,6 +17,7 @@ class QuizCloneTest(CourseTestMixin, TestCase):
 
     def test_clone(self):
         original = QuizFactory(course=self.course, title='cloned quiz')
+        original.question = QuestionFactory(quiz=original)
 
         cloned_pk = original.clone().pk
         cloned = Quiz.objects.get(pk=cloned_pk)
@@ -43,8 +44,8 @@ class QuizCloneTest(CourseTestMixin, TestCase):
         self.assertEqual(cloned.scoring_scheme, 0)
         self.assertNotEqual(original.scoring_scheme, cloned.scoring_scheme)
 
-        self.assertEqual(original.question_set.all().count(),
-                         cloned.question_set.all().count())
+        self.assertEqual(original.question_set.count(),
+                         cloned.question_set.count())
 
 
 class QuizSubmissionTest(CourseTestMixin, TestCase):

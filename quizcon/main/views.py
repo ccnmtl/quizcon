@@ -452,11 +452,14 @@ class CloneQuizView(UpdateQuizPermissionMixin, CreateView):
     form_class = QuizCloneForm
     template_name = "main/quiz_clone.html"
 
-    # def get_context_data(self, **kwargs):
-    #     ctx = super().get_context_data(**kwargs)
-    #     ctx['course'] = self.object.course
-    #     return ctx
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['course'] = self.object.course
+        return ctx
 
+    def get_success_url(self):
+        return reverse('course-detail-view',
+                       kwargs={'pk': self.object.course.pk})
     def form_valid(self, form):
         result = CreateView.form_valid(self, form)
 

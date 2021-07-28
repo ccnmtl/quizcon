@@ -94,10 +94,12 @@ class Quiz(models.Model):
         c.pk = None
         c.save()
         # Clone the questions.
-        for question in self.question_set.all():
-            Question.objects.create(quiz=c)
+        for q in self.question_set.all():
+            Question.objects.create(quiz=c, description=q.description,
+                                    text=q.text, explanation=q.explanation,
+                                    ordinality=q.ordinality)
 
-            for marker in question.marker_set.all():
+            for marker in q.marker_set.all():
                 cloned_marker = marker.clone()
                 cloned_marker.save()
         return c
@@ -126,6 +128,12 @@ class Marker(models.Model):
     correct = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def clone(self):
+        m = copy.copy(self)
+        m.pk = None
+        m.save()
+        return m
 
 
 class QuizSubmission(models.Model):

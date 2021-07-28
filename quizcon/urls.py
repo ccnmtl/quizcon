@@ -42,6 +42,10 @@ urlpatterns = [
     url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),
         name='quiz-detail'),
 
+    url(r'^assignment/(?P<assignment_id>\d+)/'
+        r'(?P<submission_id>\d+)/$',
+        views.LTIAssignmentView.as_view(),
+        name='quiz-submission'),
     url(r'^assignment/(?P<assignment_id>\d+)/',
         views.LTIAssignmentView.as_view(),
         name='quiz'),

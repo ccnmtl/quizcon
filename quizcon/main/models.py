@@ -1,7 +1,6 @@
 from courseaffils.models import Course
 from django.contrib.auth.models import User
 from django.db import models
-import copy
 
 TRIANGLE_SIDE = 4
 I_DONT_KNOW_POSITION = 12
@@ -90,19 +89,34 @@ class Quiz(models.Model):
     display_name = "Quiz"
 
     def clone(self):
-        c = copy.copy(self)
-        c.pk = None
-        c.save()
+        question_set = []
         # Clone the questions.
+        cloned = Quiz.objects.create(
+                    course=self.course,
+                    title=self.title,
+                    description=self.description,
+                    multiple_attempts=self.multiple_attempts,
+                    scoring_scheme=self.scoring_scheme,
+                    show_answers=self.show_answers,
+                    randomize=self.randomize
+                )
         for q in self.question_set.all():
-            Question.objects.create(quiz=c, description=q.description,
-                                    text=q.text, explanation=q.explanation,
-                                    ordinality=q.ordinality)
+            question = Question.objects.create(
+                quiz=cloned,
+                description=q.description,
+                text=q.text,
+                explanation=q.explanation,
+                ordinality=q.ordinality
+                )
 
             for marker in q.marker_set.all():
-                cloned_marker = marker.clone()
-                cloned_marker.save()
-        return c
+                marker.clone(question)
+
+            question_set.append(question)
+
+        cloned.question_set.add(*question_set)
+
+        return cloned
 
 
 class Question(models.Model):
@@ -129,11 +143,13 @@ class Marker(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    def clone(self):
-        m = copy.copy(self)
-        m.pk = None
-        m.save()
-        return m
+    def clone(self, question):
+        return Marker.objects.create(
+            question=question,
+            value=self.value,
+            label=self.label,
+            correct=self.correct
+        )
 
 
 class QuizSubmission(models.Model):

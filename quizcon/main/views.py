@@ -23,7 +23,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
-from quizcon.main.forms import QuizForm, QuestionForm, QuizCloneForm
+from quizcon.main.forms import QuizForm, QuestionForm
 from quizcon.main.models import (
     Quiz, Question, Marker, QuizSubmission,
     QuestionResponse, QuestionResponseMarker)
@@ -447,31 +447,17 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
                        kwargs={'pk': self.object.quiz.pk})
 
 
-class CloneQuizView(UpdateQuizPermissionMixin, CreateView):
-    model = Quiz
-    form_class = QuizCloneForm
-    template_name = "main/quiz_clone.html"
+class CloneQuizView(UpdateQuizPermissionMixin, View):
+    http_method_names = ['post']
 
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        ctx['course'] = self.object.course
-        return ctx
-
-    def get_success_url(self):
-        return reverse('course-detail-view',
-                       kwargs={'pk': self.object.course.pk})
-    def form_valid(self, form):
-        result = CreateView.form_valid(self, form)
-
-        self.object.authors.add(self.request.user)
-
-        self.clone()
-
-        title = form.cleaned_data['title']
+    def post(self, request, *args, **kwargs):
+        quiz = get_object_or_404(Quiz, pk=self.kwargs.get('pk'))
+        cloned_quiz = quiz.clone()
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> quiz created.'.format(title),
+            '<strong>{}</strong> quiz created.'.format(cloned_quiz.title),
             extra_tags='safe'
         )
 
-        return result
+        return HttpResponseRedirect(reverse('update-quiz',
+                                    kwargs={'pk': cloned_quiz.pk}))

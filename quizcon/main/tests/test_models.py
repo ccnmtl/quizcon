@@ -16,36 +16,45 @@ class QuizCloneTest(CourseTestMixin, TestCase):
         self.setup_course()
 
     def test_clone(self):
-        original = QuizFactory(course=self.course, title='cloned quiz')
-        original.question = QuestionFactory(quiz=original)
+        q = QuizFactory(course=self.course, title='cloned quiz')
+        q.question = QuestionFactory(quiz=q)
 
-        cloned_pk = original.clone().pk
-        cloned = Quiz.objects.get(pk=cloned_pk)
+        cloned_pk = q.clone().pk
+        c = Quiz.objects.get(pk=cloned_pk)
 
-        self.assertNotEqual(original.pk, cloned.pk)
-        self.assertEqual(original.title, 'cloned quiz')
-        self.assertEqual(cloned.title, 'cloned quiz')
+        self.assertNotEqual(q.pk, c.pk)
+        self.assertEqual(q.title, 'cloned quiz')
+        self.assertEqual(c.title, 'cloned quiz')
 
-        cloned.title = 'new title'
-        original.save()
-        cloned.save()
+        c.title = 'new title'
+        q.save()
+        c.save()
 
-        original.refresh_from_db()
-        cloned.refresh_from_db()
+        q.refresh_from_db()
+        c.refresh_from_db()
 
-        self.assertNotEqual(original.pk, cloned.pk)
-        self.assertEqual(original.title, 'cloned quiz')
-        self.assertEqual(cloned.title, 'new title')
-        self.assertEqual(original.scoring_scheme, cloned.scoring_scheme)
+        self.assertNotEqual(q.pk, c.pk)
+        self.assertEqual(q.title, 'cloned quiz')
+        self.assertEqual(c.title, 'new title')
+        self.assertEqual(q.scoring_scheme, c.scoring_scheme)
 
-        cloned.scoring_scheme = 0
-        cloned.save()
-        cloned.refresh_from_db()
-        self.assertEqual(cloned.scoring_scheme, 0)
-        self.assertNotEqual(original.scoring_scheme, cloned.scoring_scheme)
+        c.scoring_scheme = 0
+        c.save()
+        c.refresh_from_db()
+        self.assertEqual(c.scoring_scheme, 0)
+        self.assertNotEqual(q.scoring_scheme, c.scoring_scheme)
 
-        self.assertEqual(original.question_set.count(),
-                         cloned.question_set.count())
+        self.assertEqual(q.question_set.count(),
+                         c.question_set.count())
+        self.assertNotEqual(q.question_set.first().pk,
+                            c.question_set.first().pk)
+        quiz_q = q.question_set.first()
+        clone_q = c.question_set.first()
+
+        self.assertEqual(quiz_q.marker_set.count(),
+                         clone_q.marker_set.count())
+        self.assertNotEqual(quiz_q.marker_set.first().pk,
+                            clone_q.marker_set.first().pk)
 
 
 class QuizSubmissionTest(CourseTestMixin, TestCase):

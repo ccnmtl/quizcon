@@ -3,7 +3,6 @@ from quizcon.main.tests.factories import (
     CourseTestMixin, QuizFactory, QuestionFactory, QuestionResponseFactory,
     QuizSubmissionFactory
 )
-from quizcon.main.models import Quiz
 
 
 class BasicModelTest(TestCase):
@@ -19,31 +18,12 @@ class QuizCloneTest(CourseTestMixin, TestCase):
         q = QuizFactory(course=self.course, title='cloned quiz')
         q.question = QuestionFactory(quiz=q)
 
-        cloned_pk = q.clone().pk
-        c = Quiz.objects.get(pk=cloned_pk)
+        c = q.clone()
 
         self.assertNotEqual(q.pk, c.pk)
         self.assertEqual(q.title, 'cloned quiz')
         self.assertEqual(c.title, 'cloned quiz')
-
-        c.title = 'new title'
-        q.save()
-        c.save()
-
-        q.refresh_from_db()
-        c.refresh_from_db()
-
-        self.assertNotEqual(q.pk, c.pk)
-        self.assertEqual(q.title, 'cloned quiz')
-        self.assertEqual(c.title, 'new title')
         self.assertEqual(q.scoring_scheme, c.scoring_scheme)
-
-        c.scoring_scheme = 0
-        c.save()
-        c.refresh_from_db()
-        self.assertEqual(c.scoring_scheme, 0)
-        self.assertNotEqual(q.scoring_scheme, c.scoring_scheme)
-
         self.assertEqual(q.question_set.count(),
                          c.question_set.count())
         self.assertNotEqual(q.question_set.first().pk,

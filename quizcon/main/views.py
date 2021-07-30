@@ -481,3 +481,19 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
 
         return reverse('update-quiz',
                        kwargs={'pk': self.object.quiz.pk})
+
+
+class CloneQuizView(UpdateQuizPermissionMixin, View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        quiz = get_object_or_404(Quiz, pk=self.kwargs.get('pk'))
+        cloned_quiz = quiz.clone()
+        messages.add_message(
+            self.request, messages.SUCCESS,
+            '<strong>{}</strong> quiz created.'.format(cloned_quiz.title),
+            extra_tags='safe'
+        )
+
+        return HttpResponseRedirect(reverse('update-quiz',
+                                    kwargs={'pk': cloned_quiz.pk}))

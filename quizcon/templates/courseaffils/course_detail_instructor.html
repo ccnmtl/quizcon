@@ -30,7 +30,10 @@
                     <td>08.31.2021</td>
                     <td class="text-muted">http://ctl.columbia.edu</td>
                     <td>
-                        <a href="edit-quiz.html" class="btn btn-sm btn-info">Clone Quiz</a>
+                        <form method="POST" action="{% url 'clone-quiz' quiz.id %}">
+                            {% csrf_token %}
+                            <input class="btn btn-sm btn-info" type="submit" value="Clone Quiz">
+                        </form>
                         <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
                         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
                     </td>

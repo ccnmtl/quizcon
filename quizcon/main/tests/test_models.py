@@ -10,6 +10,33 @@ class BasicModelTest(TestCase):
         self.assertTrue(True)
 
 
+class QuizCloneTest(CourseTestMixin, TestCase):
+    def setUp(self):
+        self.setup_course()
+
+    def test_clone(self):
+        q = QuizFactory(course=self.course, title='cloned quiz')
+        q.question = QuestionFactory(quiz=q)
+
+        c = q.clone()
+
+        self.assertNotEqual(q.pk, c.pk)
+        self.assertEqual(q.title, 'cloned quiz')
+        self.assertEqual(c.title, 'cloned quiz')
+        self.assertEqual(q.scoring_scheme, c.scoring_scheme)
+        self.assertEqual(q.question_set.count(),
+                         c.question_set.count())
+        self.assertNotEqual(q.question_set.first().pk,
+                            c.question_set.first().pk)
+        quiz_q = q.question_set.first()
+        clone_q = c.question_set.first()
+
+        self.assertEqual(quiz_q.marker_set.count(),
+                         clone_q.marker_set.count())
+        self.assertNotEqual(quiz_q.marker_set.first().pk,
+                            clone_q.marker_set.first().pk)
+
+
 class QuizSubmissionTest(CourseTestMixin, TestCase):
 
     def setUp(self):

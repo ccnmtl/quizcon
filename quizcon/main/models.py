@@ -88,6 +88,36 @@ class Quiz(models.Model):
 
     display_name = "Quiz"
 
+    def clone(self):
+        question_set = []
+        # Clone the questions.
+        cloned = Quiz.objects.create(
+                    course=self.course,
+                    title=self.title,
+                    description=self.description,
+                    multiple_attempts=self.multiple_attempts,
+                    scoring_scheme=self.scoring_scheme,
+                    show_answers=self.show_answers,
+                    randomize=self.randomize
+                )
+        for q in self.question_set.all():
+            question = Question.objects.create(
+                quiz=cloned,
+                description=q.description,
+                text=q.text,
+                explanation=q.explanation,
+                ordinality=q.ordinality
+                )
+
+            for marker in q.marker_set.all():
+                marker.clone(question)
+
+            question_set.append(question)
+
+        cloned.question_set.add(*question_set)
+
+        return cloned
+
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -112,6 +142,14 @@ class Marker(models.Model):
     correct = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+
+    def clone(self, question):
+        return Marker.objects.create(
+            question=question,
+            value=self.value,
+            label=self.label,
+            correct=self.correct
+        )
 
 
 class QuizSubmission(models.Model):

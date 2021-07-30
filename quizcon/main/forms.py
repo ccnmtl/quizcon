@@ -3,6 +3,13 @@ from quizcon.main.models import Quiz, Question
 
 
 class QuizForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['scoring_scheme'].choices = [
+            ('', '-- Select One --')] + list(
+            self.fields['scoring_scheme'].choices[0:])
+        self.fields['scoring_scheme'].initial = '-- Select One --'
+
     class Meta:
         model = Quiz
         fields = ['title', 'description', 'multiple_attempts',
@@ -10,7 +17,10 @@ class QuizForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(),
-            'description': forms.Textarea(attrs={'rows': 3})
+            'description': forms.Textarea(attrs={'rows': 3}),
+            'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
+            'multiple_attempts': forms.NumberInput(
+                                 attrs={'class': 'form-control'})
         }
 
 

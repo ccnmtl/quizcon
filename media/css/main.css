@@ -158,3 +158,13 @@ img.sort
 {
     width: 300px;
 }
+
+textarea.assignment-url {
+    height: .875em;
+    resize: none;
+    white-space: pre;
+    overflow-wrap: normal;
+    min-height: calc(1.2em + .75rem + 2px);
+    padding-top: .25rem!important;
+    padding-bottom: .25rem!important;
+}

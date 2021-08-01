@@ -142,7 +142,7 @@
 
         <main role="main" class="pb-4">
             <section id="content">
-                <div class="container">
+                <div class="{% block content-class %}container{% endblock %}">
                 {% block content %}{% endblock %}
                 </div>
             </section>

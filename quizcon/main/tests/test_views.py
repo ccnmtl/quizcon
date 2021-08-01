@@ -235,7 +235,7 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
             self.view.get_context_data()
 
     def test_get_context_data(self):
-        self.view.kwargs['assignment_id'] = self.quiz.id
+        self.view.kwargs['pk'] = self.quiz.id
 
         ctx = self.view.get_context_data()
         self.assertFalse(ctx['is_faculty'])
@@ -243,7 +243,7 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
         self.assertEqual(ctx['submission'], None)
 
     def test_get_context_data_submitted(self):
-        self.view.kwargs['assignment_id'] = self.quiz.id
+        self.view.kwargs['pk'] = self.quiz.id
 
         # Create a submission
         submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
@@ -266,7 +266,8 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
     def test_get_launch_url(self):
         submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
         launch_url = \
-            'http://testserver/assignment/grade/{}/'.format(submission.id)
+            'http://testserver/lti/?assignment=grade&pk={}'.format(
+                submission.id)
         self.assertEqual(self.view.get_launch_url(submission), launch_url)
 
     def mock_post_score(self, submission):
@@ -274,7 +275,7 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
 
     def test_post(self):
         with patch.object(self.view, 'post_score', self.mock_post_score):
-            self.view.kwargs['assignment_id'] = self.quiz.id
+            self.view.kwargs['pk'] = self.quiz.id
 
             # setup the post data
             # two keys that indicate the original order of the markers
@@ -301,7 +302,7 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
             self.assertEqual(submission.quiz, self.quiz)
 
             url = reverse('quiz-submission',
-                          kwargs={'assignment_id': self.quiz.id,
+                          kwargs={'pk': self.quiz.id,
                                   'submission_id': submission.id})
             self.assertEqual(url, response.url)
 
@@ -348,19 +349,10 @@ class LTISpeedGraderViewTest(CourseTestMixin, TestCase):
             self.view.get_context_data()
 
     def test_get_context_data(self):
-        self.view.kwargs['submission_id'] = self.submission.id
+        self.view.kwargs['pk'] = self.submission.id
 
         ctx = self.view.get_context_data()
         self.assertFalse(ctx['is_faculty'])
         self.assertTrue(ctx['is_student'])
         self.assertEqual(ctx['quiz'], self.quiz)
         self.assertEqual(ctx['submission'], self.submission)
-
-    def test_post(self):
-        self.view.kwargs['submission_id'] = self.submission.id
-        response = self.view.post()
-        self.assertEqual(response.status_code, 302)
-
-        url = reverse('quiz-grade',
-                      kwargs={'submission_id': self.submission.id})
-        self.assertEqual(url, response.url)

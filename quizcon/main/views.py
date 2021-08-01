@@ -216,7 +216,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
     template_name = 'main/lti_assignment.html'
 
     def get_context_data(self, **kwargs):
-        assignment_id = self.kwargs.get('assignment_id')
+        assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
         submission_id = self.kwargs.get('submission_id', -1)
@@ -238,7 +238,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         }
 
     def get_launch_url(self, submission):
-        url = reverse('quiz-grade', kwargs={'submission_id': submission.id})
+        url = '/lti/?assignment=grade&pk={}'.format(submission.id)
         return self.request.build_absolute_uri(url)
 
     def message_identifier(self):
@@ -274,7 +274,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             raise LTIPostMessageException('Post grade failed')
 
     def post(self, *args, **kwargs):
-        assignment_id = self.kwargs.get('assignment_id')
+        assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
         submission = QuizSubmission.objects.create(
@@ -294,8 +294,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
 
         self.post_score(submission)
 
-        data = {'assignment_id': self.kwargs.get('assignment_id'),
-                'submission_id': submission.id}
+        data = {'pk': self.kwargs.get('pk'), 'submission_id': submission.id}
         url = reverse('quiz-submission', kwargs=data)
         return HttpResponseRedirect(url)
 
@@ -305,7 +304,7 @@ class LTISpeedGraderView(LTIAuthMixin, TemplateView):
     template_name = 'main/lti_speedgrader.html'
 
     def get_context_data(self, **kwargs):
-        submission_id = self.kwargs.get('submission_id')
+        submission_id = self.kwargs.get('pk')
         submission = get_object_or_404(QuizSubmission, pk=submission_id)
 
         is_faculty = submission.quiz.course.is_true_faculty(self.request.user)
@@ -320,11 +319,6 @@ class LTISpeedGraderView(LTIAuthMixin, TemplateView):
             'quiz': submission.quiz,
             'submission': submission
         }
-
-    def post(self, *args, **kwargs):
-        submission_id = self.kwargs.get('submission_id')
-        url = reverse('quiz-grade', kwargs={'submission_id': submission_id})
-        return HttpResponseRedirect(url)
 
 
 class CreateQuizView(LoggedInFacultyMixin, CreateView):

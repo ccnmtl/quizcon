@@ -114,3 +114,4 @@ entrypoints==0.3
 
 django-courseaffils==2.2.5
 
+mock==4.0.3

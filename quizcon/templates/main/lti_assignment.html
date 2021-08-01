@@ -12,13 +12,14 @@
     </h1>
     {% if is_faculty %}
         <p>Instructors cannot submit an assignment</p>
-    {% else %}
+    {% else %}{% if is_student %}
         <p class="lead">{{quiz.description}}</p>
         {% if submission %}
             <!-- Submitted Interface -->
             <div class="alert alert-info" role="alert">
                 <strong>Congratulations!</strong> You've completed the quiz.<br />
-                <strong>Your score is:</strong> {{submission.score_quiz}}
+                <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}<br />
+                <strong>Score:</strong> {{submission.user_score}}
             </div>
 
             {% for question in quiz.question_set.all %}
@@ -100,6 +101,6 @@
                 <input class="btn btn-primary" type="submit" {% if submission %}disabled="disabled" value="submitted"{% else %}value="submit" {% endif %} />
             </form>
         {% endif %}
-    {% endif %}
+    {% endif %}{% endif %}
 </div>
 {% endblock %}

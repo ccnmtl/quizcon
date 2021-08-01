@@ -1,5 +1,6 @@
 import json
 import re
+import time
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
 from courseaffils.models import Course
@@ -23,6 +24,7 @@ from django.views.generic.edit import (
     CreateView, UpdateView, DeleteView)
 from lti_provider.mixins import LTIAuthMixin
 from lti_provider.models import LTICourseContext
+from pylti.common import LTIPostMessageException, post_message
 from quizcon.main.forms import QuizForm, QuestionForm
 from quizcon.main.models import (
     Quiz, Question, Marker, QuizSubmission,
@@ -209,7 +211,7 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
 
 
 @method_decorator(xframe_options_exempt, name='dispatch')
-class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
+class LTIAssignmentView(LTIAuthMixin, TemplateView):
 
     template_name = 'main/lti_assignment.html'
 
@@ -223,15 +225,53 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
         except QuizSubmission.DoesNotExist:
             submission = None
 
+        is_faculty = quiz.course.is_true_faculty(self.request.user)
+        is_student = (quiz.course.is_true_member(self.request.user) and
+                      not is_faculty)
+
         return {
-            'is_student': self.lti.lis_result_sourcedid(self.request),
-            'course_title': self.lti.course_title(self.request),
-            'assignment_id': assignment_id,
-            'is_faculty': quiz.course.is_true_faculty(self.request.user),
+            'is_student': is_student,
+            'is_faculty': is_faculty,
             'quiz': quiz,
             'num_markers': range(13),
             'submission': submission
         }
+
+    def get_launch_url(self, submission):
+        url = reverse('quiz-grade', kwargs={'submission_id': submission.id})
+        return self.request.build_absolute_uri(url)
+
+    def message_identifier(self):
+        return '{:.0f}'.format(time.time())
+
+    def post_score(self, submission):
+        """
+        Post grade to LTI consumer using XML
+
+        :param: score: 0 <= score <= 1. (Score MUST be between 0 and 1)
+        :return: True if post successful and score valid
+        :exception: LTIPostMessageException if call failed
+        """
+        score = submission.user_score()
+        launch_url = self.get_launch_url(submission)
+        print(launch_url)
+
+        xml = self.lti.generate_request_xml(
+            self.message_identifier(), 'replaceResult',
+            self.lti.lis_result_sourcedid(self.request), score, launch_url)
+
+        if post_message(self.lti.consumers(),
+                        self.lti.oauth_consumer_key(self.request),
+                        self.lti.lis_outcome_service_url(self.request), xml):
+            return True
+        else:
+            msg = ('An error occurred while saving your score. '
+                   'Please try again.')
+            messages.add_message(self.request, messages.ERROR, msg)
+
+            # Something went wrong, display an error.
+            # Is 500 the right thing to do here?
+            raise LTIPostMessageException('Post grade failed')
 
     def post(self, *args, **kwargs):
         assignment_id = self.kwargs.get('assignment_id')
@@ -251,6 +291,8 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
                 marker = get_object_or_404(Marker, pk=marker_id)
                 QuestionResponseMarker.objects.create(
                     response=response, marker=marker, ordinal=idx)
+
+        self.post_score(submission)
 
         data = {'assignment_id': self.kwargs.get('assignment_id'),
                 'submission_id': submission.id}
@@ -258,49 +300,30 @@ class LTIAssignmentView(LTIAuthMixin, LoginRequiredMixin, TemplateView):
         return HttpResponseRedirect(url)
 
 
-class StandAloneAssignmentView(LoggedInCourseMixin, TemplateView):
-    template_name = 'main/standalone_assignment.html'
+@method_decorator(xframe_options_exempt, name='dispatch')
+class LTISpeedGraderView(LTIAuthMixin, TemplateView):
+    template_name = 'main/lti_speedgrader.html'
 
     def get_context_data(self, **kwargs):
-        assignment_id = self.kwargs.get('assignment_id')
-        quiz = get_object_or_404(Quiz, pk=assignment_id)
+        submission_id = self.kwargs.get('submission_id')
+        submission = get_object_or_404(QuizSubmission, pk=submission_id)
 
-        submission_id = self.kwargs.get('submission_id', -1)
-        try:
-            submission = QuizSubmission.objects.get(id=int(submission_id))
-        except QuizSubmission.DoesNotExist:
-            submission = None
+        is_faculty = submission.quiz.course.is_true_faculty(self.request.user)
+        is_student = (
+            submission.quiz.course.is_true_member(self.request.user) and
+            not is_faculty)
 
         return {
-            'is_faculty': quiz.course.is_true_faculty(self.request.user),
-            'quiz': quiz,
+            'is_student': is_student,
+            'is_faculty': is_faculty,
             'num_markers': range(13),
+            'quiz': submission.quiz,
             'submission': submission
         }
 
     def post(self, *args, **kwargs):
-        assignment_id = self.kwargs.get('assignment_id')
-        quiz = get_object_or_404(Quiz, pk=assignment_id)
-
-        submission = QuizSubmission.objects.create(
-            quiz=quiz, user=self.request.user)
-
-        for question in quiz.question_set.all():
-            response = QuestionResponse.objects.create(
-                question=question, submission=submission,
-                selected_position=self.request.POST.get(str(question.pk)))
-
-            key = 'question-{}-markers'.format(question.pk)
-            markers = json.loads(self.request.POST.get(key))
-            for idx, marker_id in enumerate(markers):
-                marker = get_object_or_404(Marker, pk=marker_id)
-                QuestionResponseMarker.objects.create(
-                    response=response, marker=marker, ordinal=idx)
-
-        data = {'pk': self.kwargs.get('pk'),
-                'assignment_id': self.kwargs.get('assignment_id'),
-                'submission_id': submission.id}
-        url = reverse('standalone-submission', kwargs=data)
+        submission_id = self.kwargs.get('submission_id')
+        url = reverse('quiz-grade', kwargs={'submission_id': submission_id})
         return HttpResponseRedirect(url)
 
 

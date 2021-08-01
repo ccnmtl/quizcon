@@ -88,6 +88,10 @@ class Quiz(models.Model):
 
     display_name = "Quiz"
 
+    def total_points(self):
+        scheme = LEVELS[self.scoring_scheme]
+        return self.question_set.count() * scheme['0']
+
     def clone(self):
         question_set = []
         # Clone the questions.
@@ -158,12 +162,19 @@ class QuizSubmission(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    def score_quiz(self):
-        score = 0
+    def user_points(self):
+        """Add up the all the question points for a given submission"""
+        points = 0
         for questionresponse in self.questionresponse_set.all():
-            score += questionresponse.score_question()
+            points += questionresponse.user_question_points()
 
-        return score
+        return points
+
+    def user_score(self):
+        """The user's total points divided by the possible score"""
+        """All negative values are rounded up to 0"""
+        score = round(self.user_points() / self.quiz.total_points(), 2)
+        return 0 if score < 0 else score
 
 
 class QuestionResponse(models.Model):
@@ -174,7 +185,10 @@ class QuestionResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
-    def score_question(self):
+    def user_question_points(self):
+        """Based on the correct marker position, determine the number of points
+           the user earned for their response"""
+
         scheme = LEVELS[self.question.quiz.scoring_scheme]
 
         if self.selected_position == I_DONT_KNOW_POSITION:

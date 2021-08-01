@@ -1,7 +1,7 @@
 from courseaffils.lib import in_course
 from courseaffils.models import Course
 from django.contrib.auth.mixins import UserPassesTestMixin
-from quizcon.main.models import Quiz, Question
+from quizcon.main.models import Quiz, Question, QuizSubmission
 
 
 class LoggedInCourseMixin(UserPassesTestMixin):
@@ -75,3 +75,60 @@ class UpdateQuestionPermissionMixin(UserPassesTestMixin):
             return False
 
         return question.quiz.course.is_true_faculty(self.request.user)
+
+
+class AssignmentPermissionMixin(UserPassesTestMixin):
+
+    def test_func(self):
+        try:
+            assignment_id = self.kwargs.get('assignment_id')
+
+            assignment = Quiz.objects.get(pk=assignment_id)
+
+            # course faculty can see the assignment & submission
+            if assignment.quiz.course.is_true_faculty(self.request.user):
+                return True
+
+            # non-course students cannot see anything
+            if not assignment.course.is_true_member(self.request.user):
+                return False
+
+            # course students can only see their own submissions
+            submission_id = self.kwargs.get('submission_id', -1)
+            submission = QuizSubmission.objects.get(id=int(submission_id))
+            return submission.user == self.request.user
+
+        except KeyError:
+            # expecting an assignment id
+            return False
+        except Quiz.DoesNotExist:
+            return False
+        except QuizSubmission.DoesNotExist:
+            # the submission may not exist
+            return True
+
+
+class SubmissionPermissionMixin(UserPassesTestMixin):
+
+    def test_func(self):
+        try:
+            submission_id = self.request.GET.get('submission_id')
+            submission = QuizSubmission.objects.get(pk=submission_id)
+
+            # course faculty can see all submissions
+            if submission.quiz.course.is_true_faculty(self.request.user):
+                return True
+
+            # non-course students cannot see anything
+            if not submission.quiz.course.is_true_member(self.request.user):
+                return False
+
+            # course students can only see their own submissions
+            return submission.user == self.request.user
+
+        except KeyError:
+            # exception a submission id
+            return False
+        except QuizSubmission.DoesNotExist:
+            # exception a valid submission id
+            return False

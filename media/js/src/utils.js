@@ -1,16 +1,7 @@
-define([
-    'jquery'
-], function(_) {
-    var utils = {
 
-        /**
-         * This is just an example util that can be removed.
-         */
-        isEven: function(n) {
-            return (n % 2) === 0;
-        }
-
-    };
-
-    return utils;
-});
+// eslint-disable-next-line no-unused-vars
+function copyToClipboard(eltId) {
+    var text = document.getElementById(eltId);
+    text.select(); //select the text area
+    document.execCommand('copy'); //copy to clipboard
+}

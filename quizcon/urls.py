@@ -44,19 +44,16 @@ urlpatterns = [
     url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),
         name='quiz-detail'),
 
-    url(r'^assignment/(?P<assignment_id>\d+)/(?P<submission_id>\d+)/$',
+    url(r'^assignment/(?P<pk>\d+)/(?P<submission_id>\d+)/$',
         views.LTIAssignmentView.as_view(),
         name='quiz-submission'),
-    url(r'^assignment/(?P<assignment_id>\d+)/',
+    url(r'^assignment/(?P<pk>\d+)/',
         views.LTIAssignmentView.as_view(),
         name='quiz'),
-    url(r'^assignment/grade/(?P<submission_id>\d+)/$',
+    url(r'^assignment/grade/(?P<pk>\d+)/$',
         views.LTISpeedGraderView.as_view(),
-        name='quiz-grade'),
+        name='grade'),
 
-    url(r'^assignment/success', TemplateView.as_view(
-        template_name='main/assignment_success.html'),
-        name='assignment-success'),
     url(r'^course/(?P<pk>\d+)/quiz/create/$', views.CreateQuizView.as_view(),
         name='create-quiz'),
     url(r'^question/(?P<pk>\d+)/update/$', views.UpdateQuestionView.as_view(),

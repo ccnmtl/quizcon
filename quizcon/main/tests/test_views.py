@@ -45,7 +45,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         response = self.client.post(
             url,
             {'title': 'Lorem Ipsum', 'description': 'dolor sit amet',
-             'multiple_attempts': 1, 'show_answers': False,
+             'multiple_attempts': 1, 'show_answers': 1,
              'randomize': True, 'course': self.course.pk, 'scoring_scheme': 2})
 
         self.assertEqual(self.course.quiz_set.count(), 1)
@@ -54,7 +54,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         self.assertEqual(quiz.title, 'Lorem Ipsum')
         self.assertEqual(quiz.description, 'dolor sit amet')
         self.assertEqual(quiz.multiple_attempts, 1)
-        self.assertFalse(quiz.show_answers)
+        self.assertEqual(quiz.show_answers, 1)
         self.assertTrue(quiz.randomize)
         self.assertEqual(quiz.scoring_scheme, 2)
 
@@ -85,7 +85,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
             url,
             {'title': 'Alpha',
              'description': 'Quiz updated.',
-             'multiple_attempts': 3, 'show_answers': False,
+             'multiple_attempts': 3, 'show_answers': 2,
              'randomize': True, 'scoring_scheme': 3,
              'course': self.quiz.course.pk})
 
@@ -94,7 +94,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         self.assertEqual(self.quiz.description, 'Quiz updated.')
         self.assertEqual(self.quiz.multiple_attempts, 3)
         self.assertTrue(self.quiz.randomize)
-        self.assertFalse(self.quiz.show_answers)
+        self.assertEqual(self.quiz.show_answers, 2)
         self.assertEqual(self.quiz.scoring_scheme, 3)
 
 

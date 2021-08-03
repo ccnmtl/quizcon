@@ -45,7 +45,7 @@ class QuizFactory(factory.django.DjangoModelFactory):
     title = 'Lorem Ipsum'
     description = 'dolor sit amet'
     multiple_attempts = 2
-    show_answers = False
+    show_answers = 1
     randomize = True
     scoring_scheme = 2
 

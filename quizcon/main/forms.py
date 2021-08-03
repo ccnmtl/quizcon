@@ -20,7 +20,8 @@ class QuizForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'rows': 3}),
             'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
             'multiple_attempts': forms.NumberInput(
-                                 attrs={'class': 'form-control'})
+                                 attrs={'class': 'form-control'}),
+            'show_answers': forms.RadioSelect()
         }
 
 

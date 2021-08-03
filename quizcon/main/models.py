@@ -58,6 +58,12 @@ SCORING_SCHEMES = [
     (3, 'Custom')
 ]
 
+SHOW_ANSWERS_CHOICES = [
+    (0, 'Never'),
+    (1, 'Immediately after quiz submission'),
+    (2, 'On given date')
+]
+
 LEVELS = [EASY, MEDIUM, HARD]
 
 
@@ -67,14 +73,15 @@ class Quiz(models.Model):
     title = models.TextField()
     description = models.TextField()
     multiple_attempts = models.IntegerField(default=0)
-    show_answers = models.BooleanField(
-        default=False,
-        verbose_name="Show the correct answers on submission")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     randomize = models.BooleanField(
         default=False,
         verbose_name="Randomize the quiz questions")
+    show_answers = models.PositiveSmallIntegerField(
+        choices=SHOW_ANSWERS_CHOICES,
+        default=1
+    )
     scoring_scheme = models.PositiveSmallIntegerField(
         choices=SCORING_SCHEMES,
         default=1

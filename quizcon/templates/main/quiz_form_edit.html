@@ -67,27 +67,13 @@
         <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                    <label class="form-check-label" for="flexRadioDefault1"> Never </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                    <label class="form-check-label" for="flexRadioDefault2"> Immediately after quiz submission </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
-                    <label class="form-check-label" for="flexRadioDefault3"> On given date
-                        <input type="text" class="form-control" id="date" value="MM/DD/YYYY" size="10" maxlength="10">
-                    </label>
+                    {% bootstrap_field form.show_answers show_label=False show_help=False %}
                 </div>
             </div>
         </div>
         <div class="row mb-3">
             <label for="options" class="col-sm-2 col-form-label">Additional Settings</label>
             <div class="col-sm-10">
-                <div class="form-check form-switch">
-                    {% bootstrap_field form.show_answers show_help=False %}
-                </div>
                 <div class="form-check form-switch">
                     {% bootstrap_field form.randomize show_help=False %}
                 </div>

@@ -10,15 +10,14 @@
         <button onclick="javascript:window.close('','_parent','');" class="btn btn-warning btn-sm float-end">Close</button>
         This is a preview of what your students will see.
     </div>
-    <div>
     <h1>
         {{quiz.title}}
     </h1>
 
     <p class="lead">{{quiz.description}}</p>
-    <div class="alert alert-danger" role="alert">
+    <!-- <div class="alert alert-danger" role="alert">
         <strong>00:00:00</strong> remaining to complete quiz.
-    </div>
+    </div> -->
     {% for question in quiz.question_set.all %}
         {% with markers=question.random_markers %}
         <form>

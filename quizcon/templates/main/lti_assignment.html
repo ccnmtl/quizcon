@@ -4,41 +4,111 @@
 {% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
 
 {% load coursetags static %}
-
+{% block topnavbar %}
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/course/1" title="Home"><strong><span class="text-light">QuizCon</span></strong> </a>
+    </div>
+</nav>
+{% endblock %}
 {% block content %}
 <div class="quiz-container">
-    <h1>
-        {{quiz.title}}
-    </h1>
     {% if is_faculty %}
-        <p>Instructors cannot submit an assignment</p>
+        <div class="alert alert-warning" role="alert">
+            This is a preview of what your students will see.
+        </div>
+        <h1>
+            {{quiz.title}}
+        </h1>
+
+        <p class="lead">{{quiz.description}}</p>
+        <!-- <div class="alert alert-danger" role="alert">
+            <strong>00:00:00</strong> remaining to complete quiz.
+        </div> -->
+        {% for question in quiz.question_set.all %}
+            {% with markers=question.random_markers %}
+            <form>
+                <div class="row bg-light">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>{{question.text}}</strong>
+                        </p>
+                        <ol>
+                            {% for marker in markers %}
+                            <li class="border-top p-2">{{marker.label}}</li>
+                            {% endfor %}
+                            <li class="border-top p-2">I don't know.</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="choicebox float-end">
+                            {% for x in num_markers %}
+                            <div class="form-check answer{{x}}">
+                                <input class="form-check-input" type="radio" name="radiodefault" value="{{x}}">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% endwith %}
+        {% endfor %}
     {% else %}{% if is_student %}
+        <h1>
+            {{quiz.title}}
+        </h1>
         <p class="lead">{{quiz.description}}</p>
         {% if submission %}
-            <!-- Submitted Interface -->
-            <div class="alert alert-info" role="alert">
-                <strong>Congratulations!</strong> You've completed the quiz.<br />
-                <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}<br />
-                <strong>Score:</strong> {{submission.user_score}}
-            </div>
+        <!-- Submitted Interface -->
+            <!-- if show Immediately -->
+            {% if quiz.show_answers == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <strong>You're Done!</strong> Your score is {{submission.user_score}}. <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}.
+                    Review your answers below.
+                </div>
+            <!-- if later date  -->
+            {% elif quiz.show_answers == 2 %}
+                <div class="alert alert-success" role="alert">
+                    <strong>You're Done!</strong> Your score is {{submission.user_score}}. <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}.
+                    The correct answers will be available for review on MM/DD/YYYY.
+                </div>
+            <!-- if never -->
+            {% else %}
+                <div class="alert alert-success" role="alert">
+                    <strong>You're Done!</strong> Your score is {{submission.user_score}}. <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}.
+                </div>
+            {% endif %}
 
             {% for question in quiz.question_set.all %}
                 {% question_response question submission as response %}
                 <div class="row bg-light">
                     <div class="col-md-6">
                         <p>
+                            {% with qp=response.user_question_points %}
+                                {% if quiz.scoring_scheme == 0 %}
+                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                        {{qp}} points
+                                    </span>
+                                {% elif quiz.scoring_scheme == 1 %}
+                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                        {{qp}} points
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                        {{qp}} points
+                                    </span>
+                                {% endif %}
+                            {% endwith %}
                             <strong>{{question.text}}</strong>
-                            {% if response.is_correct %}
-                                <span class="badge bg-success">Success</span>
-                            {% else %}
-                                <span class="badge bg-danger">Not Quite</span>
-                            {% endif %}
                         </p>
                         <ol>
                             {% for marker in response.questionresponsemarker_set.all %}
                                 <li class="border-top p-2">
-                                    {% if marker.marker.correct %}
-                                        <span class="badge bg-secondary">Correct Answer</span>
+                                    <!-- Only if show answer is Immediately or at a later date -->
+                                    {% if quiz.show_answers == 1 %}
+                                        {% if marker.marker.correct %}
+                                            <span class="badge rounded-pill bg-success">Correct</span>
+                                        {% endif %}
                                     {% endif %}
                                     {{marker.marker.label}}
                                 </li>
@@ -46,7 +116,8 @@
                             <li class="border-top p-2">I don't know.</li>
                         </ol>
                         <div>
-                            {% if quiz.show_answers %}
+                            <!-- Only if show answer is Immediately or at a later date -->
+                            {% if quiz.show_answers == 1 %}
                                 {{question.explanation}}
                             {% endif %}
                         </div>

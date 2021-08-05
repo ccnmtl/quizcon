@@ -51,6 +51,13 @@ class QuizTest(CourseTestMixin, TestCase):
         self.assertNotEqual(quiz_q.marker_set.first().pk,
                             clone_q.marker_set.first().pk)
 
+    def test_show_answers_verbose(self):
+        quiz = QuizFactory(course=self.course, show_answers=0)
+        self.assertEqual(quiz.show_answers_verbose(), 'Never')
+        quiz.show_answers = 1
+        self.assertEqual(quiz.show_answers_verbose(),
+                         'Immediately after quiz submission')
+
 
 class QuizSubmissionTest(CourseTestMixin, TestCase):
 

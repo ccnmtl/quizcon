@@ -70,7 +70,7 @@
             {% elif quiz.show_answers == 2 %}
                 <div class="alert alert-success" role="alert">
                     <strong>You're Done!</strong> Your score is {{submission.user_score}}. <strong>Points:</strong> {{submission.user_points}} out of {{submission.quiz.total_points}}.
-                    The correct answers will be available for review on MM/DD/YYYY.
+                    The correct answers will be available for review on {{quiz.show_answers_date}}.
                 </div>
             <!-- if never -->
             {% else %}
@@ -85,18 +85,20 @@
                     <div class="col-md-6">
                         <p>
                             {% with qp=response.user_question_points %}
-                                {% if quiz.scoring_scheme == 0 %}
-                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
-                                {% elif quiz.scoring_scheme == 1 %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
-                                {% else %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
+                                {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                    {% if quiz.scoring_scheme == 0 %}
+                                        <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                            {{qp}} points
+                                        </span>
+                                    {% elif quiz.scoring_scheme == 1 %}
+                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                            {{qp}} points
+                                        </span>
+                                    {% elif quiz.scoring_scheme == 2 %}
+                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                            {{qp}} points
+                                        </span>
+                                    {% endif %}
                                 {% endif %}
                             {% endwith %}
                             <strong>{{question.text}}</strong>
@@ -105,7 +107,7 @@
                             {% for marker in response.questionresponsemarker_set.all %}
                                 <li class="border-top p-2">
                                     <!-- Only if show answer is Immediately or at a later date -->
-                                    {% if quiz.show_answers == 1 %}
+                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                         {% if marker.marker.correct %}
                                             <span class="badge rounded-pill bg-success">Correct</span>
                                         {% endif %}
@@ -117,7 +119,7 @@
                         </ol>
                         <div>
                             <!-- Only if show answer is Immediately or at a later date -->
-                            {% if quiz.show_answers == 1 %}
+                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                 {{question.explanation}}
                             {% endif %}
                         </div>

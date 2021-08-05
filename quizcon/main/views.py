@@ -1,6 +1,7 @@
 import json
 import re
 import time
+from datetime import date
 
 from courseaffils.columbia import WindTemplate, CanvasTemplate
 from courseaffils.models import Course
@@ -220,6 +221,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
         submission_id = self.kwargs.get('submission_id', -1)
+        today = date.today()
         try:
             submission = QuizSubmission.objects.get(id=int(submission_id))
         except QuizSubmission.DoesNotExist:
@@ -234,7 +236,8 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             'is_faculty': is_faculty,
             'quiz': quiz,
             'num_markers': range(13),
-            'submission': submission
+            'submission': submission,
+            'today': today
         }
 
     def get_launch_url(self, submission):

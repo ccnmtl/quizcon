@@ -28,11 +28,14 @@ class QuizForm(forms.ModelForm):
 class QuestionForm(forms.ModelForm):
 
     answer_label_1 = forms.CharField(
-        required=True, widget=forms.TextInput(attrs={'class': "form-control"}))
+        required=True, widget=forms.Textarea(
+                                    attrs={'rows': 2, 'placeholder': ''}))
     answer_label_2 = forms.CharField(
-        required=True, widget=forms.TextInput(attrs={'class': "form-control"}))
+        required=True, widget=forms.Textarea(
+                                    attrs={'rows': 2, 'placeholder': ''}))
     answer_label_3 = forms.CharField(
-        required=True, widget=forms.TextInput(attrs={'class': "form-control"}))
+        required=True, widget=forms.Textarea(
+                                    attrs={'rows': 2, 'placeholder': ''}))
 
     correct = forms.IntegerField(required=True)
 
@@ -56,6 +59,6 @@ class QuestionForm(forms.ModelForm):
         fields = ['quiz', 'text', 'explanation']
 
         widgets = {
-            'title': forms.TextInput(),
-            'description': forms.Textarea(attrs={'rows': 3})
+            'text': forms.Textarea(attrs={'rows': 2, 'placeholder': ''}),
+            'explanation': forms.Textarea(attrs={'rows': 2, 'placeholder': ''})
         }

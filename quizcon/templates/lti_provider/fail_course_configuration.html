@@ -2,43 +2,73 @@
 {% load coursetags static %}
 {% get_instructor_courses user as courses %}
 
-{% block title %}
-Provision Your Course
-{% endblock %}
+{% block title %}Provision Your Course{% endblock %}
 
 {% block topnavbar %}
+{% endblock %}
+
+{% block usernav %}
 {% endblock %}
 
 {% block footer %}
 {% endblock %}
 
+{% block css %}
+<style>
+    html,body {
+        height: 100%;
+    }
+
+    body, .container
+    {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #032b50;
+        justify-content: center;
+    }
+
+    h1 {
+        color: #0E78DB;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>Provision Your Course</h1>
-     {% if not is_instructor and not is_administrator %}
-        <div>
-            <p>
-                Your {{title}} course has not been configured to use this component.<br />
-                Contact your instructor for more information.
-            </p>
-        </div>
-     {% else %}
-        <div>
-            <p>
-                Quizzing with Confidence is an open-source tool to integrate weighted multiple choice questions into your course.
-            </p>
-            <p>
-                Connect your Canvas course to Quizzing with Confidence.
-            </p>
-            <form class="text-center" action="{% url 'lti-course-create' %}" method='POST'>
-                {% csrf_token %}
-                <input type="hidden" name="lms_course" value="{{lms_course}}">
-                <input type="hidden" name="lms_course_title" value="{{lms_course_title}}">
-                <input type="hidden" name="sis_course_id" value="{{sis_course_id}}">
-                <input type="hidden" name="domain" value="{{domain}}">
-                <p>
-                    <button type="submit" class="btn btn-primary btn-lg">Connect Now</button>
+
+    {% if not is_instructor and not is_administrator %}
+         <body id="splash" class="text-center">
+             <div id="signin">
+                 <h1 class="logo display-1" style="border: 0; font-weight: 700;">
+                     QuizCon
+                 </h1>
+                 <p class="lead text-light">
+                     Your {{title}} course has not been configured to use Quizzing with Confidence.<br />
+                     Contact your instructor for more information.
+                 </p>
+             <div>
+         </body>
+    {% else %}
+        <body id="splash" class="text-center">
+            <div id="signin">
+                <h1 class="logo display-1" style="border: 0; font-weight: 700;">
+                    QuizCon
+                </h1>
+                <p class="lead text-light">
+                    Quizzing with Confidence is an open-source tool to integrate weighted multiple choice questions into your course.
                 </p>
-            </form>
-        </div>
+                <form class="text-center" action="{% url 'lti-course-create' %}" method='POST'>
+                    {% csrf_token %}
+                    <input type="hidden" name="lms_course" value="{{lms_course}}">
+                    <input type="hidden" name="lms_course_title" value="{{lms_course_title}}">
+                    <input type="hidden" name="sis_course_id" value="{{sis_course_id}}">
+                    <input type="hidden" name="domain" value="{{domain}}">
+                    <div style="margin: 2em 0 2em 0;">
+                        <button type="submit" class="btn btn-lg btn-light">Connect</button>
+                    </div>
+                </form>
+            <div>
+        </body>
     {% endif %}
 {% endblock %}

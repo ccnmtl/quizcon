@@ -1,17 +1,44 @@
-# from django.test import TestCase
-# from django.urls.base import reverse
-# from django.test.client import RequestFactory
-# from quizcon.main.tests.factories import UserFactory
-# from quizcon.main.middleware import WhoDidItMiddleware
-# from quizcon.main.models import Quiz
-#
-#
-# class WhoDidItMiddlewareTest(TestCase):
-#     def setUp(self):
-#         self.request = RequestFactory.post('/')
-#         self.request.user = UserFactory()
-#
-#     def test_created_by(self):
-#         middleware = WhoDidItMiddleware()
-#         respone = self.middleware.process_request(self.request)
-#         quiz = Quiz.objects.create()
+from quizcon.main.middleware import WhoDidItMiddleware
+from django.test.client import RequestFactory
+from django.test.testcases import TestCase
+from django.urls.base import reverse
+from quizcon.main.models import Quiz
+from quizcon.main.tests.factories import UserFactory, QuizFactory
+
+
+def get_response(request):
+    # Make a change, any change
+    quiz = Quiz.objects.first()
+    quiz.title = 'Something Different'
+    quiz.save()
+
+
+class WhoDidItMiddlewareTest(TestCase):
+
+    def test_whodidit(self):
+        author = UserFactory()
+        quiz = QuizFactory()
+        self.assertEqual(quiz.created_by, None)
+        self.assertEqual(quiz.modified_by, None)
+
+        mw = WhoDidItMiddleware(get_response)
+
+        url = reverse('quiz-detail', kwargs={'pk': quiz.pk})
+
+        # get operations should leave the object unchanged
+        request = RequestFactory().get(url)
+        request.user = author
+        mw.__call__(request)
+
+        quiz.refresh_from_db()
+        self.assertEqual(quiz.created_by, None)
+        self.assertEqual(quiz.modified_by, None)
+
+        # post operations should save the request.user
+        request = RequestFactory().post(url)
+        request.user = author
+        mw.__call__(request)
+
+        quiz.refresh_from_db()
+        self.assertEqual(quiz.created_by, author)
+        self.assertEqual(quiz.modified_by, author)

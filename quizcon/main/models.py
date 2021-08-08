@@ -96,6 +96,9 @@ class Quiz(models.Model):
 
     display_name = "Quiz"
 
+    def show_answers_verbose(self):
+        return dict(SHOW_ANSWERS_CHOICES)[self.show_answers]
+
     def total_points(self):
         scheme = LEVELS[self.scoring_scheme]
         return self.question_set.count() * scheme['0']

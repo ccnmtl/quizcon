@@ -5,17 +5,33 @@
 
 {% load coursetags static %}
 {% block topnavbar %}
-<nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/course/1" title="Home"><strong><span class="text-light">QuizCon</span></strong> </a>
-    </div>
-</nav>
+{% if is_faculty %}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ request.scheme }}://{{ request.get_host }}{% url 'course-detail-view' quiz.course.pk %}" target="_blank" rel="noopener noreferrer"><strong><span class="text-light">QuizCon</span></strong></a>
+            <div class="collapse navbar-collapse" id="nabarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"> <a class="nav-link" href="{% url 'update-quiz' quiz.id %}" target="_blank" rel="noopener noreferrer">Edit Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% else %}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><strong><span class="text-light">QuizCon</span></strong></a>
+        </div>
+    </nav>
+{% endif %}
 {% endblock %}
 {% block content %}
 <div class="quiz-container">
     {% if is_faculty %}
         <div class="alert alert-warning" role="alert">
-            This is a preview of what your students will see.
+            This is a preview of what your students will see. <br>
+            {% if quiz.randomize %} Questions are randomized.<br>{% endif %}
+            Question answers are always randomized.<br>
+            Students will be able to see their answers: {{quiz.show_answers_verbose}}
         </div>
         <h1>
             {{quiz.title}}
@@ -171,7 +187,7 @@
                     </div>
                     {% endwith %}
                 {% endfor %}
-                <input class="btn btn-primary" type="submit" {% if submission %}disabled="disabled" value="submitted"{% else %}value="submit" {% endif %} />
+                <input class="btn btn-primary" type="submit" {% if submission %}disabled="disabled" value="submitted"{% else %}value="Submit Answers" {% endif %} />
             </form>
         {% endif %}
     {% endif %}{% endif %}

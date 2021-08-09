@@ -48,14 +48,34 @@
                         </div>
                     </td>
                     <td>
-                        <form method="POST" action="{% url 'clone-quiz' quiz.id %}" class="d-inline">
-                            {% csrf_token %}
-                            <input class="btn btn-sm btn-info" type="submit" value="Clone Quiz">
-                        </form>
+                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal">Clone Quiz</a>
                         <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
                         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
                     </td>
                 </tr>
+                <!-- Modal -->
+                <div class="modal fade" id="cloneModal" tabindex="-1" aria-labelledby="cloneModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Clone Quiz
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure that you want to clone this quiz?
+                            </div>
+                            <div class="modal-footer">
+                                <form method="POST" action="{% url 'clone-quiz' quiz.id %}">
+                                {% csrf_token %}
+                                <input class="btn btn-primary" type="submit" value="Clone Quiz">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% endfor %}
             </tbody>
         </table>

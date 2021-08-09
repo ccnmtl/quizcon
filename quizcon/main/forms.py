@@ -13,7 +13,8 @@ class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
         fields = ['title', 'description', 'multiple_attempts',
-                  'show_answers', 'randomize', 'course', 'scoring_scheme']
+                  'show_answers', 'randomize', 'course', 'scoring_scheme',
+                  'show_answers_date']
 
         widgets = {
             'title': forms.TextInput(),
@@ -21,7 +22,10 @@ class QuizForm(forms.ModelForm):
             'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
             'multiple_attempts': forms.NumberInput(
                                  attrs={'class': 'form-control'}),
-            'show_answers': forms.RadioSelect()
+            'show_answers': forms.RadioSelect(),
+            'show_answers_date': forms.DateInput(
+                                attrs={'class': 'form-control',
+                                       'type': 'date'})
         }
 
 

@@ -92,6 +92,7 @@ class Quiz(models.Model):
     modified_by = models.ForeignKey(
         User, null=True, on_delete=models.SET_NULL,
         related_name='quiz_modified_by')
+    show_answers_date = models.DateField(blank=True, null=True)
 
     display_name = "Quiz"
 

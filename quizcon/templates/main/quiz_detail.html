@@ -5,10 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<div class="quiz-container">
+<div class="quiz-container container-fluid">
     <div class="alert alert-warning" role="alert">
         <button onclick="javascript:window.close('','_parent','');" class="btn btn-warning btn-sm float-end">Close</button>
-        This is a preview of what your students will see.
+        This is a preview of what your students will see. <br>
+        {% if quiz.randomize %} Questions are randomized.<br>{% endif %}
+        Question answers are always randomized.<br>
+        Students will be able to see their answers: <strong>{{quiz.show_answers_verbose}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}
     </div>
     <h1>
         {{quiz.title}}

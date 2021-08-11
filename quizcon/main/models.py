@@ -187,6 +187,12 @@ class QuizSubmission(models.Model):
         score = round(self.user_points() / self.quiz.total_points(), 2)
         return 0 if score < 0 else score
 
+    def user_score_percent(self):
+        """The user's total points divided by the possible score times 100"""
+        """All negative values are rounded up to 0"""
+        score = round(self.user_points() / self.quiz.total_points(), 2) * 100
+        return 0 if score < 0 else score
+
 
 class QuestionResponse(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

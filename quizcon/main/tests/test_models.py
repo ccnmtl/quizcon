@@ -93,6 +93,7 @@ class QuizSubmissionTest(CourseTestMixin, TestCase):
 
         self.assertEqual(submission.user_points(), 5)
         self.assertEqual(submission.user_score(), 0.5)
+        self.assertEqual(submission.user_score_percent(), 50)
 
     def test_score_medium_quiz(self):
         self.quiz.scoring_scheme = 1
@@ -123,6 +124,7 @@ class QuizSubmissionTest(CourseTestMixin, TestCase):
 
         self.assertEqual(submission.user_points(), 0)
         self.assertEqual(submission.user_score(), 0.0)
+        self.assertEqual(submission.user_score_percent(), 0)
 
     def test_i_dont_know(self):
         submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
@@ -147,6 +149,7 @@ class QuizSubmissionTest(CourseTestMixin, TestCase):
 
         self.assertEqual(submission.user_points(), 0)
         self.assertEqual(submission.user_score(), 0.0)
+        self.assertEqual(submission.user_score_percent(), 0)
 
 
 class QuestionResponseTest(CourseTestMixin, TestCase):

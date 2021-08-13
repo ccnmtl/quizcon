@@ -108,7 +108,7 @@ class Quiz(models.Model):
         # Clone the questions.
         cloned = Quiz.objects.create(
                     course=self.course,
-                    title=self.title,
+                    title=self.title + ' (clone)',
                     description=self.description,
                     multiple_attempts=self.multiple_attempts,
                     scoring_scheme=self.scoring_scheme,

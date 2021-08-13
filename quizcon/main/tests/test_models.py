@@ -37,7 +37,7 @@ class QuizTest(CourseTestMixin, TestCase):
 
         self.assertNotEqual(q.pk, c.pk)
         self.assertEqual(q.title, 'cloned quiz')
-        self.assertEqual(c.title, 'cloned quiz')
+        self.assertEqual(c.title, 'cloned quiz (clone)')
         self.assertEqual(q.scoring_scheme, c.scoring_scheme)
         self.assertEqual(q.question_set.count(),
                          c.question_set.count())

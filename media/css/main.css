@@ -168,3 +168,7 @@ textarea.assignment-url {
     padding-top: .25rem!important;
     padding-bottom: .25rem!important;
 }
+
+#id_show_answers_date {
+    width: auto;
+}

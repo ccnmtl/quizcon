@@ -26,19 +26,19 @@
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
+                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
                     Review your answers below.
                 </div>
             <!-- if later date  -->
             {% elif quiz.show_answers == 2 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
+                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
                     The correct answers will be available for review on {{quiz.show_answers_date}}.
                 </div>
             <!-- if never -->
             {% else %}
                 <div class="alert alert-success" role="alert">
-                    <<strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
+                    <<strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
                 </div>
             {% endif %}
 
@@ -83,7 +83,7 @@
                         <div>
                             <!-- Only if show answer is Immediately or at a later date -->
                             {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                {{question.explanation}}
+                                <strong>Feedback: </strong>{{question.explanation}}
                             {% endif %}
                         </div>
                     </div>

@@ -3,6 +3,20 @@
 
 {% block title %}Create Quiz{% endblock %}
 
+{% block js %}
+<script type="text/javascript">
+    jQuery("#id_show_answers_2").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", false)
+    });
+    jQuery("#id_show_answers_1").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+    jQuery("#id_show_answers_0").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid container-content">
 <!-- Create Quiz -->

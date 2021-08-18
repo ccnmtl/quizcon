@@ -6,45 +6,57 @@ My Courses | QuizCon
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid container-content">
-    <h1>
-        My Courses
-    </h1>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
-            <thead>
-                <tr>
-                    <th scope="col">Course Title</th>
-                    <th scope="col">Course Quiz(zes)</th>
-                    <th scope="col">Course Description</th>
-                    <th scope="col">Semester</th>
-                    <th scope="col">Author(s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for course in courses %}
-                <tr>
-                    <th scope="row"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
-                    <td>{% if course.quiz_set %}
-                            <ul>
-                                {% for quiz in course.quiz_set.all %}
-                                    <li>{{quiz.title}}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </td>
-                    <td>{% if course|course_description %}
-                        {{ course|course_description }}
-                    {% else %}
-                        <span class="text-muted font-italic">There’s no description for this Course.</span>
-                    {% endif %}</td>
-                    <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
-                    <td>{{ course|course_faculty_string }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+    {% if is_faculty %}
+        <div class="container-fluid container-content">
+            <h1>
+                My Courses
+            </h1>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <col width="20%"> <col width="30%"> <col width="30%"> <col width="20%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Course Title</th>
+                            <th scope="col">Course Quiz(zes)</th>
+                            <th scope="col">Course Description</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Author(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
+                            <td>{% if course.quiz_set %}
+                                    <ul>
+                                        {% for quiz in course.quiz_set.all %}
+                                            <li>{{quiz.title}}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                            <td>{% if course|course_description %}
+                                {{ course|course_description }}
+                            {% else %}
+                                <span class="text-muted font-italic">There’s no description for this Course.</span>
+                            {% endif %}</td>
+                            <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
+                            <td>{{ course|course_faculty_string }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-md-center">
+            <div class="col-md-auto text-center my-5">
+                <h2>403: Forbidden</h2>
+                <p>
+                  We're sorry. This content is not available for students.
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock %}

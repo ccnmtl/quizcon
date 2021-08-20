@@ -163,6 +163,10 @@ textarea.assignment-url {
     padding-bottom: .25rem!important;
 }
 
+#id_show_answers_date {
+    width: auto;
+}
+
 /* DragonDrop css */
 .dragondrop-container > li.dragon-inactive {
   box-shadow: 0 0 1px #000;

@@ -2,9 +2,27 @@
 {% load bootstrap4 %}
 
 {% block title %}Edit Quiz{% endblock %}
+{% block js %}
+<script
+     data-main="{{STATIC_URL}}js/src/main.js"
+     src="{{STATIC_URL}}js/lib/require/require.js"></script>
+
+<script type="text/javascript">
+    jQuery("#id_show_answers_2").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", false)
+    });
+    jQuery("#id_show_answers_1").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+    jQuery("#id_show_answers_0").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+</script>
+
+
+{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid container-content">
 <!-- Edit Quiz -->
     <h1>
@@ -66,7 +84,7 @@
         <div class="row mb-3">
         <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
-                <div class="form-check">
+                <div>
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
                     {% bootstrap_field form.show_answers_date show_label=False %}
                 </div>
@@ -82,45 +100,63 @@
         </div>
 
         <hr />
-        <h2>Questions</h2>
+        <h2 id="questions-container">Questions</h2>
         <div class="row">
             <div class="col">
                 <a href="{% url 'create-question' quiz.id %}" class="btn btn-sm btn-primary">Create Question</a>
                 <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
             </div>
         </div>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <col width="1%"> <col width="4%"> <col width="40%"> <col width="40%"> <col width="15%">
-                <thead>
-                    <tr>
-                        <th scope="col">Sort</th>
-                        <th scope="col">#</th>
-                        <th scope="col">Question</th>
-                        <th scope="col">Answers</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for question in quiz.question_set.all %}
-                <tr>
-                    <td><img class="sort" src="{{STATIC_URL}}img/icon-sort.svg" class="img-fluid" /></td>
-                    <th scope="row">{{question.ordinality}}</th>
-                    <td>{{question.text}}</td>
-                    <td>
-                    <ol>
-                        {% for marker in question.marker_set.all %}
-                        <li>{{marker.label}}
-                            {% if marker.correct %}<span class="badge rounded-pill bg-secondary">Correct</span>{% endif %}</li>
-                        {% endfor %}
-                    </ol>
-                    </td>
-                    <td><a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning">Edit Question</a> </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <ol id="questions-header" aria-labelledby="questions-container">
+            <li>
+                <div class="row d-inline-flex w-100 ml-2">
+                    <div class="col-sm-1">
+                        Sort
+                    </div>
+                    <div class="col-sm-4">
+                        Question
+                    </div>
+                    <div class="col-sm-5">
+                        Answers
+                    </div>
+                    <div class="col-sm-2">
+                        Action
+                    </div>
+                </div>
+            </li>
+        </ol>
+        <ol class="dragondrop-container" id="dragondrop-container" aria-labelledby="questions-header">
+            {% for question in quiz.question_set.all %}
+                <li class="list-style-none">
+                    <div class="row d-inline-flex w-100 ml-2">
+                        <div class="col-sm-1">
+                            <button aria-describedby="global-help" type="button" class="handle"
+                                aria-labelledby="question-{{question.id}}" tabindex="0">
+                                <div class="offscreen">Reorder</div>
+                            </button>
+                            <span class="sr-only">{{question.text}}</span>
+                        </div>
+                        <div class="col-sm-4">
+                            {{question.text}}
+                        </div>
+                        <div class="col-sm-5">
+                            {% for marker in question.marker_set.all %}
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                    </svg>
+                                    {{marker.label}}
+                                    {% if marker.correct %}<span class="badge rounded-pill bg-secondary">Correct</span>{% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning">Edit Question</a>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
         <input type="hidden" name="course" value="{{course.pk}}" />
         <button type="submit" class="btn btn-primary">Save Quiz</button>
         <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>

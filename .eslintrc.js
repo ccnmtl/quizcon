@@ -16,6 +16,9 @@ module.exports = {
         "eslint:recommended",
         "plugin:security/recommended"
     ],  
+    "globals": {
+        "quizcon": true
+    },
     "rules": {
         "indent": [
             "error",

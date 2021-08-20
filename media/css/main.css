@@ -35,7 +35,6 @@ h1
 
 ol { list-style-type: upper-alpha; }
 .breadcrumb { font-weight: 300; }
-img.sort { cursor: move; }
 
 #signin {
     width: 100%;
@@ -149,11 +148,6 @@ img.sort { cursor: move; }
     height: 1px;
 }
 
-img.sort
-{
-    cursor: move;
-}
-
 #footer-logo
 {
     width: 300px;
@@ -167,4 +161,102 @@ textarea.assignment-url {
     min-height: calc(1.2em + .75rem + 2px);
     padding-top: .25rem!important;
     padding-bottom: .25rem!important;
+}
+
+/* DragonDrop css */
+.dragondrop-container > li.dragon-inactive {
+  box-shadow: 0 0 1px #000;
+  border-color: transparent;
+}
+
+#questions-header {
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+#questions-header > li {
+  margin: 15px 0 0 0;
+  text-align: left;
+  list-style: inherit;
+  list-style: none;
+  font-weight: bold;
+  border: 0;
+  border-bottom: 1px solid black;
+}
+
+.list-style-none {
+    list-style: none !important;
+}
+
+.dragondrop-container {
+    padding-left: 0;
+}
+
+.dragondrop-container > li {
+    padding: 8px 0;
+    text-align: left;
+    list-style: none !important;
+    border-bottom: 1px solid gray;
+}
+
+.handle {
+  margin-right: 10px;
+  border: 0;
+  background: #fff;
+  border-radius: 2px;
+  padding: 5px;
+  cursor: grabbing !important;
+  background-image: url(../img/icon-sort.svg);
+  background-repeat: no-repeat;
+  width: 32px;
+  height: 32px;
+}
+
+.offscreen {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.dragon-active {
+  box-shadow: 0 0 8px #000;
+}
+
+/**
+ * Below are styles for the dragula elements
+ */
+.gu-mirror {
+  box-sizing: border-box;
+  padding: 5px;
+  border: 1px solid;
+  text-align: left;
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  background: #fff;
+  cursor: -webkit-grabbing;
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+  list-style: none !important;
 }

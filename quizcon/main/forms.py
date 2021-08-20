@@ -25,7 +25,8 @@ class QuizForm(forms.ModelForm):
             'show_answers': forms.RadioSelect(),
             'show_answers_date': forms.DateInput(
                                 attrs={'class': 'form-control',
-                                       'type': 'date'})
+                                       'type': 'date',
+                                       'disabled': 'true'})
         }
 
 

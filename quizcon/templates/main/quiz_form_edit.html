@@ -2,9 +2,21 @@
 {% load bootstrap4 %}
 
 {% block title %}Edit Quiz{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    jQuery("#id_show_answers_2").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", false)
+    });
+    jQuery("#id_show_answers_1").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+    jQuery("#id_show_answers_0").on("click", function() {
+        jQuery("#id_show_answers_date").attr("disabled", true)
+    });
+</script>
+{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid container-content">
 <!-- Edit Quiz -->
     <h1>
@@ -66,7 +78,7 @@
         <div class="row mb-3">
         <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
-                <div class="form-check">
+                <div>
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
                     {% bootstrap_field form.show_answers_date show_label=False %}
                 </div>

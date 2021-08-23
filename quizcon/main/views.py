@@ -517,3 +517,12 @@ class CloneQuizView(UpdateQuizPermissionMixin, View):
 
         return HttpResponseRedirect(reverse('update-quiz',
                                     kwargs={'pk': cloned_quiz.pk}))
+
+
+class ReorderQuestionsView(UpdateQuizPermissionMixin, View):
+    def post(self, request, *args, **kwargs):
+        order_json = json.loads(request.body.decode('utf-8'))
+        for idx, id in enumerate(order_json['ids']):
+            q = Question.objects.get(id=id)
+            q.ordinality = idx
+            q.save()

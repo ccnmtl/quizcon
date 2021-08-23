@@ -103,6 +103,12 @@ class Quiz(models.Model):
         scheme = LEVELS[self.scoring_scheme]
         return self.question_set.count() * scheme['0']
 
+    def ordered_questions(self):
+        return self.question_set.all().order_by('ordinality')
+
+    def randomize_questions(self):
+        return self.question_set.all().order_by('?')
+
     def clone(self):
         question_set = []
         # Clone the questions.

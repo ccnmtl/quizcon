@@ -8,8 +8,30 @@ requirejs.config({
 });
 
 define(['dragondrop'], function(DragonDrop) {
-    const demo1 = document.getElementById('dragondrop-container');
-    const dragonDrop = new DragonDrop(demo1, {
+    const el = document.getElementById('dragondrop-container');
+
+    const token = $('meta[name="csrf-token"]').attr('content');
+    let q_order = {ids: []};
+    let url = $('meta[name="reorder-url"]').attr('content');
+
+    function post_order() {
+        console.log('reorder func');
+        $('#dragondrop-container li').each(function(index, element) {
+            var id = $(element).attr('data-id');
+            q_order.ids.push(id);
+        });
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(q_order),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', token);
+            }
+        });
+    }
+    const dragonDrop = new DragonDrop(el, {
         handle: '.handle',
         announcement: {
             grabbed: el => `${el.querySelector('span').innerText} grabbed`,
@@ -24,7 +46,7 @@ define(['dragondrop'], function(DragonDrop) {
         }
     });
 
-    dragonDrop.on('reorder', function() {
-        // @todo - post the new order to the server
-    });
+    dragonDrop
+        .on('reorder', post_order)
+        .on('dropped', post_order);
 });

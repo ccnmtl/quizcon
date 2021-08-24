@@ -10,12 +10,11 @@ requirejs.config({
 define(['dragondrop'], function(DragonDrop) {
     const el = document.getElementById('dragondrop-container');
 
-    const token = $('meta[name="csrf-token"]').attr('content');
-    let q_order = {ids: []};
-    let url = $('meta[name="reorder-url"]').attr('content');
-
     function post_order() {
-        console.log('reorder func');
+        const token = $('meta[name="csrf-token"]').attr('content');
+        let q_order = {ids: []};
+        let url = $('meta[name="reorder-url"]').attr('content');
+
         $('#dragondrop-container li').each(function(index, element) {
             var id = $(element).attr('data-id');
             q_order.ids.push(id);

@@ -17,7 +17,6 @@
                 <tr>
                     <th scope="col">Quiz Title</th>
                     <th scope="col">Quiz Description</th>
-                    <th scope="col">Due Date</th>
                     <th scope="col">Assignment Url (?)</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -27,7 +26,6 @@
                 <tr>
                     <th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
                     <td>{{quiz.description}}</td>
-                    <td>08.31.2021</td>
                     <td class="text-muted">
                         <div class="input-group mb-3">
                             <button class="btn btn-sm btn-outline-secondary" type="button" id="button-addon2"

@@ -68,10 +68,9 @@ LEVELS = [EASY, MEDIUM, HARD]
 
 
 class Quiz(models.Model):
-
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     title = models.TextField()
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     multiple_attempts = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)

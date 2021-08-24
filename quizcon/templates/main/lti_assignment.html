@@ -41,7 +41,7 @@
         <!-- <div class="alert alert-danger" role="alert">
             <strong>00:00:00</strong> remaining to complete quiz.
         </div> -->
-        {% for question in quiz.question_set.all %}
+        {% for question in quiz.ordered_questions %}
             {% with markers=question.random_markers %}
             <form>
                 <div class="row bg-light">
@@ -95,7 +95,7 @@
                 </div>
             {% endif %}
 
-            {% for question in quiz.question_set.all %}
+            {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
                 <div class="row bg-light">
                     <div class="col-md-6">
@@ -159,7 +159,7 @@
                 <strong>00:00:00</strong> remaining to complete quiz.
             </div>
             <form action="." method="post">
-                {% for question in quiz.question_set.all %}
+                {% for question in quiz.ordered_questions %}
                     {% with markers=question.random_markers %}
                     <div class="row bg-light">
                         <div class="col-md-6">

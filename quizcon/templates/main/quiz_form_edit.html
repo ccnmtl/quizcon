@@ -20,6 +20,11 @@
 </script>
 {% endblock %}
 
+{% block extrahead %}
+    <meta name="csrf-token" content="{{csrf_token}}">
+    <meta name="reorder-url" content="{% url 'reorder-questions' quiz.id %}">
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid container-content">
 <!-- Edit Quiz -->
@@ -118,8 +123,8 @@
             </li>
         </ol>
         <ol class="dragondrop-container" id="dragondrop-container" aria-labelledby="questions-header">
-            {% for question in quiz.question_set.all %}
-                <li class="list-style-none">
+            {% for question in quiz.ordered_questions %}
+                <li class="list-style-none" data-id="{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
                             <button aria-describedby="global-help" type="button" class="handle"
@@ -129,7 +134,7 @@
                             <span class="sr-only">{{question.text}}</span>
                         </div>
                         <div class="col-sm-4">
-                            {{question.text}}
+                            {{question.ordinality}}{{question.text}}
                         </div>
                         <div class="col-sm-5">
                             {% for marker in question.marker_set.all %}

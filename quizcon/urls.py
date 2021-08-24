@@ -39,6 +39,8 @@ urlpatterns = [
         name='delete-quiz'),
     url(r'^quiz/(?P<pk>\d+)/clone/$', views.CloneQuizView.as_view(),
         name='clone-quiz'),
+    url(r'^quiz/(?P<pk>\d+)/reorder/$', views.ReorderQuestionsView.as_view(),
+        name='reorder-questions'),
     url(r'^quiz/(?P<pk>\d+)/question/create/$',
         views.CreateQuestionView.as_view(), name='create-question'),
     url(r'^quiz/(?P<pk>\d+)/', views.QuizDetailView.as_view(),

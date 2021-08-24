@@ -42,7 +42,7 @@
                 </div>
             {% endif %}
 
-            {% for question in quiz.question_set.all %}
+            {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
                 <div class="row bg-light">
                     <div class="col-md-6">
@@ -110,7 +110,7 @@
                 Review student's answer below.
             </div>
 
-            {% for question in quiz.question_set.all %}
+            {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
                 <div class="row bg-light">
                     <div class="col-md-6">

@@ -58,6 +58,20 @@ class QuizTest(CourseTestMixin, TestCase):
         self.assertEqual(quiz.show_answers_verbose(),
                          'Immediately after quiz submission')
 
+    def test_ordered_questions(self):
+        quiz = QuizFactory(course=self.course, scoring_scheme=0)
+        QuestionFactory(quiz=quiz)
+        QuestionFactory(quiz=quiz)
+
+        q1 = quiz.question_set.first()
+        # ordinality of q2 is -1
+        q2 = quiz.question_set.last()
+        q1.ordinality = 1
+        q1.save()
+        first = quiz.ordered_questions().first()
+        self.assertEqual(quiz.question_set.first().ordinality, 1)
+        self.assertEqual(first, q2)
+
 
 class QuizSubmissionTest(CourseTestMixin, TestCase):
 

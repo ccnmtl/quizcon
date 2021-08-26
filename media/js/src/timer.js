@@ -37,7 +37,8 @@ const activateTimer = (time) => {
             }, 500);
         }
         $('#quiz-timer')
-            .html(`<b>${display_minutes}:${display_secs}</b> remaining to complete quiz.`);
+            .html(`<b>${display_minutes}:${display_secs}</b>` +
+                 ' remaining to complete quiz.');
 
     }, 1000);
 };

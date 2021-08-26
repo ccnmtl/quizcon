@@ -12,7 +12,7 @@
     <div class="table-responsive">
         <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
         <table class="table table-striped">
-            <col width="15%"> <col width="20%"> <col width="10%"> <col width="30%"> <col width="25%">
+            <col width="20%"> <col width="20%"> <col width="30%"><col width="20%">
             <thead>
                 <tr>
                     <th scope="col">Quiz Title</th>
@@ -25,7 +25,11 @@
                 {% for quiz in course.quiz_set.all %}
                 <tr>
                     <th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
-                    <td>{{quiz.description}}</td>
+                    {% if quiz.description %}
+                        <td>{{quiz.description}}</td>
+                    {% else %}
+                        <td>No description.</td>
+                    {% endif %}
                     <td class="text-muted">
                         <div class="input-group mb-3">
                             <button class="btn btn-sm btn-outline-secondary" type="button" id="button-addon2"

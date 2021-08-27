@@ -19,7 +19,9 @@
     <h1>
         {{quiz.title}}
     </h1>
-    <p class="lead">{{quiz.description}}</p>
+    {% if quiz.description %}
+        <p class="lead">{{quiz.description}}</p>
+    {% endif %}
     {% if is_student %}
         {% if submission %}
         <!-- Submitted Interface -->

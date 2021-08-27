@@ -16,8 +16,9 @@
     <h1>
         {{quiz.title}}
     </h1>
-
-    <p class="lead">{{quiz.description}}</p>
+    {% if quiz.description %}
+        <p class="lead">{{quiz.description}}</p>
+    {% endif %}
     <!-- <div class="alert alert-danger" role="alert">
         <strong>00:00:00</strong> remaining to complete quiz.
     </div> -->

@@ -7,6 +7,14 @@
     Edit Question
 {% endblock %}
 
+{% block js %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        tinymce.init({selector: 'textarea', statusbar: false, menubar: false});
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid container-content">
 <!-- Edit Question -->

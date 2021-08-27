@@ -83,7 +83,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
             {'title': 'Alpha',
              'description': 'Quiz updated.',
              'multiple_attempts': 3, 'show_answers': 2,
-             'randomize': True, 'scoring_scheme': 3,
+             'randomize': True, 'scoring_scheme': 0,
              'course': self.quiz.course.pk})
 
         self.quiz.refresh_from_db()
@@ -92,7 +92,7 @@ class UpdateQuizTest(CourseTestMixin, TestCase):
         self.assertEqual(self.quiz.multiple_attempts, 3)
         self.assertTrue(self.quiz.randomize)
         self.assertEqual(self.quiz.show_answers, 2)
-        self.assertEqual(self.quiz.scoring_scheme, 3)
+        self.assertEqual(self.quiz.scoring_scheme, 0)
 
 
 class DeleteQuizTest(CourseTestMixin, TestCase):

@@ -63,13 +63,13 @@
                 {% bootstrap_field form.scoring_scheme show_label=False %}
             </div>
         </div>
-        <div class="row mb-3">
+        <!-- <div class="row mb-3">
             <label for="options" class="col-sm-2 col-form-label">Time</label>
             <div class="col-sm-2">
                 <input type="text" class="form-control" id="attempts" placeholder="HH:MM:SS" size="8" maxlength="8">
             </div>
-        </div>
-        <div class="row mb-3">
+        </div> -->
+        <div class="row mb-3" style="display: none">
             <label for="multiple_attempts" class="col-sm-2 col-form-label">Number of Attempts</label>
             <div class="col-sm-1">
                 {% bootstrap_field form.multiple_attempts show_label=False %}
@@ -84,7 +84,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3" style="display: none">
             <label for="options" class="col-sm-2 col-form-label">Additional Settings</label>
             <div class="col-sm-10">
                 <div class="form-check form-switch">

@@ -52,9 +52,9 @@ HARD = {
     }
 
 SCORING_SCHEMES = [
-    (0, 'Easy'),
-    (1, 'Medium'),
-    (2, 'Hard'),
+    (0, 'No Consequences'),
+    (1, 'Moderate Consequences'),
+    (2, 'High Consequences'),
     (3, 'Custom')
 ]
 

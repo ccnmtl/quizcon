@@ -37,7 +37,9 @@
             {{quiz.title}}
         </h1>
 
-        <p class="lead">{{quiz.description}}</p>
+        {% if quiz.description %}
+            <p class="lead">{{quiz.description}}</p>
+        {% endif %}
         <!-- <div class="alert alert-danger" role="alert">
             <strong>00:00:00</strong> remaining to complete quiz.
         </div> -->
@@ -73,7 +75,9 @@
         <h1>
             {{quiz.title}}
         </h1>
-        <p class="lead">{{quiz.description}}</p>
+        {% if quiz.description %}
+            <p class="lead">{{quiz.description}}</p>
+        {% endif %}
         {% if submission %}
         <!-- Submitted Interface -->
             <!-- if show Immediately -->
@@ -155,9 +159,9 @@
             {% endfor %}
         {% else %}
             <!-- Quiz Response Interface -->
-            <div class="alert alert-danger" role="alert">
+            <!-- <div class="alert alert-danger" role="alert">
                 <strong>00:00:00</strong> remaining to complete quiz.
-            </div>
+            </div> -->
             <form action="." method="post">
                 {% for question in quiz.ordered_questions %}
                     {% with markers=question.random_markers %}

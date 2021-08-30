@@ -7,7 +7,7 @@ class QuizForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['scoring_scheme'].choices = [
             ('', '-- Select One --')] + list(
-            self.fields['scoring_scheme'].choices[0:])
+            self.fields['scoring_scheme'].choices[0:3])
         self.fields['scoring_scheme'].initial = '-- Select One --'
 
     class Meta:

@@ -24,7 +24,7 @@
             <tbody>
                 {% for quiz in course.quiz_set.all %}
                 <tr>
-                    <th scope="row"><a href="{% url 'quiz-detail' quiz.id %}" target="_blank">{{quiz.title}}</a></th>
+                    <th scope="row"><p class="fw-normal">{{quiz.title}}</p></th>
                     {% if quiz.description %}
                         <td>{{quiz.description}}</td>
                     {% else %}

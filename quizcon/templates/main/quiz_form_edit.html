@@ -95,15 +95,12 @@
                 </div>
             </div>
         </div>
-
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Save Quiz</button>
+            <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
+        </div>
         <hr />
         <h2 id="questions-container">Questions</h2>
-        <div class="row">
-            <div class="col">
-                <a href="{% url 'create-question' quiz.id %}" class="btn btn-sm btn-primary">Create Question</a>
-                <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
-            </div>
-        </div>
         <ol id="questions-header" aria-labelledby="questions-container">
             <li>
                 <div class="row d-inline-flex w-100 ml-2">
@@ -155,8 +152,8 @@
             {% endfor %}
         </ol>
         <input type="hidden" name="course" value="{{course.pk}}" />
-        <button type="submit" class="btn btn-primary">Save Quiz</button>
-        <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
+        <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary">Create Question</a>
+        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-success">Preview Quiz</a>
         <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Quiz</a>
         <div class="clearfix"></div>
     </form>

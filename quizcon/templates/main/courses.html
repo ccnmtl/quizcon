@@ -12,12 +12,11 @@ My Courses | QuizCon
     </h1>
     <div class="table-responsive">
         <table class="table table-striped">
-            <col width="25%"> <col width="25%"> <col width="25%"><col width="5%"> <col width="20%">
+            <col width="30%"> <col width="30%"> <col width="10%"><col width="30%">
             <thead>
                 <tr>
                     <th scope="col">Course Title</th>
                     <th scope="col">Course Quiz(zes)</th>
-                    <th scope="col">Course Description</th>
                     <th scope="col">Semester</th>
                     <th scope="col">Author(s)</th>
                 </tr>
@@ -34,11 +33,6 @@ My Courses | QuizCon
                             </ul>
                         {% endif %}
                     </td>
-                    <td>{% if course|course_description %}
-                        {{ course|course_description }}
-                    {% else %}
-                        <span class="text-muted font-italic">There’s no description for this Course.</span>
-                    {% endif %}</td>
                     <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
                     <td>{{ course|course_faculty_string }}</td>
                 </tr>

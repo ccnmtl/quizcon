@@ -12,7 +12,7 @@
     <div class="table-responsive">
         <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
         <table class="table table-striped">
-            <col width="20%"> <col width="20%"> <col width="30%"><col width="20%">
+            <col width="20%"> <col width="20%"> <col width="25%"><col width="25%">
             <thead>
                 <tr>
                     <th scope="col">Quiz Title</th>
@@ -50,9 +50,9 @@
                         </div>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal">Clone Quiz</a>
                         <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit Quiz</a>
-                        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">View Quiz</a>
+                        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">Preview Quiz</a>
+                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal">Clone Quiz</a>
                     </td>
                 </tr>
                 <!-- Modal -->

@@ -32,15 +32,19 @@ class QuizForm(forms.ModelForm):
 
 class QuestionForm(forms.ModelForm):
 
+    text = forms.CharField(
+        required=False, widget=forms.Textarea(
+            attrs={'rows': 2, 'placeholder': '', 'class': 'rich-text'}))
+
     answer_label_1 = forms.CharField(
         required=True, widget=forms.Textarea(
-                                    attrs={'rows': 2, 'placeholder': ''}))
+            attrs={'rows': 2, 'placeholder': 'First choice'}))
     answer_label_2 = forms.CharField(
         required=True, widget=forms.Textarea(
-                                    attrs={'rows': 2, 'placeholder': ''}))
+            attrs={'rows': 2, 'placeholder': 'Second choice'}))
     answer_label_3 = forms.CharField(
         required=True, widget=forms.Textarea(
-                                    attrs={'rows': 2, 'placeholder': ''}))
+            attrs={'rows': 2, 'placeholder': 'Third choice'}))
 
     correct = forms.IntegerField(required=True)
 
@@ -65,7 +69,14 @@ class QuestionForm(forms.ModelForm):
 
         widgets = {
             'text': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
-                                        'class': 'rich-text'}),
+                                          'class': 'rich-text'}),
             'explanation': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
-                                        'class': 'rich-text'})
+                                                 'class': 'rich-text'})
         }
+
+    def clean_text(self):
+        txt = self.cleaned_data.get('text', '')
+        if txt is None or len(txt) < 1:
+            self._errors['text'] = self.error_class([
+                'Please enter question text'])
+        return txt

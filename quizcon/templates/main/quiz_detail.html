@@ -28,7 +28,7 @@
             <div class="row bg-light">
                 <div class="col-md-6">
                     <p>
-                        <strong>{{question.text}}</strong>
+                        <strong>{{question.text|safe}}</strong>
                     </p>
                     <ol>
                         {% for marker in markers %}

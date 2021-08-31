@@ -111,7 +111,7 @@
                         Question
                     </div>
                     <div class="col-sm-5">
-                        Answers
+                        Choices
                     </div>
                     <div class="col-sm-2">
                         Action
@@ -128,10 +128,10 @@
                                 aria-labelledby="question-{{question.id}}" tabindex="0">
                                 <div class="offscreen">Reorder</div>
                             </button>
-                            <span class="sr-only">{{question.text}}</span>
+                            <span class="sr-only">{{question.text|safe}}</span>
                         </div>
                         <div class="col-sm-4">
-                            {{question.text}}
+                            {{question.text|safe}}
                         </div>
                         <div class="col-sm-5">
                             {% for marker in question.marker_set.all %}

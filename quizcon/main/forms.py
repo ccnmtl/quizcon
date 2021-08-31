@@ -64,6 +64,8 @@ class QuestionForm(forms.ModelForm):
         fields = ['quiz', 'text', 'explanation']
 
         widgets = {
-            'text': forms.Textarea(attrs={'rows': 2, 'placeholder': ''}),
-            'explanation': forms.Textarea(attrs={'rows': 2, 'placeholder': ''})
+            'text': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
+                                        'class': 'rich-text'}),
+            'explanation': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
+                                        'class': 'rich-text'})
         }

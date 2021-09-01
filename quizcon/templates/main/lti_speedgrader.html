@@ -16,11 +16,11 @@
 
 {% block content %}
 <div class="quiz-container container-fluid">
-    <h1>
+    <h1 class="mt-2">
         {{quiz.title}}
     </h1>
     {% if quiz.description %}
-        <p class="lead">{{quiz.description}}</p>
+        <p class="lead text-muted">{{quiz.description}}</p>
     {% endif %}
     {% if is_student %}
         {% if submission %}
@@ -46,8 +46,8 @@
 
             {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
-                <div class="row bg-light">
-                    <div class="col-md-6">
+                <div class="row bg-light mx-0">
+                    <div class="col-md-12">
                         <p>
                             {% with qp=response.user_question_points %}
                                 {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
@@ -66,38 +66,42 @@
                                     {% endif %}
                                 {% endif %}
                             {% endwith %}
-                            <strong>{{question.text}}</strong>
+                            <strong>{{question.text|safe}}</strong>
                         </p>
-                        <ol>
-                            {% for marker in response.questionresponsemarker_set.all %}
-                                <li class="border-top p-2">
+                        <div class="row mx-0 p-0">
+                            <div class="col-md-5 p-0">
+                                <ol class="p-3 pt-0">
+                                    {% for marker in response.questionresponsemarker_set.all %}
+                                        <li class="border-top p-2">
+                                            <!-- Only if show answer is Immediately or at a later date -->
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if marker.marker.correct %}
+                                                    <span class="badge rounded-pill bg-success">Correct</span>
+                                                {% endif %}
+                                            {% endif %}
+                                            {{marker.marker.label}}
+                                        </li>
+                                    {% endfor %}
+                                    <li class="border-top p-2">I don't know.</li>
+                                </ol>
+                                <div>
                                     <!-- Only if show answer is Immediately or at a later date -->
                                     {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                        {% if marker.marker.correct %}
-                                            <span class="badge rounded-pill bg-success">Correct</span>
-                                        {% endif %}
+                                        <strong>Feedback: </strong>{{question.explanation|safe}}
                                     {% endif %}
-                                    {{marker.marker.label}}
-                                </li>
-                            {% endfor %}
-                            <li class="border-top p-2">I don't know.</li>
-                        </ol>
-                        <div>
-                            <!-- Only if show answer is Immediately or at a later date -->
-                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                <strong>Feedback: </strong>{{question.explanation}}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="choicebox float-end">
-                            {% for x in num_markers %}
-                            <div class="form-check answer{{x}}">
-                                <input disabled="disabled" class="form-check-input" type="radio"
-                                    name="{{question.pk}}" value="{{x}}"
-                                    {% if x == response.selected_position %}checked{% endif %}/>
+                                </div>
                             </div>
-                            {% endfor %}
+                            <div class="col-md-7">
+                                <div class="choicebox float-end">
+                                    {% for x in num_markers %}
+                                    <div class="form-check answer{{x}}">
+                                        <input disabled="disabled" class="form-check-input" type="radio"
+                                            name="{{question.pk}}" value="{{x}}"
+                                            {% if x == response.selected_position %}checked{% endif %}/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,8 +118,8 @@
 
             {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
-                <div class="row bg-light">
-                    <div class="col-md-6">
+                <div class="row bg-light mx-0">
+                    <div class="col-md-12">
                         <p>
                             {% with qp=response.user_question_points %}
                                 {% if quiz.scoring_scheme == 0 %}
@@ -132,33 +136,37 @@
                                     </span>
                                 {% endif %}
                             {% endwith %}
-                            <strong>{{question.text}}</strong>
+                            <strong>{{question.text|safe}}</strong>
                         </p>
-                        <ol>
-                            {% for marker in response.questionresponsemarker_set.all %}
-                                <li class="border-top p-2">
-                                    {% if marker.marker.correct %}
-                                        <span class="badge rounded-pill bg-success">Correct</span>
-                                    {% endif %}
+                        <div class="row mx-0 p-0">
+                            <div class="col-md-5 p-0">
+                                <ol class="p-3 pt-0">
+                                    {% for marker in response.questionresponsemarker_set.all %}
+                                        <li class="border-top p-2">
+                                            {% if marker.marker.correct %}
+                                                <span class="badge rounded-pill bg-success">Correct</span>
+                                            {% endif %}
 
-                                    {{marker.marker.label}}
-                                </li>
-                            {% endfor %}
-                            <li class="border-top p-2">I don't know.</li>
-                        </ol>
-                        <div>
-                            <strong>Feedback: </strong>{{question.explanation}}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="choicebox float-end">
-                            {% for x in num_markers %}
-                            <div class="form-check answer{{x}}">
-                                <input disabled="disabled" class="form-check-input" type="radio"
-                                    name="{{question.pk}}" value="{{x}}"
-                                    {% if x == response.selected_position %}checked{% endif %}/>
+                                            {{marker.marker.label}}
+                                        </li>
+                                    {% endfor %}
+                                    <li class="border-top p-2">I don't know.</li>
+                                </ol>
+                                <div>
+                                    <strong>Feedback: </strong>{{question.explanation|safe}}
+                                </div>
                             </div>
-                            {% endfor %}
+                            <div class="col-md-7">
+                                <div class="choicebox float-end">
+                                    {% for x in num_markers %}
+                                    <div class="form-check answer{{x}}">
+                                        <input disabled="disabled" class="form-check-input" type="radio"
+                                            name="{{question.pk}}" value="{{x}}"
+                                            {% if x == response.selected_position %}checked{% endif %}/>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

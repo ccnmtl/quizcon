@@ -52,33 +52,33 @@
                     <td>
                         <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit</a>
                         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">Preview</a>
-                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal">Clone</a>
+                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>
                         <a href="#" class="btn btn-sm btn-dark">Analytics</a>
-                    </td>
-                </tr>
-                <!-- Modal -->
-                <div class="modal fade" id="cloneModal" tabindex="-1" aria-labelledby="cloneModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    Clone Quiz
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                Are you sure that you want to clone this quiz?
-                            </div>
-                            <div class="modal-footer">
-                                <form method="POST" action="{% url 'clone-quiz' quiz.id %}">
-                                {% csrf_token %}
-                                <input class="btn btn-primary" type="submit" value="Clone Quiz">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                </form>
+                        <!-- Modal -->
+                        <div class="modal fade" id="cloneModal-{{quiz.id}}" tabindex="-1" aria-labelledby="clone modal for quiz {{quiz.id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                            Clone Quiz
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure that you want to clone this quiz?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form method="POST" action="{% url 'clone-quiz' quiz.id %}">
+                                        {% csrf_token %}
+                                        <input class="btn btn-primary" type="submit" value="Clone Quiz">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

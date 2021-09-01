@@ -71,7 +71,8 @@ class QuestionForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
                                           'class': 'rich-text'}),
             'explanation': forms.Textarea(attrs={'rows': 2, 'placeholder': '',
-                                                 'class': 'rich-text'})
+                                                 'class': 'rich-text',
+                                                 'id': 'student-feedback'})
         }
 
     def clean_text(self):

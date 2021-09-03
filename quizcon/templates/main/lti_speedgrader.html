@@ -28,21 +28,24 @@
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     Review your answers below.
                 </div>
             <!-- if later date  -->
             {% elif quiz.show_answers == 2 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     The correct answers will be available for review on {{quiz.show_answers_date}}.
                 </div>
             <!-- if never -->
             {% else %}
                 <div class="alert alert-success" role="alert">
-                    <<strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                 </div>
             {% endif %}
+                <div class="alert alert-dark" role="alert">
+                    <strong>Please note: </strong>This is a weighted score on QuizCon. Your instructor may have chosen a different point total for this quiz on Courseworks Grades, so the score will be adjusted accordingly.
+                </div>
 
             {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
@@ -84,14 +87,6 @@
                                     {% endfor %}
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
-                                <div>
-                                    {% if question.explanation %}
-                                        <!-- Only if show answer is Immediately or at a later date -->
-                                        {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                            <strong>Feedback: </strong>{{question.explanation|safe}}
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="choicebox float-end">
@@ -105,6 +100,14 @@
                                 </div>
                             </div>
                         </div>
+                {% if question.explanation %}
+                    <!-- Only if show answer is Immediately or at a later date -->
+                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                        <div class="row mx-0 p-0">
+                            <strong>Feedback: </strong>{{question.explanation|safe}}
+                        </div>
+                    {% endif %}
+                {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -154,11 +157,6 @@
                                     {% endfor %}
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
-                                <div>
-                                    {% if question.explanation %}
-                                        <strong>Feedback: </strong>{{question.explanation|safe}}
-                                    {% endif %}
-                                </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="choicebox float-end">
@@ -172,6 +170,11 @@
                                 </div>
                             </div>
                         </div>
+                    {% if question.explanation %}
+                        <div class="row mx-0 p-0">
+                            <strong>Feedback: </strong>{{question.explanation|safe}}
+                        </div>
+                    {% endif %}
                     </div>
                 </div>
             {% endfor %}

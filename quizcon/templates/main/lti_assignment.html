@@ -29,9 +29,9 @@
     {% if is_faculty %}
         <div class="alert alert-warning" role="alert">
             This is a preview of what your students will see. <br>
-            {% if quiz.randomize %} Questions are randomized.<br>{% endif %}
+            <!-- {% if quiz.randomize %} Questions are randomized.<br>{% endif %} -->
             Question answers are always randomized.<br>
-            Students will be able to see their answers: <strong>{{quiz.show_answers_verbose}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}
+            Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}
         </div>
     {% endif %}
     <h1 class="mt-2">
@@ -102,26 +102,27 @@
                 {% question_response question submission as response %}
                 <div class="row bg-light mx-0">
                     <div class="col-md-12">
-                        <p>
+
                             {% with qp=response.user_question_points %}
                                 {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                     {% if quiz.scoring_scheme == 0 %}
                                         <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 1 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 2 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% endif %}
                                 {% endif %}
                             {% endwith %}
-                            <strong>{{question.text|safe}}</strong>
-                        </p>
+                            <p>
+                                <strong>{{question.text|safe}}</strong>
+                            </p>
                         <div class="row mx-0 p-0">
                             <div class="col-md-5 p-0">
                                 <ol class="p-3 pt-0">
@@ -139,9 +140,11 @@
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
                                 <div>
+                                    {% if question.explanation %}
                                     <!-- Only if show answer is Immediately or at a later date -->
-                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                        <strong>Feedback: </strong>{{question.explanation|safe}}
+                                        {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                            <strong>Feedback: </strong>{{question.explanation|safe}}
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>

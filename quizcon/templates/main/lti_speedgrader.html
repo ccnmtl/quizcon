@@ -48,26 +48,26 @@
                 {% question_response question submission as response %}
                 <div class="row bg-light mx-0">
                     <div class="col-md-12">
-                        <p>
                             {% with qp=response.user_question_points %}
                                 {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                     {% if quiz.scoring_scheme == 0 %}
                                         <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 1 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 2 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
+                                            {{qp}} of {{question.total_question_points}} points
                                         </span>
                                     {% endif %}
                                 {% endif %}
                             {% endwith %}
-                            <strong>{{question.text|safe}}</strong>
-                        </p>
+                            <p>
+                                <strong>{{question.text|safe}}</strong>
+                            </p>
                         <div class="row mx-0 p-0">
                             <div class="col-md-5 p-0">
                                 <ol class="p-3 pt-0">
@@ -85,9 +85,11 @@
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
                                 <div>
-                                    <!-- Only if show answer is Immediately or at a later date -->
-                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                        <strong>Feedback: </strong>{{question.explanation|safe}}
+                                    {% if question.explanation %}
+                                        <!-- Only if show answer is Immediately or at a later date -->
+                                        {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                            <strong>Feedback: </strong>{{question.explanation|safe}}
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
@@ -120,24 +122,24 @@
                 {% question_response question submission as response %}
                 <div class="row bg-light mx-0">
                     <div class="col-md-12">
-                        <p>
                             {% with qp=response.user_question_points %}
                                 {% if quiz.scoring_scheme == 0 %}
                                     <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
+                                        {{qp}} of {{question.total_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 1 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
+                                        {{qp}} of {{question.total_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 2 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
+                                        {{qp}} of {{question.total_question_points}} points
                                     </span>
                                 {% endif %}
                             {% endwith %}
-                            <strong>{{question.text|safe}}</strong>
-                        </p>
+                            <p>
+                                <strong>{{question.text|safe}}</strong>
+                            </p>
                         <div class="row mx-0 p-0">
                             <div class="col-md-5 p-0">
                                 <ol class="p-3 pt-0">
@@ -153,7 +155,9 @@
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
                                 <div>
-                                    <strong>Feedback: </strong>{{question.explanation|safe}}
+                                    {% if question.explanation %}
+                                        <strong>Feedback: </strong>{{question.explanation|safe}}
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-7">

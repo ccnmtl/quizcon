@@ -8,7 +8,7 @@
 {% if is_faculty %}
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ request.scheme }}://{{ request.get_host }}{% url 'course-detail-view' quiz.course.pk %}" target="_blank" rel="noopener noreferrer"><strong><span class="text-light">QuizCon</span></strong></a>
+            <a class="navbar-brand" href="{{ request.scheme }}://{{ request.get_host }}{% url 'course-detail-view' quiz.course.pk %}" target="_blank" rel="noopener noreferrer"><strong><span class="text-light">Quizzing With Confidence</span></strong></a>
             <div class="collapse navbar-collapse" id="nabarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item"> <a class="nav-link" href="{% url 'update-quiz' quiz.id %}" target="_blank" rel="noopener noreferrer">Edit Quiz</a></li>
@@ -19,7 +19,7 @@
 {% else %}
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#"><strong><span class="text-light">QuizCon</span></strong></a>
+            <a class="navbar-brand" href="#"><strong><span class="text-light">Quizzing With Confidence</span></strong></a>
         </div>
     </nav>
 {% endif %}
@@ -139,14 +139,6 @@
                                     {% endfor %}
                                     <li class="border-top p-2">I don't know.</li>
                                 </ol>
-                                <div>
-                                    {% if question.explanation %}
-                                    <!-- Only if show answer is Immediately or at a later date -->
-                                        {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                            <strong>Feedback: </strong>{{question.explanation|safe}}
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="choicebox float-end">
@@ -160,6 +152,14 @@
                                 </div>
                             </div>
                         </div>
+                        {% if question.explanation %}
+                            <div class="row mx-0 p-0">
+                                <!-- Only if show answer is Immediately or at a later date -->
+                                {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                    <strong>Feedback: </strong>{{question.explanation|safe}}
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}

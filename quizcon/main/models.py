@@ -157,6 +157,10 @@ class Question(models.Model):
     def correct_marker(self):
         return self.marker_set.get(correct=True)
 
+    def total_question_points(self):
+        scheme = LEVELS[self.quiz.scoring_scheme]
+        return scheme['0']
+
 
 class Marker(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

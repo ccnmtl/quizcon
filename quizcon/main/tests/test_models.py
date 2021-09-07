@@ -72,6 +72,13 @@ class QuizTest(CourseTestMixin, TestCase):
         self.assertEqual(quiz.question_set.first().ordinality, 1)
         self.assertEqual(first, q2)
 
+    def test_total_question_points(self):
+        quiz = QuizFactory(course=self.course, scoring_scheme=0)
+        QuestionFactory(quiz=quiz)
+
+        q1 = quiz.question_set.first()
+        self.assertEqual(q1.total_question_points(), 5)
+
 
 class QuizSubmissionTest(CourseTestMixin, TestCase):
 

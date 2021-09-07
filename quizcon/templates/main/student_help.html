@@ -1,5 +1,6 @@
+{% load quiz_tools %}
 <div class="modal fade" id="studentHelp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentHelpLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog  modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row p-0 m-0">
@@ -8,55 +9,82 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item carousel-txt-item text-center align-self-center active">
                                     <h2>Before You Begin</h2>
-                                    <p>Familiarize yourself with these unique Quizcon conventions before taking this quiz.</p>
-                                    <p>Unlike traditional multiple choice questions, the Quizcon triangle provides a range of answer possibilities.</p>
+                                    <p>Familiarize yourself with these unique Quizzing With Confidence conventions before taking this quiz.</p>
+                                    <p>Unlike traditional multiple choice questions, the Quizzing With Confidence triangle provides a range of answer possibilities.</p>
                                 </div>
                                 <div class="carousel-item carousel-txt-item text-center align-self-center">
                                     <h2>Scoring</h2>
-                                    <p>It's not A, B, C, or anything in between? Quizcon lets you say "I don't know" with Option D.</p>
-                                    <p>It's not just "correct" and "incorrect" with QuizCon. Your score is unique calculation based on both difficulty and confidence that your instructor determines in advance.</p>
+                                    <p>It's not just "correct" and "incorrect" with Quizzing With Confidence. Your score is unique calculation based on both difficulty and confidence that your instructor determines in advance.</p>
+                                    <p>In Quizzing With Confidence, you can even say "I don't know" with Option D.</p>
                                 </div>
                                 <div class="carousel-item carousel-txt-item">
-                                    <h2 class ="text-center">This Quiz</h2>
+                                    <h5 class ="text-center">This Quiz</h5>
                                     <ul>
                                         <li>The difficulty score scheme for this quiz has been set to {{quiz.scoring_scheme_verbose}}.</li>
                                         <li>You will be able to view the answers {{quiz.show_answers_verbose}}{% if quiz.show_answers == 2 %} {{quiz.show_answers_date}}. {% else %}.{% endif %}</li>
                                     </ul>
                                     <h5 class ="text-center">Try it out!</h5>
-                                    <p>The practice question on the right has <strong>A</strong> as the correct answer, for a possible total score of sum. As you click around, you will be able to see your potential number of points.</p>
+                                    <p>The practice question on the right has <strong>A</strong> as the correct answer. As you click around, you will be able to see your potential number of points.</p>
+                                    <ul>
+                                        <li>A. Correct Answer</li>
+                                        <li>B. Incorrect Answer</li>
+                                        <li>C. Incorrect Answer</li>
+                                        <li>D. I Don't Know</li>
+                                </div>
+                                <div class="carousel-item carousel-txt-item text-center align-self-center">
+                                    <h2>Ready?</h2>
+                                    <p>When you are ready to take your quiz, <br />click <strong>Start Quiz</strong></p>
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="footer m-2">
-                                <a href="#" class="btn btn-success rounded-pill btn-prev float-start ms-5 d-none">Prev</a>
-                                <a href="#" class="btn btn-success rounded-pill btn-next float-end me-5 d-none">Next</a>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div id="studentHelpCarousel" class="studentHelpCarousel carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false" data-bs-wrap="false">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="{{STATIC_URL}}img/triangle.svg" class="d-block w-100" alt="...">
-                                    <p>First Text</p>
+                                    <div class="w-100" style="background-color: #032b50; padding-bottom: 150px;">
+                                        <h1 class="logo display-1 text-center align-self-center" style="border: 0; font-weight: 700; color: #0E78DB;">
+                                            QuizCon
+                                        </h1>
+                                        <p class="lead text-light text-center ">
+                                            Built for creating confident choices<br />
+                                            for testing in CourseWorks.
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div class="carousel-item">
                                     <img src="{{STATIC_URL}}img/triangle.svg" class="d-block w-100" alt="...">
-                                    <p>Second Text</p>
                                 </div>
 
                                 <div class="carousel-item">
                                     <div class="choicebox float-end">
                                         {% for x in num_markers %}
                                         <div class="form-check answer{{x}}">
-                                            <input class="form-check-input" type="radio" name="radiodefault" value="{{x}}">
+                                            {% radio_points quiz.id x as pts %}
+                                            <input class="form-check-input" type="radio" name="radiodefault" value="{{x}}"
+                                            data-bs-toggle="tooltip" data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
+                                            title="{{pts}} points">
                                         </div>
                                         {% endfor %}
                                     </div>
                                 </div>
+                                <div class="carousel-item">
+                                    <div class="text-center align-self-center" style="background-color: #032b50; padding-bottom: 150px;">
+                                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary" style="margin-top: 150px;">
+                                            Start Quiz
+                                        </button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="footer m-2 col-md-6">
+                        <a href="#" class="btn btn-success rounded-pill btn-prev float-start d-none">Prev</a>
+                        <a href="#" class="btn btn-success rounded-pill btn-next float-end d-none">Next</a>
                 </div>
             </div>
         </div>

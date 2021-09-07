@@ -111,6 +111,12 @@ class Quiz(models.Model):
     def randomize_questions(self):
         return self.question_set.all().order_by('?')
 
+    # To be used for the student help modal
+    def value_per_marker(self, value):
+        scheme = LEVELS[self.scoring_scheme]
+        value = str(value)
+        return scheme[value]
+
     def clone(self):
         question_set = []
         # Clone the questions.

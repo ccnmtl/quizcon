@@ -41,7 +41,7 @@
                                 <div class="carousel-item carousel-txt-item align-self-center">
                                     <h3 class="text-center mt-5">Ready?</h3>
                                     <p class="text-center">When you are ready to take your quiz, <br />click <strong>Start Quiz</strong> below.<br />
-                                        <a href="/help/" class="btn btn-warning mt-4">
+                                        <a href="/help/" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-4">
                                             Learn More
                                         </a>
                                         <button type="button" data-bs-dismiss="modal" class="btn btn-secondary mt-4">
@@ -57,29 +57,32 @@
                         <div id="studentHelpCarousel" class="studentHelpCarousel carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false" data-bs-wrap="false">
                             <div class="carousel-inner">
 
-                                <div class="carousel-item active">
-                                    <div class="w-100" style="background-color: #032b50; padding-bottom: 150px;">
-                                        <h1 class="logo display-1 text-center align-self-center" style="border: 0; font-weight: 700; color: #0E78DB;">
+                                <div class="carousel-item text-center active">
+                                    <div style="height: 350px; width: auto; background-color: #033a62;">
+                                        <h2 class="logo display-1 align-self-center mb-0" style="border: 0; font-weight: 700; color: #0E78DB; background-color: #033a62;">
                                             QuizCon
-                                        </h1>
+                                        </h2>
+                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 280px; width: auto;" class="pb-2" alt="...">
                                     </div>
                                 </div>
 
                                 <div class="carousel-item">
-                                    {% if quiz.scoring_scheme == 0 %}
-                                        <img src="{{STATIC_URL}}img/no-consequence.png" class="d-block" style="height: 350px; weight: 350px;" alt="...">
-                                    {% else %}
-                                        <img src="{{STATIC_URL}}img/moderate-high-consequence.png" class="d-block" style="height: 350px; weight: 350px;" alt="...">
-                                    {% endif %}
+                                    <div style="height: 350px; width: auto;">
+                                        {% if quiz.scoring_scheme == 0 %}
+                                            <img src="{{STATIC_URL}}img/no-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                        {% else %}
+                                            <img src="{{STATIC_URL}}img/moderate-high-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                        {% endif %}
+                                    </div>
                                 </div>
 
                                 <div class="carousel-item text-center">
                                     {% if quiz.scoring_scheme == 0 %}
-                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" class="d-block" style="height: 350px; weight: 350px;" alt="...">
+                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="...">
                                     {% elif quiz.scoring_scheme == 1 %}
-                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" class="d-block" style="height: 350px; weight: 350px;" alt="...">
+                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="...">
                                     {% else %}
-                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" class="d-block" style="height: 350px; weight: 350px;" alt="...">
+                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="...">
                                     {% endif %}
                                 </div>
 
@@ -97,8 +100,8 @@
                                 </div>
 
                                 <div class="carousel-item">
-                                    <div class="text-center align-self-center" style="background-color: #032b50; padding-bottom: 150px;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" style="margin-top: 150px;" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <div class="text-center align-self-center" style="background-color: #032b50; padding-bottom: 150px; height: 350px; width: auto;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" style="margin-top: 130px;" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>
                                     </div>

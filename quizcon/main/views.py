@@ -530,11 +530,11 @@ class AnalyticsQuizView(UpdateQuizPermissionMixin, TemplateView):
         for sub in quiz.quizsubmission_set.all():
             submissions.append(sub)
 
-
         return {
             'quiz': quiz,
             'submissions': submissions,
-            'total_submissions': count
+            'total_submissions': count,
+            'num_markers': range(13)
         }
 
 

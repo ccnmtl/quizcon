@@ -1,11 +1,292 @@
 {% extends 'base.html' %}
+{% load quiz_tools %}
 
 {% block title %}
 Report for {{ quiz.title }}
 {% endblock %}
 
 {% block content %}
-    {% for subs in quiz.quizsubmission_set.all %}
-        {{subs.user_points}}
-    {% endfor %}
+    {% if submissions %}
+        <div class="container-fluid p-0">
+            <div class="row mb-2 mb-xl-3">
+                <div class="col-auto d-none d-sm-block">
+                    <h3>Quiz Analytics</h3>
+                </div>
+            </div>
+            <div class="row">
+				<div class="col-12 col-sm-6 col-xxl-4 d-flex">
+					<div class="card illustration flex-fill">
+						<div class="card-body p-0 d-flex flex-fill">
+							<div class="row g-0 w-100">
+								<div class="col">
+									<div class="illustration-text p-3 m-1">
+										<h4 class="illustration-text">Welcome to your Quiz dashboard!</h4>
+										<p class="mb-0">Here you will find stats about your quiz.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-12 col-sm-6 col-xxl-4 d-flex">
+                    <div class="card illustration flex-fill">
+                        <div class="card-body p-0 d-flex flex-fill">
+                            <div class="row g-0 w-100">
+                                <div class="col">
+                                    <div class="illustration-text p-3 m-1">
+                                        <h3 class="illustration-text">Quiz Details</h3>
+                                        <p class="mb-0">
+                                            <!-- {% if quiz.randomize %} Questions are randomized.<br>{% endif %} -->
+                                            <ul>
+                                                <li>Question answers are always randomized.</li>
+                                                <li>The scoring scheme for this Quiz is {{quiz.scoring_scheme_verbose}}.</li>
+                                                <li>Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}</li>
+                                            </ul>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="col-12 col-sm-6 col-xxl-4 d-flex">
+					<div class="card flex-fill">
+						<div class="card-body py-4">
+							<div class="d-flex align-items-center">
+								<div class="flex-grow-1 text-center">
+									<h3 class="mb-2">{{total_submissions}}</h3>
+									<p class="mb-2 h4">Total Quiz Submissions</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_mean submissions as mean %}
+                                    <h3 class="mb-2">{{mean}}</h3>
+                                    <p class="mb-2">Mean Score</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_mode submissions as mode %}
+                                    <h3 class="mb-2">{{mode}}</h3>
+                                    <p class="mb-2">Mode</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_standard_dev submissions as stdev %}
+                                    <h3 class="mb-2">{{stdev}}</h3>
+                                    <p class="mb-2">Standard Deviation</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_median submissions as median %}
+                                    <h3 class="mb-2">{{median}}</h3>
+                                    <p class="mb-2">Median</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_max_points submissions as max %}
+                                    <h3 class="mb-2">{{max}}</h3>
+                                    <p class="mb-2">Maximum Points Earned</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xxl-2 d-flex">
+                    <div class="card flex-fill">
+                        <div class="card-body py-4">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-grow-1 text-center">
+                                    {% submission_min_points submissions as min %}
+                                    <h3 class="mb-2">{{min}}</h3>
+                                    <p class="mb-2">Minimum Points Earned</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+    			<div class="col-12 col-lg-8 d-flex">
+    				<div class="card flex-fill w-100">
+    					<div class="card-header">
+    						<div class="card-actions float-end">
+    							<div class="dropdown show">
+    								<a href="#" data-bs-toggle="dropdown" data-bs-display="static">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal align-middle"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                    </a>
+
+    								<div class="dropdown-menu dropdown-menu-end">
+    									<a class="dropdown-item" href="#">Action</a>
+    									<a class="dropdown-item" href="#">Another action</a>
+    									<a class="dropdown-item" href="#">Something else here</a>
+    								</div>
+    							</div>
+    						</div>
+    						<h5 class="card-title mb-0">Per Question Analysis</h5>
+    					</div>
+    					<div class="card-body d-flex w-100">
+    						<div class="align-self-center chart chart-lg"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+    							<canvas id="chartjs-dashboard-bar" style="display: block; height: 350px; width: 913px;" width="1826" height="700" class="chartjs-render-monitor"></canvas>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-12 col-lg-4 d-flex">
+    				<div class="card flex-fill w-100">
+    					<div class="card-header">
+    						<h5 class="card-title mb-0">Visual Can Go Here</h5>
+    					</div>
+    					<div class="card-body">
+    						<div class="d-flex align-items-start">
+    							<div class="flex-grow-1">
+    								<small class="float-end">5m ago</small>
+    								<strong>Ashley Briggs</strong> started following <strong>Stacie Hall</strong><br>
+    								<small class="text-muted">Today 7:51 pm</small><br>
+
+    							</div>
+    						</div>
+
+    						<hr>
+    						<div class="d-flex align-items-start">
+    							<div class="flex-grow-1">
+    								<small class="float-end">30m ago</small>
+    								<strong>Chris Wood</strong> posted something on <strong>Stacie Hall</strong>'s timeline<br>
+    								<small class="text-muted">Today 7:21 pm</small>
+
+    								<div class="border text-sm text-muted p-2 mt-1">
+    									Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing...
+    								</div>
+    							</div>
+    						</div>
+
+    						<hr>
+    						<div class="d-flex align-items-start">
+    							<div class="flex-grow-1">
+    								<small class="float-end">1h ago</small>
+    								<strong>Stacie Hall</strong> posted a new blog<br>
+
+    								<small class="text-muted">Today 6:35 pm</small>
+    							</div>
+    						</div>
+
+    						<hr>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+        </div>
+        <!-- {% for subs in quiz.quizsubmission_set.all %}
+            <p><strong>Submission total points:</strong>{{subs.user_points}}</p>
+        {% endfor %} -->
+        <!-- {% submission_max_points submissions as max %}
+        <div>
+            <p><strong>Max points received by a student: </strong>{{max}}</p>
+        </div>
+
+        {% submission_min_points submissions as min %}
+        <div>
+            <p><strong>Min points received by a student: </strong>{{min}}</p>
+        </div>
+
+        {% submission_median submissions as median %}
+        <div>
+            <p><strong>Median points: </strong>{{median}}</p>
+        </div>
+
+        {% submission_mean submissions as mean %}
+        <div>
+            <p><strong>Mean points: </strong>{{mean}}</p>
+        </div>
+
+        {% submission_mode submissions as mode %}
+        <div>
+            <p><strong>Mode points: </strong>{{mode}}</p>
+        </div>
+
+        {% submission_standard_dev submissions as stdev %}
+        <div>
+            <p><strong>Standard Deviation: </strong>{{stdev}}</p>
+        </div>
+
+        {% right_answers_per_quiz quiz.id as question_most_right %}
+        <div>
+            <p><strong>Question most right answers: </strong>{{question_most_right.text|safe}}</p>
+        </div>
+
+        {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
+        <div>
+            <p><strong>Question most wrong answers: </strong>{{question_most_wrong.text|safe}}</p>
+        </div>
+
+        {% idk_answers_per_quiz quiz.id as question_most_idk %}
+        <div>
+            <p><strong>Question most 'I don't know': </strong>{{question_most_idk.text|safe}}</p>
+        </div>
+
+
+        <h1>Questions</h1>
+            {% for question in quiz.question_set.all %}
+                {% total_right_answers question as anscorrect %}
+                {% total_wrong_answers question as ansincorrect %}
+                {% total_idk_answers question as idk %}
+                <ul>
+                    <li>
+                        <strong>{{question.text|safe}}</strong>
+                        <p>Number of students with correct answer: {{anscorrect}}</p>
+                        <p>Number of students with incorrect answer: {{ansincorrect}}</p>
+                        <p>Number of students with idk answer: {{idk}}</p>
+                    </li>
+                </ul>
+                {% for x in num_markers %}
+                    {% percentage_choice x question as percent%}
+                    <ul>
+                        <li>
+                            <p>Choice {{x}} ({{percent}}%)</p>
+                        </li>
+                    </ul>
+                {% endfor %}
+            {% endfor %} -->
+
+    {% else %}
+        <p>No submissions for this quiz yet.</p>
+
+    {% endif %}
+
 {% endblock %}

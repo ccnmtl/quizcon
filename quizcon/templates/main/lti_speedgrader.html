@@ -55,15 +55,15 @@
                                 {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                     {% if quiz.scoring_scheme == 0 %}
                                         <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 1 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 2 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% endif %}
                                 {% endif %}
@@ -128,15 +128,15 @@
                             {% with qp=response.user_question_points %}
                                 {% if quiz.scoring_scheme == 0 %}
                                     <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 1 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 2 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% endif %}
                             {% endwith %}

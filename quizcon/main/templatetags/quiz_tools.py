@@ -67,7 +67,6 @@ def submission_standard_dev(submissions):
     return round((statistics.stdev(points)), 2)
 
 
-@register.simple_tag
 def total_right_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -76,7 +75,6 @@ def total_right_answers(question):
     return num
 
 
-@register.simple_tag
 def total_wrong_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -85,7 +83,6 @@ def total_wrong_answers(question):
     return num
 
 
-@register.simple_tag
 def total_idk_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -109,11 +106,16 @@ def percentage_choice(x, question):
 def right_answers_per_quiz(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_correct = 0
-    question_most_correct = None
+    question_most_correct = []
+    questions = {}
     for question in quiz.question_set.all():
         if num_of_correct < total_right_answers(question):
             num_of_correct = total_right_answers(question)
-            question_most_correct = question
+
+        questions.update({total_right_answers(question): question})
+    for key in questions:
+        if key == num_of_correct:
+            question_most_correct.append(questions[key])
     return question_most_correct
 
 
@@ -121,11 +123,16 @@ def right_answers_per_quiz(id):
 def wrong_answers_per_quiz(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_incorrect = 0
-    question_least_correct = None
+    question_least_correct = []
+    questions = {}
     for question in quiz.question_set.all():
         if num_of_incorrect < total_wrong_answers(question):
             num_of_incorrect = total_wrong_answers(question)
-            question_least_correct = question
+
+        questions.update({total_wrong_answers(question): question})
+    for key in questions:
+        if key == num_of_incorrect:
+            question_least_correct.append(questions[key])
     return question_least_correct
 
 
@@ -133,9 +140,14 @@ def wrong_answers_per_quiz(id):
 def idk_answers_per_quiz(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_idk = 0
-    question_most_idk = None
+    questions_most_idk = []
+    questions = {}
     for question in quiz.question_set.all():
         if num_of_idk < total_idk_answers(question):
             num_of_idk = total_idk_answers(question)
-            question_most_idk = question
-    return question_most_idk
+
+        questions.update({total_idk_answers(question): question})
+    for key in questions:
+        if key == num_of_idk:
+            questions_most_idk.append(questions[key])
+    return questions_most_idk

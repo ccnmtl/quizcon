@@ -5,12 +5,17 @@
 Report for {{ quiz.title }}
 {% endblock %}
 
+{% block css %}
+<link href="{{STATIC_URL}}css/analytics.css" rel="stylesheet">
+
+{% endblock %}
+
 {% block content %}
     {% if submissions %}
         <div class="container-fluid p-0">
             <div class="row mb-2 mb-xl-3">
                 <div class="col-auto d-none d-sm-block">
-                    <h3>Quiz Analytics</h3>
+                    <h3>{{quiz.title}} Analytics</h3>
                 </div>
             </div>
             <div class="row">
@@ -50,7 +55,7 @@ Report for {{ quiz.title }}
                     </div>
                 </div>
 				<div class="col-12 col-sm-6 col-xxl-4 d-flex">
-					<div class="card flex-fill">
+					<div class="card illustration flex-fill">
 						<div class="card-body py-4">
 							<div class="d-flex align-items-center">
 								<div class="flex-grow-1 text-center">
@@ -176,9 +181,6 @@ Report for {{ quiz.title }}
     					<div class="card-body">
     						<div class="d-flex align-items-start">
     							<div class="flex-grow-1">
-    								<small class="float-end">5m ago</small>
-    								<strong>Ashley Briggs</strong> started following <strong>Stacie Hall</strong><br>
-    								<small class="text-muted">Today 7:51 pm</small><br>
 
     							</div>
     						</div>
@@ -186,23 +188,14 @@ Report for {{ quiz.title }}
     						<hr>
     						<div class="d-flex align-items-start">
     							<div class="flex-grow-1">
-    								<small class="float-end">30m ago</small>
-    								<strong>Chris Wood</strong> posted something on <strong>Stacie Hall</strong>'s timeline<br>
-    								<small class="text-muted">Today 7:21 pm</small>
 
-    								<div class="border text-sm text-muted p-2 mt-1">
-    									Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing...
-    								</div>
     							</div>
     						</div>
 
     						<hr>
     						<div class="d-flex align-items-start">
     							<div class="flex-grow-1">
-    								<small class="float-end">1h ago</small>
-    								<strong>Stacie Hall</strong> posted a new blog<br>
 
-    								<small class="text-muted">Today 6:35 pm</small>
     							</div>
     						</div>
 

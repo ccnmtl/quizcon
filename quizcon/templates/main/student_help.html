@@ -4,63 +4,86 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row p-0 m-0">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div id="studentHelpCarouselText" class="studentHelpCarousel carousel slide" data-bs-ride="carousel" data-bs-interval="false" data-bs-wrap="false">
                             <div class="carousel-inner">
+
                                 <div class="carousel-item carousel-txt-item align-self-center active">
-                                    <h2>Before You Begin</h2>
-                                    <p>Familiarize yourself with these unique Quizzing With Confidence conventions before taking this quiz.</p>
-                                    <p>Unlike traditional multiple choice questions, the Quizzing With Confidence triangle provides a range of answer possibilities.</p>
+                                    <h2>Tutorial</h2>
+                                    <p>QuizCon is an alternative take on multiple choice quizzes that uses confidence-weighted questions to allow you to more accurately answer based on your understanding of the question. Let’s take a tutorial on how QuizCon works.</p>
                                 </div>
+
+                                <div class="carousel-item carousel-txt-item align-self-center">
+                                    <h2>Taking the Quiz</h2>
+                                    <p>By providing a sliding scale between any two given options, the QuizCon triangle allows you the option to indicate how confident you are about one answer over the other.</p>
+                                    <p>If you are completely unsure, you can just say “I don’t know”.</p>
+                                </div>
+
                                 <div class="carousel-item carousel-txt-item align-self-center">
                                     <h2>Scoring</h2>
-                                    <p>It's not just "correct" and "incorrect" with Quizzing With Confidence. Your score is a unique calculation based on both difficulty and confidence that your instructor determines in advance.</p>
-                                    <p>In Quizzing With Confidence, you can even say "I don't know" with Option D.</p>
+                                    {% with q=quiz.question_set.first %}
+                                        <p>Quizzing with Confidence is unique because you can receive partial credit for your answers instead of guessing the right answer.</p>
+                                        <p>Your instructor has configured this quiz so the <b>lowest</b> you can score on a question is <b>{{q.lowest_question_points}}</b> points.</p>
+                                        <p>The diagram on the right shows you possible scores for all responses. Venus is the correct answer.</p>
+                                    {% endwith %}
                                 </div>
+
                                 <div class="carousel-item carousel-txt-item">
                                     <h2>Try it out!</h2>
-                                    <p>The practice question on the right has a diffuclty score scheme set to {{quiz.scoring_scheme_verbose}}, like your quiz. <br/><strong>A</strong> is the correct answer here. As you click around, you will be able to see your potential number of points.</p>
+                                    <p>The practice question on the right has <b>A</b> as the correct answer. Click on different answer options to see the number of points you would receive if you go with that option.</p>
                                     <ul>
                                         <li>A. Correct Answer</li>
                                         <li>B. Incorrect Answer</li>
                                         <li>C. Incorrect Answer</li>
                                         <li>D. I Don't Know</li>
                                 </div>
+
                                 <div class="carousel-item carousel-txt-item align-self-center">
-                                    <h3 class="text-center">This Quiz</h3>
-                                    <ul>
-                                        <li>The difficulty score scheme for this quiz has been set to <strong>{{quiz.scoring_scheme_verbose}}</strong>.</li>
-                                        <li>You will be able to view the answers <strong>{{quiz.show_answers_verbose|lower}}</strong>{% if quiz.show_answers == 2 %} {{quiz.show_answers_date}}. {% else %}.{% endif %}</li>
-                                    </ul>
                                     <h3 class="text-center mt-5">Ready?</h3>
                                     <p class="text-center">When you are ready to take your quiz, <br />click <strong>Start Quiz</strong> below.<br />
+                                        <a href="/help/" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-4">
+                                            Learn More
+                                        </a>
                                         <button type="button" data-bs-dismiss="modal" class="btn btn-secondary mt-4">
                                             Start Quiz
                                         </button>
                                     </p>
-
-
                                 </div>
+
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-7">
                         <div id="studentHelpCarousel" class="studentHelpCarousel carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="false" data-bs-wrap="false">
                             <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="w-100" style="background-color: #032b50; padding-bottom: 150px;">
-                                        <h1 class="logo display-1 text-center align-self-center" style="border: 0; font-weight: 700; color: #0E78DB;">
+
+                                <div class="carousel-item text-center active">
+                                    <div style="height: 350px; width: auto; background-color: #033a62;">
+                                        <h2 class="logo display-1 align-self-center mb-0" style="border: 0; font-weight: 700; color: #0E78DB; background-color: #033a62;">
                                             QuizCon
-                                        </h1>
-                                        <p class="lead text-light text-center ">
-                                            Built for creating confident choices<br />
-                                            for testing in CourseWorks.
-                                        </p>
+                                        </h2>
+                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 280px; width: auto;" class="pb-2" alt="...">
                                     </div>
                                 </div>
 
                                 <div class="carousel-item">
-                                    <img src="{{STATIC_URL}}img/triangle.svg" class="d-block w-100" alt="...">
+                                    <div style="height: 350px; width: auto;">
+                                        {% if quiz.scoring_scheme == 0 %}
+                                            <img src="{{STATIC_URL}}img/no-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                        {% else %}
+                                            <img src="{{STATIC_URL}}img/moderate-high-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="carousel-item text-center">
+                                    {% if quiz.scoring_scheme == 0 %}
+                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                    {% elif quiz.scoring_scheme == 1 %}
+                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                    {% else %}
+                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                    {% endif %}
                                 </div>
 
                                 <div class="carousel-item">
@@ -75,9 +98,10 @@
                                         {% endfor %}
                                     </div>
                                 </div>
+
                                 <div class="carousel-item">
-                                    <div class="text-center align-self-center" style="background-color: #032b50; padding-bottom: 150px;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" style="margin-top: 150px;" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <div class="text-center align-self-center" style="background-color: #032b50; padding-bottom: 150px; height: 350px; width: auto;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" style="margin-top: 130px;" fill="green" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                                         </svg>
                                     </div>
@@ -87,10 +111,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer m-2 col-md-6">
-                        <a href="#" class="btn btn-success rounded-pill btn-prev float-start d-none">Prev</a>
-                        <a href="#" class="btn btn-success rounded-pill btn-next float-end d-none">Next</a>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary rounded-pill btn-prev float-start d-none">Prev</a>
+                <a href="#" class="btn btn-success rounded-pill btn-next float-end d-none">Next</a>
             </div>
         </div>
     </div>

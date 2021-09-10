@@ -28,23 +28,23 @@
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     Review your answers below.
                 </div>
             <!-- if later date  -->
             {% elif quiz.show_answers == 2 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     The correct answers will be available for review on {{quiz.show_answers_date}}.
                 </div>
             <!-- if never -->
             {% else %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                 </div>
             {% endif %}
                 <div class="alert alert-dark" role="alert">
-                    <strong>Please note: </strong>This is a weighted score on QuizCon. Your instructor may have chosen a different point total for this quiz on Courseworks Grades, so the score will be adjusted accordingly.
+                    <strong class="alert-dark">Please note: </strong>This is a weighted score on QuizCon. Your instructor may have chosen a different point total for this quiz on Courseworks Grades, so the score will be adjusted accordingly.
                 </div>
 
             {% for question in quiz.ordered_questions %}
@@ -55,15 +55,15 @@
                                 {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                     {% if quiz.scoring_scheme == 0 %}
                                         <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 1 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% elif quiz.scoring_scheme == 2 %}
                                         <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.total_question_points}} points
+                                            {{qp}} of {{question.highest_question_points}} points
                                         </span>
                                     {% endif %}
                                 {% endif %}
@@ -117,7 +117,7 @@
     {% else %}{% if is_faculty %}
         {% if submission %}
             <div class="alert alert-success" role="alert">
-                Student's score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
+                Student's score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
                 Review student's answer below.
             </div>
 
@@ -128,15 +128,15 @@
                             {% with qp=response.user_question_points %}
                                 {% if quiz.scoring_scheme == 0 %}
                                     <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 1 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% elif quiz.scoring_scheme == 2 %}
                                     <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.total_question_points}} points
+                                        {{qp}} of {{question.highest_question_points}} points
                                     </span>
                                 {% endif %}
                             {% endwith %}

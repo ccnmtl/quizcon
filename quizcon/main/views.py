@@ -519,6 +519,25 @@ class CloneQuizView(UpdateQuizPermissionMixin, View):
                                     kwargs={'pk': cloned_quiz.pk}))
 
 
+class AnalyticsQuizView(UpdateQuizPermissionMixin, TemplateView):
+    template_name = "main/quiz_report.html"
+
+    def get_context_data(self, **kwargs):
+        quiz_id = self.kwargs.get('pk')
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        submissions = []
+        count = quiz.quizsubmission_set.count()
+        for sub in quiz.quizsubmission_set.all():
+            submissions.append(sub)
+
+        return {
+            'quiz': quiz,
+            'submissions': submissions,
+            'total_submissions': count,
+            'num_markers': range(13)
+        }
+
+
 class ReorderQuestionsView(UpdateQuizPermissionMixin, View):
     def post(self, request, *args, **kwargs):
         order_json = json.loads(request.body.decode('utf-8'))

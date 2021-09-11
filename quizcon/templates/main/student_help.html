@@ -10,12 +10,12 @@
 
                                 <div class="carousel-item carousel-txt-item align-self-center active">
                                     <h2>Tutorial</h2>
-                                    <p>QuizCon is an alternative take on multiple choice quizzes that uses confidence-weighted questions to allow you to more accurately answer based on your understanding of the question. Let’s take a tutorial on how QuizCon works.</p>
+                                    <p class="mt-5">QuizCon is an alternative take on multiple choice quizzes that uses confidence-weighted questions to allow you to more accurately answer based on your understanding of the question. Let’s take a tutorial on how QuizCon works.</p>
                                 </div>
 
                                 <div class="carousel-item carousel-txt-item align-self-center">
                                     <h2>Taking the Quiz</h2>
-                                    <p>By providing a sliding scale between any two given options, the QuizCon triangle allows you the option to indicate how confident you are about one answer over the other.</p>
+                                    <p class="mt-5">By providing a sliding scale between any two given options, the QuizCon triangle allows you the option to indicate how confident you are about one answer over the other.</p>
                                     <p>If you are completely unsure, you can just say “I don’t know”.</p>
                                 </div>
 
@@ -24,7 +24,7 @@
                                     {% with q=quiz.question_set.first %}
                                         <p>Quizzing with Confidence is unique because you can receive partial credit for your answers instead of guessing the right answer.</p>
                                         <p>Your instructor has configured this quiz so the <b>lowest</b> you can score on a question is <b>{{q.lowest_question_points}}</b> points.</p>
-                                        <p>The diagram on the right shows you possible scores for all responses. Venus is the correct answer.</p>
+                                        <p>The diagram on the right shows you possible scores for all responses.</p>
                                     {% endwith %}
                                 </div>
 

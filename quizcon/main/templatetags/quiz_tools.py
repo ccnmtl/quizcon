@@ -99,7 +99,7 @@ def percentage_choice(x, question):
         if res.selected_position == x:
             num += 1
 
-    return round((num / total * 100), 2)
+    return round((num / total * 100), 1)
 
 
 @register.simple_tag

@@ -264,3 +264,87 @@ textarea.assignment-url {
   filter: alpha(opacity=20);
   list-style: none !important;
 }
+
+/* report view */
+.percent-container .form-check
+{
+    position: absolute;
+    height: 1px;
+}
+.percent-container .answer0
+{
+    right: 160px;
+    top: 74px;
+}
+
+.percent-container .answer1
+{
+    right: 130px;
+    top: 120px;
+}
+
+.percent-container .answer2
+{
+    right: 103px;
+    top: 166px;
+}
+
+.percent-container .answer3
+{
+    right: 78px;
+    top: 211px;
+}
+
+.percent-container .answer4
+{
+    right: 40px;
+    top: 257px;
+}
+
+.percent-container .answer5
+{
+    right: 107px;
+    top: 257px;
+}
+
+.percent-container .answer6
+{
+    right: 165px;
+    top: 257px;
+}
+
+.percent-container .answer7
+{
+    right: 222px;
+    top: 257px;
+}
+
+.percent-container .answer8
+{
+    right: 280px;
+    top: 257px;
+}
+
+.percent-container .answer9
+{
+    right: 240px;
+    top: 211px;
+}
+
+.percent-container .answer10
+{
+    right: 215px;
+    top: 166px;
+}
+
+.percent-container .answer11
+{
+    right: 188px;
+    top: 120px;
+}
+
+.percent-container .answer12
+{
+    right: 160px;
+    top: 204px;
+}

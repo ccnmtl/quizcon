@@ -183,13 +183,13 @@ Report for {{ quiz.title }}
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-start">
-                            <div>
+                            <div class="percent-container">
                                 {% for question in quiz.question_set.all %}
                                     <div class="choicebox float-end mb-2">
                                     {% for x in num_markers %}
                                     {% percentage_choice x question as percent%}
                                         <div class="form-check answer{{x}}">
-                                            <span class="text-white">({{percent}}%)</span>
+                                            <span class="text-white bg-dark">({{percent}}%)</span>
                                         </div>
                                     {% endfor %}
                                     </div>

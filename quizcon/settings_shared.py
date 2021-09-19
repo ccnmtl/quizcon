@@ -18,6 +18,7 @@ USE_TZ = True
 INSTALLED_APPS += [  # noqa
     'bootstrap4',
     'infranil',
+    'contactus',
     'django_extensions',
     'courseaffils',
     'lti_provider',
@@ -32,6 +33,9 @@ THUMBNAIL_SUBDIR = "thumbs"
 LOGIN_REDIRECT_URL = "/"
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+CONTACT_US_EMAIL = 'ctl-quizcon@columbia.edu'
+SERVER_EMAIL = 'automated@mail.ctl.columbia.edu'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',

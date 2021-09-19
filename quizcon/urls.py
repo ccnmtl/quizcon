@@ -63,7 +63,9 @@ urlpatterns = [
     url(r'^question/(?P<pk>\d+)/update/$', views.UpdateQuestionView.as_view(),
         name='update-question'),
     url(r'^question/(?P<pk>\d+)/delete/$', views.DeleteQuestionView.as_view(),
-        name='delete-question')
+        name='delete-question'),
+
+    url('^contact/', include('contactus.urls'))
 ]
 
 

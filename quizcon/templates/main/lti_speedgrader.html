@@ -51,26 +51,61 @@
                 {% question_response question submission as response %}
                 <div class="row bg-light mx-0">
                     <div class="col-md-12">
-                            {% with qp=response.user_question_points %}
-                                {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                    {% if quiz.scoring_scheme == 0 %}
-                                        <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.highest_question_points}} points
-                                        </span>
-                                    {% elif quiz.scoring_scheme == 1 %}
-                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.highest_question_points}} points
-                                        </span>
-                                    {% elif quiz.scoring_scheme == 2 %}
-                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} of {{question.highest_question_points}} points
-                                        </span>
+                        <p class="question-text">
+                            {{question.text|safe}}
+                        </p>
+
+                        <div class="border p-3 shadow-sm">
+                            <div>
+                                <div class="row p-0 m-0 g-0">
+                                    <div class="col-md-10">
+                                        {% if response.selected_position == 0 %}
+                                            <strong>You were confident the answer was A.</strong>
+                                        {% elif response.selected_position == 4 %}
+                                            <strong>You were confident the answer was B.</strong>
+                                        {% elif response.selected_position == 8 %}
+                                            <strong>You were confident the answer was C.</strong>
+                                        {% elif response.selected_position == 12 %}
+                                            <strong>You answered <i>I Don't Know</i>.</strong>
+                                        {% elif response.selected_position > 0 and response.selected_position < 4 %}
+                                            <strong>You were confident the answer was between A and B.</strong>
+                                        {% elif response.selected_position > 4 and response.selected_position < 8 %}
+                                            <strong>You were confident the answer was between B and C.</strong>
+                                        {% elif response.selected_position > 8 and response.selected_position <= 11 %}
+                                            <strong>You were confident the answer was between A and C.</strong>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        {% with qp=response.user_question_points %}
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if quiz.scoring_scheme == 0 %}
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 1 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 2 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if question.explanation %}
+                                <div class="mt-2">
+                                    <!-- Only if show answer is Immediately or at a later date -->
+                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                        {{question.explanation|safe}}
                                     {% endif %}
-                                {% endif %}
-                            {% endwith %}
-                            <p>
-                                <strong>{{question.text|safe}}</strong>
-                            </p>
+                                </div>
+                            {% endif %}
+                        </div>
+
                         <div class="row mx-0 p-0">
                             <div class="col-md-5 p-0">
                                 <ol class="p-3 pt-0">
@@ -100,14 +135,6 @@
                                 </div>
                             </div>
                         </div>
-                {% if question.explanation %}
-                    <!-- Only if show answer is Immediately or at a later date -->
-                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                        <div class="row mx-0 p-0">
-                            <strong>Feedback: </strong>{{question.explanation|safe}}
-                        </div>
-                    {% endif %}
-                {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -125,24 +152,62 @@
                 {% question_response question submission as response %}
                 <div class="row bg-light mx-0">
                     <div class="col-md-12">
-                            {% with qp=response.user_question_points %}
-                                {% if quiz.scoring_scheme == 0 %}
-                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.highest_question_points}} points
-                                    </span>
-                                {% elif quiz.scoring_scheme == 1 %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.highest_question_points}} points
-                                    </span>
-                                {% elif quiz.scoring_scheme == 2 %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} of {{question.highest_question_points}} points
-                                    </span>
-                                {% endif %}
-                            {% endwith %}
-                            <p>
-                                <strong>{{question.text|safe}}</strong>
-                            </p>
+
+                        <p class="question-text">
+                            {{question.text|safe}}
+                        </p>
+
+                        <div class="border p-3 shadow-sm">
+                            <div>
+                                <div class="row p-0 m-0 g-0">
+                                    <div class="col-md-10">
+                                        {% if response.selected_position == 0 %}
+                                            <strong>Your student was confident the answer was A.</strong>
+                                        {% elif response.selected_position == 4 %}
+                                            <strong>Your student was confident the answer was B.</strong>
+                                        {% elif response.selected_position == 8 %}
+                                            <strong>Your student was confident the answer was C.</strong>
+                                        {% elif response.selected_position == 12 %}
+                                            <strong>Your student answered <i>I Don't Know</i>.</strong>
+                                        {% elif response.selected_position > 0 and response.selected_position < 4 %}
+                                            <strong>Your student was confident the answer was between A and B.</strong>
+                                        {% elif response.selected_position > 4 and response.selected_position < 8 %}
+                                            <strong>Your student was confident the answer was between B and C.</strong>
+                                        {% elif response.selected_position > 8 and response.selected_position <= 11 %}
+                                            <strong>Your student was confident the answer was between A and C.</strong>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        {% with qp=response.user_question_points %}
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if quiz.scoring_scheme == 0 %}
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 1 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 2 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if question.explanation %}
+                                <div class="mt-2">
+                                    <!-- Only if show answer is Immediately or at a later date -->
+                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                        {{question.explanation|safe}}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+
                         <div class="row mx-0 p-0">
                             <div class="col-md-5 p-0">
                                 <ol class="p-3 pt-0">
@@ -170,11 +235,6 @@
                                 </div>
                             </div>
                         </div>
-                    {% if question.explanation %}
-                        <div class="row mx-0 p-0">
-                            <strong>Feedback: </strong>{{question.explanation|safe}}
-                        </div>
-                    {% endif %}
                     </div>
                 </div>
             {% endfor %}

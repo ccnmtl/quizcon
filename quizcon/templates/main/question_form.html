@@ -11,7 +11,8 @@
 <script type="text/javascript">
     jQuery(document).ready(function() {
         tinymce.init({selector: '.rich-text', statusbar: false, menubar: false,
-                    content_style: 'body {font-size: 11pt!important}'});
+                      content_style: 'body {font-size: 11pt!important}',
+                      forced_root_block : 'false'});
     });
 </script>
 {% endblock %}

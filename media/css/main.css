@@ -138,7 +138,7 @@ ol { list-style-type: upper-alpha; }
 .quiz-container .row
 {
     margin: 2rem;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .quiz-container .form-check
@@ -146,6 +146,11 @@ ol { list-style-type: upper-alpha; }
     position: absolute;
     width: 1px;
     height: 1px;
+}
+
+.quiz-container .question-text {
+    font-size: 1.15rem;
+    font-weight: bold;
 }
 
 #footer-logo

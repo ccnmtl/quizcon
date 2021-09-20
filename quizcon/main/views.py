@@ -231,7 +231,8 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
                       not is_faculty)
 
         if submission_id == -1 and submission:
-            data = {'pk': self.kwargs.get('pk'), 'submission_id': submission.id}
+            data = {'pk': self.kwargs.get('pk'),
+                    'submission_id': submission.id}
             url = reverse('quiz-submission', kwargs=data)
 
             return HttpResponseRedirect(url)

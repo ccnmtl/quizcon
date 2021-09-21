@@ -215,23 +215,29 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
 class LTIAssignmentView(LTIAuthMixin, TemplateView):
 
     template_name = 'main/lti_assignment.html'
+    http_method_names = ['get', 'post']
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
-
         submission_id = self.kwargs.get('submission_id', -1)
         today = date.today()
-        try:
-            submission = QuizSubmission.objects.get(id=int(submission_id))
-        except QuizSubmission.DoesNotExist:
-            submission = None
+
+        submission = QuizSubmission.objects.filter(
+            user=self.request.user).order_by('-modified_at').first()
 
         is_faculty = quiz.course.is_true_faculty(self.request.user)
         is_student = (quiz.course.is_true_member(self.request.user) and
                       not is_faculty)
 
-        return {
+        if submission_id == -1 and submission:
+            data = {'pk': self.kwargs.get('pk'),
+                    'submission_id': submission.id}
+            url = reverse('quiz-submission', kwargs=data)
+
+            return HttpResponseRedirect(url)
+
+        ctx = {
             'is_student': is_student,
             'is_faculty': is_faculty,
             'quiz': quiz,
@@ -239,6 +245,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             'submission': submission,
             'today': today
         }
+        return self.render_to_response(ctx)
 
     def get_launch_url(self, submission):
         url = '/lti/?assignment=grade&pk={}'.format(submission.id)

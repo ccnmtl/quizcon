@@ -222,34 +222,34 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
         self.view.request.user = self.student
         self.view.kwargs = {}
 
-    def test_get_context_data_invalid_kwargs(self):
+    def test_get_invalid_kwargs(self):
         # no course or assignment specified
         with self.assertRaises(Http404):
-            self.view.get_context_data()
+            self.view.get(self.view.request)
 
         # no assignment specified
         with self.assertRaises(Http404):
-            self.view.get_context_data()
+            self.view.get(self.view.request)
 
-    def test_get_context_data(self):
+    def test_get(self):
         self.view.kwargs['pk'] = self.quiz.id
 
-        ctx = self.view.get_context_data()
-        self.assertFalse(ctx['is_faculty'])
-        self.assertEqual(ctx['quiz'], self.quiz)
-        self.assertEqual(ctx['submission'], None)
+        response = self.view.get(self.view.request)
+        self.assertFalse(response.context_data['is_faculty'])
+        self.assertEqual(response.context_data['quiz'], self.quiz)
+        self.assertEqual(response.context_data['submission'], None)
 
-    def test_get_context_data_submitted(self):
+    def test_get_data_submitted(self):
         self.view.kwargs['pk'] = self.quiz.id
 
         # Create a submission
         submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
         self.view.kwargs['submission_id'] = submission.id
 
-        ctx = self.view.get_context_data()
-        self.assertFalse(ctx['is_faculty'])
-        self.assertEqual(ctx['quiz'], self.quiz)
-        self.assertEqual(ctx['submission'], submission)
+        response = self.view.get(self.view.request)
+        self.assertFalse(response.context_data['is_faculty'])
+        self.assertEqual(response.context_data['quiz'], self.quiz)
+        self.assertEqual(response.context_data['submission'], submission)
 
     def test_post_invalid_kwargs(self):
         # no course or assignment specified

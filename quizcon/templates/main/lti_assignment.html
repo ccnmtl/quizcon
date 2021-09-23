@@ -257,10 +257,9 @@
                                 <div class="choicebox float-end">
                                     {% for x in num_markers %}
                                     <div class="form-check answer{{x}}">
-                                        {% radio_points quiz.id x as pts %}
                                         <span class="tooltips">
                                             <input class="form-check-input" type="radio"
-                                                name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="{{pts}} points" data-bs-trigger="manual"
+                                                name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Your choice" data-bs-trigger="manual"
                                                 data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
                                                 {% if x != response.selected_position %}disabled{% endif %}
                                                 {% if x == response.selected_position %}checked{% endif %}/>

@@ -224,7 +224,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         today = date.today()
 
         submission = QuizSubmission.objects.filter(
-            user=self.request.user).order_by('-modified_at').first()
+            user=self.request.user, quiz=quiz).order_by('-modified_at').first()
 
         is_faculty = quiz.course.is_true_faculty(self.request.user)
         is_student = (quiz.course.is_true_member(self.request.user) and

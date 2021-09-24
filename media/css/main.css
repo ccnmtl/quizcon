@@ -17,8 +17,16 @@ nav.navbar { background-color: #032b50; }
 
 a
 {
-    color: #0e78db;
+    color: #0c6cc5;
     text-decoration: none;
+}
+
+#logout {
+    color: #6DBFFC;
+}
+
+.text-muted {
+    color: #616970 !important;
 }
 
 a:hover

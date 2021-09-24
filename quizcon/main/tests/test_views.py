@@ -251,6 +251,22 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
         self.assertEqual(response.context_data['quiz'], self.quiz)
         self.assertEqual(response.context_data['submission'], submission)
 
+    # Check behavior if a student has two submissions; different quiz
+    def test_get_data_submitted_twice(self):
+        self.view.kwargs['pk'] = self.quiz.id
+        self.quiz2 = QuizFactory(course=self.course)
+        self.question1 = QuestionFactory(quiz=self.quiz2)
+        self.question2 = QuestionFactory(quiz=self.quiz2)
+
+        submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
+        QuizSubmissionFactory(quiz=self.quiz2, user=self.student)
+        self.view.kwargs['submission_id'] = submission.id
+
+        response = self.view.get(self.view.request)
+        self.assertFalse(response.context_data['is_faculty'])
+        self.assertEqual(response.context_data['quiz'], self.quiz)
+        self.assertEqual(response.context_data['submission'], submission)
+
     def test_post_invalid_kwargs(self):
         # no course or assignment specified
         with self.assertRaises(Http404):

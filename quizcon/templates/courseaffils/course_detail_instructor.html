@@ -12,7 +12,7 @@
     <div class="table-responsive">
         <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
         <table class="table table-striped">
-            <col width="20%"> <col width="20%"> <col width="25%"><col width="20%">
+            <col width="20%"> <col width="20%"> <col width="20%"><col width="20%">
             <thead>
                 <tr>
                     <th scope="col">Quiz Title</th>
@@ -42,11 +42,11 @@
                                       <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
                                     </svg>
                                 </span>
-                                Copy
+                                Copy Courseworks Assignment Link
                             </button>
-                            <textarea id="quiz-{{quiz.id}}" class="form-control assignment-url"
+                            <textarea id="quiz-{{quiz.id}}" style="position:absolute;left:-1000px;top:-1000px;"
                                 aria-label="Courseworks assignment url"
-                                aria-describedby="button-addon2" readonly>https://{{request.get_host}}{% url 'lti-assignment-view' 'quiz' quiz.id %}</textarea>
+                                aria-hidden="true">https://{{request.get_host}}{% url 'lti-assignment-view' 'quiz' quiz.id %}</textarea>
                         </div>
                     </td>
                     <td>

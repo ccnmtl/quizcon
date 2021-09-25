@@ -10,9 +10,15 @@
 {% block js %}
 <script type="text/javascript">
     jQuery(document).ready(function() {
-        tinymce.init({selector: '.rich-text', statusbar: false, menubar: false,
-                      content_style: 'body {font-size: 11pt!important}',
-                      forced_root_block : 'false'});
+        tinymce.init({  selector: '.rich-text',
+                        statusbar: false, menubar: false,
+                        content_style: 'body {font-size: 11pt!important}',
+                        forced_root_block : 'false',
+                        plugins: 'link',
+                        toolbar: 'undo redo | fontsizeselect | removeformat | bold italic underline strikethrough superscript subscript | link',
+                        default_link_target: '_blank',
+                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt'
+                    });
     });
 </script>
 {% endblock %}

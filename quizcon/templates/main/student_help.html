@@ -91,7 +91,7 @@
                                         {% for x in num_markers %}
                                         <div class="form-check answer{{x}}">
                                             {% radio_points quiz.id x as pts %}
-                                            <input class="form-check-input tooltips" type="radio" name="radiodefault" value="{{x}}" data-bs-trigger="focus"
+                                            <input class="form-check-input tooltips" type="radio" name="radiodefault" value="{{x}}" data-bs-trigger="focus" aria-label="radio button input for value {{x}}"
                                             data-bs-toggle="tooltip" data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
                                             title="{{pts}} points">
                                         </div>

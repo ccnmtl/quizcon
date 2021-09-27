@@ -552,3 +552,4 @@ class ReorderQuestionsView(UpdateQuizPermissionMixin, View):
             q = Question.objects.get(id=id)
             q.ordinality = idx
             q.save()
+        return HttpResponse("Ok")

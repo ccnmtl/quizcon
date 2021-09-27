@@ -183,7 +183,7 @@ Report for {{ quiz.title }}
                     </div>
                     <div class="card-body">
                         {% for question in quiz.question_set.all %}
-                        {{question.text}}
+                        {{question.text|safe}}
                         <div class="d-flex align-items-start">
                             <div class="percent-container">
                                 <div class="choicebox float-end mb-2">

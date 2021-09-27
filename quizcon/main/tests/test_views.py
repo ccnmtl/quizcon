@@ -388,7 +388,7 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(submission_median(self.submissions),
                          "Cannot calculate median.")
         self.assertEqual(submission_mean(self.submissions),
-                         "Cannot caluclate mean.")
+                         "Cannot calculate mean.")
         self.assertEqual(submission_standard_dev(self.submissions),
                          "Not enough data points")
         self.assertEqual(submission_mode(self.submissions),

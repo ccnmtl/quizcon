@@ -55,7 +55,7 @@ def submission_mean(submissions):
     try:
         mean = round((statistics.mean(points)), 2)
     except statistics.StatisticsError:
-        mean = "Cannot caluclate mean."
+        mean = "Cannot calculate mean."
     return mean
 
 

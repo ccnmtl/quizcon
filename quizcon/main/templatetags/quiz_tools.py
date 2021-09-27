@@ -40,7 +40,11 @@ def submission_median(submissions):
     points = []
     for sub in submissions:
         points.append(sub.user_points())
-    return statistics.median(points)
+    try:
+        median = statistics.median(points)
+    except statistics.StatisticsError:
+        median = "Cannot calculate median."
+    return median
 
 
 @register.simple_tag
@@ -48,7 +52,11 @@ def submission_mean(submissions):
     points = []
     for sub in submissions:
         points.append(sub.user_points())
-    return round((statistics.mean(points)), 2)
+    try:
+        mean = round((statistics.mean(points)), 2)
+    except statistics.StatisticsError:
+        mean = "Cannot calculate mean."
+    return mean
 
 
 @register.simple_tag
@@ -56,7 +64,11 @@ def submission_mode(submissions):
     points = []
     for sub in submissions:
         points.append(sub.user_points())
-    return round((statistics.mode(points)), 2)
+    try:
+        mode = round((statistics.mode(points)), 2)
+    except statistics.StatisticsError:
+        mode = "No unique mode."
+    return mode
 
 
 @register.simple_tag
@@ -64,7 +76,11 @@ def submission_standard_dev(submissions):
     points = []
     for sub in submissions:
         points.append(sub.user_points())
-    return round((statistics.stdev(points)), 2)
+    try:
+        stdev = round((statistics.stdev(points)), 2)
+    except statistics.StatisticsError:
+        stdev = "Not enough data points"
+    return stdev
 
 
 def total_right_answers(question):
@@ -99,7 +115,11 @@ def percentage_choice(x, question):
         if res.selected_position == x:
             num += 1
 
-    return round((num / total * 100), 1)
+    if total > 0:
+        percent = round((num / total * 100), 1)
+    else:
+        percent = 0
+    return percent
 
 
 @register.simple_tag

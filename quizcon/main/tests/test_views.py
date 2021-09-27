@@ -10,6 +10,10 @@ from quizcon.main.tests.factories import (
     CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory
 )
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
+from quizcon.main.templatetags.quiz_tools import (
+    submission_median, submission_mean, submission_mode,
+    submission_standard_dev
+)
 
 
 class BasicTest(TestCase):
@@ -369,3 +373,30 @@ class LTISpeedGraderViewTest(CourseTestMixin, TestCase):
         self.assertTrue(ctx['is_student'])
         self.assertEqual(ctx['quiz'], self.quiz)
         self.assertEqual(ctx['submission'], self.submission)
+
+
+class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
+
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course=self.course)
+        self.question1 = QuestionFactory(quiz=self.quiz)
+        self.question2 = QuestionFactory(quiz=self.quiz)
+        self.submissions = []
+
+    def test_no_submissions(self):
+        self.assertEqual(submission_median(self.submissions),
+                         "Cannot calculate median.")
+        self.assertEqual(submission_mean(self.submissions),
+                         "Cannot caluclate mean.")
+        self.assertEqual(submission_standard_dev(self.submissions),
+                         "Not enough data points")
+        self.assertEqual(submission_mode(self.submissions),
+                         "No unique mode.")
+
+    def test_one_submission(self):
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        self.assertEqual(submission_standard_dev(self.submissions),
+                         "Not enough data points")

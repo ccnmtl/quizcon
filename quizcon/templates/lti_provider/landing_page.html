@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block content %}
-{% if not is_instructor and not is_administrator %}
+{% if not is_instructor and not is_administrator and not is_auth_ta %}
     <body id="splash" class="text-center">
         <div id="signin">
             <h1 class="logo display-1" style="border: 0; font-weight: 700;">

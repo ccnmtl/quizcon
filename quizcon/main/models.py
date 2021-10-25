@@ -52,9 +52,9 @@ HARD = {
     }
 
 SCORING_SCHEMES = [
-    (0, 'Easy'),
-    (1, 'Medium'),
-    (2, 'Hard'),
+    (0, 'No Consequences'),
+    (1, 'Moderate Consequences'),
+    (2, 'High Consequences'),
     (3, 'Custom')
 ]
 
@@ -99,6 +99,9 @@ class Quiz(models.Model):
     def show_answers_verbose(self):
         return dict(SHOW_ANSWERS_CHOICES)[self.show_answers]
 
+    def scoring_scheme_verbose(self):
+        return dict(SCORING_SCHEMES)[self.scoring_scheme]
+
     def total_points(self):
         scheme = LEVELS[self.scoring_scheme]
         return self.question_set.count() * scheme['0']
@@ -108,6 +111,12 @@ class Quiz(models.Model):
 
     def randomize_questions(self):
         return self.question_set.all().order_by('?')
+
+    # To be used for the student help modal
+    def value_per_marker(self, value):
+        scheme = LEVELS[self.scoring_scheme]
+        value = str(value)
+        return scheme[value]
 
     def clone(self):
         question_set = []
@@ -154,6 +163,14 @@ class Question(models.Model):
 
     def correct_marker(self):
         return self.marker_set.get(correct=True)
+
+    def highest_question_points(self):
+        scheme = LEVELS[self.quiz.scoring_scheme]
+        return scheme['0']
+
+    def lowest_question_points(self):
+        scheme = LEVELS[self.quiz.scoring_scheme]
+        return scheme['6']
 
 
 class Marker(models.Model):

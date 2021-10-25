@@ -17,8 +17,16 @@ nav.navbar { background-color: #032b50; }
 
 a
 {
-    color: #0e78db;
+    color: #0c6cc5;
     text-decoration: none;
+}
+
+#logout {
+    color: #6DBFFC;
+}
+
+.text-muted {
+    color: #616970 !important;
 }
 
 a:hover
@@ -138,7 +146,7 @@ ol { list-style-type: upper-alpha; }
 .quiz-container .row
 {
     margin: 2rem;
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .quiz-container .form-check
@@ -148,19 +156,14 @@ ol { list-style-type: upper-alpha; }
     height: 1px;
 }
 
+.quiz-container .question-text {
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
 #footer-logo
 {
     width: 300px;
-}
-
-textarea.assignment-url {
-    height: .875em;
-    resize: none;
-    white-space: pre;
-    overflow-wrap: normal;
-    min-height: calc(1.2em + .75rem + 2px);
-    padding-top: .25rem!important;
-    padding-bottom: .25rem!important;
 }
 
 #id_show_answers_date {
@@ -263,4 +266,88 @@ textarea.assignment-url {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
   filter: alpha(opacity=20);
   list-style: none !important;
+}
+
+/* report view */
+.percent-container .form-check
+{
+    position: absolute;
+    height: 1px;
+}
+.percent-container .answer0
+{
+    right: 160px;
+    top: 74px;
+}
+
+.percent-container .answer1
+{
+    right: 130px;
+    top: 120px;
+}
+
+.percent-container .answer2
+{
+    right: 103px;
+    top: 166px;
+}
+
+.percent-container .answer3
+{
+    right: 78px;
+    top: 211px;
+}
+
+.percent-container .answer4
+{
+    right: 40px;
+    top: 257px;
+}
+
+.percent-container .answer5
+{
+    right: 107px;
+    top: 257px;
+}
+
+.percent-container .answer6
+{
+    right: 165px;
+    top: 257px;
+}
+
+.percent-container .answer7
+{
+    right: 222px;
+    top: 257px;
+}
+
+.percent-container .answer8
+{
+    right: 280px;
+    top: 257px;
+}
+
+.percent-container .answer9
+{
+    right: 240px;
+    top: 211px;
+}
+
+.percent-container .answer10
+{
+    right: 215px;
+    top: 166px;
+}
+
+.percent-container .answer11
+{
+    right: 188px;
+    top: 120px;
+}
+
+.percent-container .answer12
+{
+    right: 160px;
+    top: 204px;
 }

@@ -44,13 +44,9 @@
                         Sign In With Columbia UNI
                     </button>
                     <input type="hidden" name="next" value="{{ next|urlencode }}" />
-                    <p class="small pt-2"><a href="/accounts/password_reset/" title="Reset Password">Forgot Password?</a></p>
                 </div>
             </form>
         {% endif %}
-        <p class="text-muted">
-                More text here.
-        </p>
         {% if debug %}
             {% if form.errors %}
                 <div class="alert alert-danger" id="guest-login-error" role="alert">
@@ -78,7 +74,6 @@
                     onclick="jQuery('.login-local-form').show(); jQuery(this).hide(); return false;"/>
                 <input id="guest-login-submit" class="btn btn-primary login-local-form" type="submit" value="Log In" {% if not form.errors %}style="display: none;"{% endif %} />
                 <input type="hidden" name="next" value="{{ next|urlencode }}" />
-                <p class="small pt-2"><a href="/accounts/password_reset/" title="Reset Password">Forgot Password?</a></p>
             </form>
         {% endif %}
     </div>

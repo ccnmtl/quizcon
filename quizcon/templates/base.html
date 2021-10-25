@@ -8,7 +8,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- The above 2 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
+        {% block precss %}{% endblock %}
         <!-- Bootstrap CSS -->
         <!-- CSS only -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
@@ -60,16 +60,7 @@
         </script>
 
         <!-- Tiny MCE -->
-        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-        <script>
-          tinymce.init({
-            selector: '#edit-text',
-            mode: 'textareas',
-            force_p_newlines: false,
-            force_br_newlines: false,
-            forced_root_block: ''
-          });
-        </script>
+        <script src="{{STATIC_URL}}tinymce/tinymce.min.js"></script>
 
         <!-- Favicons -->
         <link rel="apple-touch-icon" href="{{STATIC_URL}}img/apple-touch-icon.png">
@@ -105,15 +96,15 @@
         {% block topnavbar %}
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/course/1" title="Home"><strong><span class="text-light">QuizCon</span></strong> </a>
+                <a class="navbar-brand" href="/" title="Home"><strong><span class="text-light">Quizzing With Confidence</span></strong> </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="nabarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item"> <a class="nav-link active" aria-current="page" href="{% url 'course-list-view'%}">My Courses</a></li>
-                        <li class="nav-item"> <a class="nav-link disabled" href="#">Reports</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="/about/">About QuizCon</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="/help/">Help</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="/about/">About</a></li>
                     </ul>
                 </div>
 
@@ -146,17 +137,26 @@
 
         <main role="main" class="pb-4">
             <section id="content">
-                <div class="{% block content-class %}container{% endblock %}">
+                <div class="{% block content-class %}container-fluid{% endblock %}">
                 {% block content %}{% endblock %}
                 </div>
             </section>
         </main>
         {% block footer %}
         <footer class="footer mt-auto py-3 text-center">
-            <div class="container-fluid">
-              <a href="https://ctl.columbia.edu" target="_blank">
-                  <img id="footer-logo" src="{{STATIC_URL}}img/logo-black-ctl.svg" alt="CTL logo" />
-              </a>
+            <div class="row">
+                <div class="col">
+                    <a title="About page" href="/about/">About</a> 
+                    <a title="Help page" href="/help/">Help</a> 
+                    <a title="Contact page" href="/contact/">Contact</a>
+                </div>
+            </div>
+            <div class=" row container-fluid">
+                <div class="col">
+                <a href="https://ctl.columbia.edu" target="_blank">
+                    <img id="footer-logo" src="{{STATIC_URL}}img/logo-black-ctl.svg" alt="CTL logo" />
+                </a>
+            </div>
             </div>
         </footer>
         {% endblock %}

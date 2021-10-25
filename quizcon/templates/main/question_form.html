@@ -7,6 +7,22 @@
     Create Question
 {% endblock %}
 
+{% block js %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        tinymce.init({  selector: '.rich-text',
+                        statusbar: false, menubar: false,
+                        content_style: 'body {font-size: 11pt!important}',
+                        forced_root_block : 'false',
+                        plugins: 'link',
+                        toolbar: 'undo redo | fontsizeselect | removeformat | bold italic underline strikethrough superscript subscript | link',
+                        default_link_target: '_blank',
+                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt'
+                    });
+    });
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid container-content">
 <!-- Create Question -->
@@ -21,13 +37,10 @@
             <li class="breadcrumb-item active" aria-current="page">Question {{object.pk}}</li>
         </ol>
     </nav>
-    <form action="." method="post" v-on:submit="onSubmit">{% csrf_token %}
+    <form action="." method="post">{% csrf_token %}
         {% if form.errors|length %}
             <div class="alert alert-danger">
-              <strong>Please correct errors before continuing</strong><br /><br />
-              {% if form.non_field_errors %}
-                <div>{{ form.non_field_errors}}</div>
-              {% endif %}
+                Please correct errors before continuing.
             </div>
         {% endif %}
         <div class="row mb-3">
@@ -37,36 +50,52 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="id_answer_label_one" class="col-sm-2 col-form-label">Answer A</label>
-            <div class="col-sm-10">
-                {% bootstrap_field form.answer_label_1 show_label=False %}
-                <input class="form-check-input" type="radio" name="correct" id="answer-label-one" value="1"
-                    {% if form.initial.correct == 1 %}checked{% endif %}>
-                <label class="form-check-label" for="answer-label-one"> Correct </label>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="id_answer_label_two" class="col-sm-2 col-form-label">Answer B</label>
-            <div class="col-sm-10">
-                {% bootstrap_field form.answer_label_2 show_label=False %}
-                <input class="form-check-input" type="radio" name="correct" id="answer-label-two" value="2"
-                    {% if form.initial.correct == 2 %}checked{% endif %}>
-                <label class="form-check-label" for="answer-label-two"> Correct </label>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="id_answer_label_three" class="col-sm-2 col-form-label">Answer C</label>
-            <div class="col-sm-10">
-                {% bootstrap_field form.answer_label_3 show_label=False %}
-                <input class="form-check-input" type="radio" name="correct" id="answer-label-three" value="3"
-                    {% if form.initial.correct == 3 %}checked{% endif %}>
-                <label class="form-check-label" for="answer-label-three"> Correct </label>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <label for="explanation" class="col-sm-2 col-form-label">Explanation</label>
+            <label for="student-feedback" class="col-sm-2 col-form-label">Student Feedback</label>
             <div class="col-sm-10">
                 {% bootstrap_field form.explanation show_label=False %}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm-12">
+                <div class="form-group {% if form.correct.errors %}is-invalid{% endif %}">
+                    <label class="col-form-label">Choices</label>
+                    {% if form.correct.errors %}
+                        <div class="invalid-feedback d-block">Please mark one choice correct</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3 g-0">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2 bg-light p-3 rounded">
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-one" value="1"
+                    {% if form.initial.correct == 1 or form.data.correct == '1' %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-one"> Correct </label>
+            </div>
+            <div class="col-sm-8">
+                {% bootstrap_field form.answer_label_1 show_label=False %}
+            </div>
+        </div>
+        <div class="row mb-3 mt-2 g-0">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2 bg-light p-3 rounded">
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-two" value="2"
+                    {% if form.initial.correct == 2 or form.data.correct == '2' %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-two"> Correct </label>
+            </div>
+            <div class="col-sm-8">
+                {% bootstrap_field form.answer_label_2 show_label=False %}
+            </div>
+        </div>
+        <div class="row mb-3 mt-2 g-0">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-2 bg-light p-3 rounded">
+                <input class="form-check-input" type="radio" name="correct" id="answer-label-three" value="3"
+                    {% if form.initial.correct == 3 or form.data.correct == '3' %}checked{% endif %}>
+                <label class="form-check-label" for="answer-label-three"> Correct </label>
+            </div>
+            <div class="col-sm-8">
+                {% bootstrap_field form.answer_label_3 show_label=False %}
             </div>
         </div>
         <input type="hidden" name="quiz" value="{{quiz.pk}}" />

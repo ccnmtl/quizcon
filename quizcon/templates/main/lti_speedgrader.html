@@ -4,10 +4,22 @@
 
 {% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
 
+{% block js %}
+    <script>
+        jQuery(document).ready(function () {
+            var tooltipTriggerList = [].slice.call(jQuery('.tooltips input:radio:checked'))
+            var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                var ele = new bootstrap.Tooltip(tooltipTriggerEl)
+                ele.show()
+            })
+        });
+    </script>
+{% endblock %}
+
 {% block topnavbar %}
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><strong><span class="text-light">QuizCon</span></strong></a>
+        <a class="navbar-brand" href="#"><strong><span class="text-light">Quizzing With Confidence</span></strong></a>
     </div>
 </nav>
 {% endblock %}
@@ -16,86 +28,128 @@
 
 {% block content %}
 <div class="quiz-container container-fluid">
-    <h1>
+    <h1 class="mt-2">
         {{quiz.title}}
     </h1>
-    <p class="lead">{{quiz.description}}</p>
+    {% if quiz.description %}
+        <p class="lead text-muted">{{quiz.description}}</p>
+    {% endif %}
     {% if is_student %}
         {% if submission %}
         <!-- Submitted Interface -->
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     Review your answers below.
                 </div>
             <!-- if later date  -->
             {% elif quiz.show_answers == 2 %}
                 <div class="alert alert-success" role="alert">
-                    <strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                     The correct answers will be available for review on {{quiz.show_answers_date}}.
                 </div>
             <!-- if never -->
             {% else %}
                 <div class="alert alert-success" role="alert">
-                    <<strong>You're Done!</strong> Your score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points. ({{submission.user_score_percent}}%)
+                    <strong class="alert-success">You're Done!</strong> Your score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> points ({{submission.user_score_percent}}%).
                 </div>
             {% endif %}
+                <div class="alert alert-dark" role="alert">
+                    <strong class="alert-dark">Please note: </strong>This is a weighted score on QuizCon. Your instructor may have chosen a different point total for this quiz on Courseworks Grades, so the score will be adjusted accordingly.
+                </div>
 
             {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
-                <div class="row bg-light">
-                    <div class="col-md-6">
-                        <p>
-                            {% with qp=response.user_question_points %}
-                                {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                    {% if quiz.scoring_scheme == 0 %}
-                                        <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
-                                        </span>
-                                    {% elif quiz.scoring_scheme == 1 %}
-                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
-                                        </span>
-                                    {% elif quiz.scoring_scheme == 2 %}
-                                        <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                            {{qp}} points
-                                        </span>
-                                    {% endif %}
-                                {% endif %}
-                            {% endwith %}
-                            <strong>{{question.text}}</strong>
+                <div class="row bg-light mx-0">
+                    <div class="col-md-12">
+                        <p class="question-text">
+                            {{question.text|safe}}
                         </p>
-                        <ol>
-                            {% for marker in response.questionresponsemarker_set.all %}
-                                <li class="border-top p-2">
+
+                        <div class="border p-3 shadow-sm">
+                            <div>
+                                <div class="row p-0 m-0 g-0">
+                                    <div class="col-md-10">
+                                        {% if response.selected_position == 0 %}
+                                            <strong>You were confident the answer was A.</strong>
+                                        {% elif response.selected_position == 4 %}
+                                            <strong>You were confident the answer was B.</strong>
+                                        {% elif response.selected_position == 8 %}
+                                            <strong>You were confident the answer was C.</strong>
+                                        {% elif response.selected_position == 12 %}
+                                            <strong>You answered <i>I Don't Know</i>.</strong>
+                                        {% elif response.selected_position > 0 and response.selected_position < 4 %}
+                                            <strong>You were confident the answer was between A and B.</strong>
+                                        {% elif response.selected_position > 4 and response.selected_position < 8 %}
+                                            <strong>You were confident the answer was between B and C.</strong>
+                                        {% elif response.selected_position > 8 and response.selected_position <= 11 %}
+                                            <strong>You were confident the answer was between A and C.</strong>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        {% with qp=response.user_question_points %}
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if quiz.scoring_scheme == 0 %}
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 1 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 2 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if question.explanation %}
+                                <div class="mt-2">
                                     <!-- Only if show answer is Immediately or at a later date -->
                                     {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                        {% if marker.marker.correct %}
-                                            <span class="badge rounded-pill bg-success">Correct</span>
-                                        {% endif %}
+                                        {{question.explanation|safe}}
                                     {% endif %}
-                                    {{marker.marker.label}}
-                                </li>
-                            {% endfor %}
-                            <li class="border-top p-2">I don't know.</li>
-                        </ol>
-                        <div>
-                            <!-- Only if show answer is Immediately or at a later date -->
-                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
-                                <strong>Feedback: </strong>{{question.explanation}}
+                                </div>
                             {% endif %}
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="choicebox float-end">
-                            {% for x in num_markers %}
-                            <div class="form-check answer{{x}}">
-                                <input disabled="disabled" class="form-check-input" type="radio"
-                                    name="{{question.pk}}" value="{{x}}"
-                                    {% if x == response.selected_position %}checked{% endif %}/>
+
+                        <div class="row mx-0 p-0">
+                            <div class="col-md-5 p-0">
+                                <ol class="p-3 pt-0">
+                                    {% for marker in response.questionresponsemarker_set.all %}
+                                        <li class="border-top p-2">
+                                            <!-- Only if show answer is Immediately or at a later date -->
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if marker.marker.correct %}
+                                                    <span class="badge rounded-pill bg-success">Correct</span>
+                                                {% endif %}
+                                            {% endif %}
+                                            {{marker.marker.label}}
+                                        </li>
+                                    {% endfor %}
+                                    <li class="border-top p-2">I don't know.</li>
+                                </ol>
                             </div>
-                            {% endfor %}
+                            <div class="col-md-7">
+                                <div class="choicebox float-end">
+                                    {% for x in num_markers %}
+                                    <div class="form-check answer{{x}}">
+                                        <span class="tooltips">
+                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="radio button input for value {{x}}"
+                                                name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Your choice"
+                                                data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
+                                                {% if x != response.selected_position %}disabled{% endif %}
+                                                {% if x == response.selected_position %}checked{% endif %}/>
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,57 +160,100 @@
     {% else %}{% if is_faculty %}
         {% if submission %}
             <div class="alert alert-success" role="alert">
-                Student's score is <strong>{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
+                Student's score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
                 Review student's answer below.
             </div>
 
             {% for question in quiz.ordered_questions %}
                 {% question_response question submission as response %}
-                <div class="row bg-light">
-                    <div class="col-md-6">
-                        <p>
-                            {% with qp=response.user_question_points %}
-                                {% if quiz.scoring_scheme == 0 %}
-                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
-                                {% elif quiz.scoring_scheme == 1 %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
-                                {% elif quiz.scoring_scheme == 2 %}
-                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
-                                        {{qp}} points
-                                    </span>
-                                {% endif %}
-                            {% endwith %}
-                            <strong>{{question.text}}</strong>
-                        </p>
-                        <ol>
-                            {% for marker in response.questionresponsemarker_set.all %}
-                                <li class="border-top p-2">
-                                    {% if marker.marker.correct %}
-                                        <span class="badge rounded-pill bg-success">Correct</span>
-                                    {% endif %}
+                <div class="row bg-light mx-0">
+                    <div class="col-md-12">
 
-                                    {{marker.marker.label}}
-                                </li>
-                            {% endfor %}
-                            <li class="border-top p-2">I don't know.</li>
-                        </ol>
-                        <div>
-                            <strong>Feedback: </strong>{{question.explanation}}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="choicebox float-end">
-                            {% for x in num_markers %}
-                            <div class="form-check answer{{x}}">
-                                <input disabled="disabled" class="form-check-input" type="radio"
-                                    name="{{question.pk}}" value="{{x}}"
-                                    {% if x == response.selected_position %}checked{% endif %}/>
+                        <p class="question-text">
+                            {{question.text|safe}}
+                        </p>
+
+                        <div class="border p-3 shadow-sm">
+                            <div>
+                                <div class="row p-0 m-0 g-0">
+                                    <div class="col-md-10">
+                                        {% if response.selected_position == 0 %}
+                                            <strong>Your student was confident the answer was A.</strong>
+                                        {% elif response.selected_position == 4 %}
+                                            <strong>Your student was confident the answer was B.</strong>
+                                        {% elif response.selected_position == 8 %}
+                                            <strong>Your student was confident the answer was C.</strong>
+                                        {% elif response.selected_position == 12 %}
+                                            <strong>Your student answered <i>I Don't Know</i>.</strong>
+                                        {% elif response.selected_position > 0 and response.selected_position < 4 %}
+                                            <strong>Your student was confident the answer was between A and B.</strong>
+                                        {% elif response.selected_position > 4 and response.selected_position < 8 %}
+                                            <strong>Your student was confident the answer was between B and C.</strong>
+                                        {% elif response.selected_position > 8 and response.selected_position <= 11 %}
+                                            <strong>Your student was confident the answer was between A and C.</strong>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-2 text-end">
+                                        {% with qp=response.user_question_points %}
+                                            {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                                {% if quiz.scoring_scheme == 0 %}
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 1 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% elif quiz.scoring_scheme == 2 %}
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                        {{qp}} of {{question.highest_question_points}} points
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
                             </div>
-                            {% endfor %}
+                            {% if question.explanation %}
+                                <div class="mt-2">
+                                    <!-- Only if show answer is Immediately or at a later date -->
+                                    {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
+                                        {{question.explanation|safe}}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mx-0 p-0">
+                            <div class="col-md-5 p-0">
+                                <ol class="p-3 pt-0">
+                                    {% for marker in response.questionresponsemarker_set.all %}
+                                        <li class="border-top p-2">
+                                            {% if marker.marker.correct %}
+                                                <span class="badge rounded-pill bg-success">Correct</span>
+                                            {% endif %}
+
+                                            {{marker.marker.label}}
+                                        </li>
+                                    {% endfor %}
+                                    <li class="border-top p-2">I don't know.</li>
+                                </ol>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="choicebox float-end">
+                                    {% for x in num_markers %}
+                                    <div class="form-check answer{{x}}">
+                                        <span class="tooltips">
+                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="radio button input for value {{x}}"
+                                                name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Student's choice"
+                                                data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
+                                                {% if x != response.selected_position %}disabled{% endif %}
+                                                {% if x == response.selected_position %}checked{% endif %}/>
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

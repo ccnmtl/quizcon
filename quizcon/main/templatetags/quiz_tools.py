@@ -79,7 +79,7 @@ def submission_standard_dev(submissions):
     try:
         stdev = round((statistics.stdev(points)), 2)
     except statistics.StatisticsError:
-        stdev = "Not enough data points"
+        stdev = "Not enough data"
     return stdev
 
 
@@ -108,11 +108,23 @@ def total_idk_answers(question):
 
 
 @register.simple_tag
+def normalize_percent(qres):
+    normalized_correct = 0
+    selected_pos = qres.selected_position
+    correct_pos = qres.correct_marker_position()
+    distance = abs(selected_pos - correct_pos)
+    normalized_selected = normalized_correct + distance
+
+    return normalized_selected
+
+
+@register.simple_tag
 def percentage_choice(x, question):
     num = 0
     total = len(question.questionresponse_set.all())
     for res in question.questionresponse_set.all():
-        if res.selected_position == x:
+        normalized_percent = normalize_percent(res)
+        if normalized_percent == x:
             num += 1
 
     if total > 0:

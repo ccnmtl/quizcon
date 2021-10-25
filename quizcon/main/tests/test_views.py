@@ -12,7 +12,7 @@ from quizcon.main.tests.factories import (
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
 from quizcon.main.templatetags.quiz_tools import (
     submission_median, submission_mean, submission_mode,
-    submission_standard_dev
+    submission_standard_dev, normalize_percent
 )
 
 
@@ -390,7 +390,7 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(submission_mean(self.submissions),
                          "Cannot calculate mean.")
         self.assertEqual(submission_standard_dev(self.submissions),
-                         "Not enough data points")
+                         "Not enough data")
         self.assertEqual(submission_mode(self.submissions),
                          "No unique mode.")
 
@@ -399,4 +399,17 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
             quiz=self.quiz, user=self.student)
         self.submissions.append(self.submission)
         self.assertEqual(submission_standard_dev(self.submissions),
-                         "Not enough data points")
+                         "Not enough data")
+
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+        correct_marker.ordinal = 0
+        correct_marker.save()
+        self.assertEqual(normalize_percent(qres), 0)
+        qres.selected_position = 2
+        qres.save()
+        self.assertEqual(normalize_percent(qres), 2)
+        correct_marker.ordinal = 2
+        correct_marker.save()
+        self.assertEqual(normalize_percent(qres), 6)

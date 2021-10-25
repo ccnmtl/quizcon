@@ -351,3 +351,7 @@ ol { list-style-type: upper-alpha; }
     right: 160px;
     top: 204px;
 }
+
+.ques-text * {
+    color: #fff!important
+}

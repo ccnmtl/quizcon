@@ -7,201 +7,295 @@ Report for {{ quiz.title }}
 
 {% block content %}
     {% if submissions %}
-    <div class="container-fluid p-0">
-        <div class="row mb-2 mb-xl-3">
-            <div class="col-auto d-none d-sm-block">
-                <h3>{{quiz.title}} Analytics</h3>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-sm-6 col-xxl-4 d-flex">
-                <div class="card illustration flex-fill">
-                    <div class="card-body p-0 d-flex flex-fill">
-                        <div class="row g-0 w-100">
-                            <div class="col">
-                                <div class="illustration-text p-3 m-1">
-                                    <h4 class="illustration-text">Welcome to your Quiz dashboard!</h4>
-                                    <p class="mb-0">Here you will find stats about your quiz.</p>
+        <div class="container-fluid container-content">
+            <h1>
+            Analytics for <strong>{{ quiz.title }}</strong>
+            </h1>
+            <p>
+            Scoring Scheme: <strong class="text-success">{{quiz.scoring_scheme_verbose}}</strong> <span class="text-muted">&bull;</span> Student Answer View: <strong class="text-success">{{quiz.show_answers_verbose|lower}}</strong>
+            </p>
+            <ul class="nav nav-tabs nav-fill mb-4">
+                <li class="nav-item"> <a class="nav-link" href="#statistics">Quiz Statistics</a> </li>
+                <li class="nav-item"> <a class="nav-link" href="#insights">Insights</a> </li>
+                <!-- <li class="nav-item"> <a class="nav-link" href="#percentages">Answer Percentages</a> </li> -->
+            </ul>
+            <section style="margin: 4em 0em 4em 0em;">
+                <a name="statistics" id="statistics"></a>
+                <h2 class="mt-4">
+                Quiz Statistics
+                </h2>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_mean submissions as mean %}
+                                <h3 class="card-title display-5">
+                                {{mean}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Mean
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_median submissions as median %}
+                                <h3 class="card-title display-5">
+                                {{median}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Median
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_mode submissions as mode %}
+                                <h3 class="card-title display-5">
+                                {{mode}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Mode
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_standard_dev submissions as stdev %}
+                                <h3 class="card-title display-5">
+                                {{stdev}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Standard Deviation
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="card-title display-5">
+                                {{quiz.question_set.count}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Total Questions
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="card-title display-5">
+                                {{total_submissions}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Quiz Submissions
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_min_points submissions as min %}
+                                <h3 class="card-title display-5">
+                                {{min}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Minimum Points Earned
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% submission_max_points submissions as max %}
+                                <h3 class="card-title display-5">
+                                {{max}}
+                                </h3>
+                            </div>
+                            <div class="card-footer bg-dark text-white">
+                            Maximum Points Earned
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section style="margin: 4em 0em 4em 0em;">
+                <a name="insights" id="insights"></a>
+                <h2 class="mt-4">
+                Insights
+                </h2>
+                <div class="row mt-4">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-success text-white">
+                            Most Correct Answers
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {% right_answers_per_quiz quiz.id as question_most_right %}
+                                    {% for question in question_most_right %}
+                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-danger text-white">
+                            Most Incorrect Answers
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
+                                    {% for question in question_most_wrong %}
+                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header bg-secondary text-white">
+                            Most "I Don't Know" Answers
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {% idk_answers_per_quiz quiz.id as question_most_idk %}
+                                    {% for question in question_most_idk %}
+                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- <section style="margin: 4em 0em 4em 0em;">
+                <a name="percentages" id="percentages"></a>
+                <h2 class="mt-4">
+                Answer Percentages
+                </h2>
+                {% for question in quiz.question_set.all %}
+                    <div class="card bg-light mt-4">
+                        <div class="card-header bg-dark ques-text">
+                        <a name="q{{question.pk}}">{{question.text|safe}}</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img src="{{STATIC_URL}}img/triangle-key.svg" class="rounded" alt="key">
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-4 d-flex">
-                <div class="card illustration flex-fill">
-                    <div class="card-body p-0 d-flex flex-fill">
-                        <div class="row g-0 w-100">
-                            <div class="col">
-                                <div class="illustration-text p-3 m-1">
-                                    <h3 class="illustration-text">Quiz Details</h3>
-                                    <p class="mb-0">
-                                        <ul>
-                                        <!-- {% if quiz.randomize %} Questions are randomized.<br>{% endif %} -->
-                                            <li>Quiz has {{quiz.question_set.count}} questions.</li>
-                                            <li>The scoring scheme for this Quiz is {{quiz.scoring_scheme_verbose}}.</li>
-                                            <li>Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}</li>
-                                        </ul>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-4 d-flex">
-                <div class="card illustration flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1 text-center">
-                                <h3 class="mb-2 illustration-text">Total Quiz Submissions</h3>
-                                <p class="mt-3 h3">{{total_submissions}}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_mean submissions as mean %}
-                                <h3 class="mb-2">{{mean}}</h3>
-                                <p class="mb-2">Mean Score</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_mode submissions as mode %}
-                                <h3 class="mb-2">{{mode}}</h3>
-                                <p class="mb-2">Mode</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_standard_dev submissions as stdev %}
-                                <h3 class="mb-2">{{stdev}}</h3>
-                                <p class="mb-2">Standard Deviation</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_median submissions as median %}
-                                <h3 class="mb-2">{{median}}</h3>
-                                <p class="mb-2">Median</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_max_points submissions as max %}
-                                <h3 class="mb-2">{{max}}</h3>
-                                <p class="mb-2">Maximum Points Earned</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-6 col-xxl-2 d-flex">
-                <div class="card flex-fill">
-                    <div class="card-body py-4">
-                        <div class="d-flex align-items-start">
-                            <div class="flex-grow-1 text-center">
-                            {% submission_min_points submissions as min %}
-                                <h3 class="mb-2">{{min}}</h3>
-                                <p class="mb-2">Minimum Points Earned</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-8 d-flex">
-                <div class="card flex-fill w-100">
-                    <div class="card-header">
-                        <div class="card-actions text-muted float-end">
-                            {{quiz.title}}
-                        </div>
-                        <h5 class="card-title mb-0">Per Question Analysis</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="h4"><u>Questions with the most right answers:</u></p>
-                        {% right_answers_per_quiz quiz.id as question_most_right %}
-                        <ul>
-                        {% for question in question_most_right %}
-                            <li>{{question.text|safe}}</li>
-                        {% endfor %}
-                        </ul>
-                        <p class="h4"><u>Questions with the most wrong answers:</u></p>
-                        {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
-                        <ul>
-                        {% for question in question_most_wrong %}
-                            <li>{{question.text|safe}}</li>
-                        {% endfor %}
-                        </ul>
-                        <p class="h4"><u>Questions with the most “I don’t know” answers:</u></p>
-                        {% idk_answers_per_quiz quiz.id as question_most_idk %}
-                        <ul>
-                        {% for question in question_most_idk %}
-                            <li>{{question.text|safe}}</li>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-4 d-flex">
-                <div class="card flex-fill w-100">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Percentage of Submissions For Each Option</h5>
-                    </div>
-                    <div class="card-body">
-                        {% for question in quiz.question_set.all %}
-                        {{question.text|safe}}
-                        <div class="d-flex align-items-start">
-                            <div class="percent-container">
-                                <div class="choicebox float-end mb-2">
-                                {% for x in num_markers %}
-                                {% percentage_choice x question as percent%}
-                                    <div class="form-check answer{{x}}">
-                                        <span class="text-white bg-dark">({{percent}}%)</span>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <ul class="list-group">
+                                                {% percentage_choice 0 question as percent %}
+                                                {% radio_points quiz.id 0 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(4, 43, 80);">{{percent}}% <span class="badge bg-light  text-dark">A</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 1 question as percent %}
+                                                {% radio_points quiz.id 1 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">AAB</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 2 question as percent %}
+                                                {% radio_points quiz.id 2 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">AB</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 3 question as percent %}
+                                                {% radio_points quiz.id 3 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">ABB</span><span class="badge bg-success text-light">{{pts}} point</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ul class="list-group">
+                                                {% percentage_choice 4 question as percent %}
+                                                {% radio_points quiz.id 4 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}% <span class="badge bg-light  text-dark">B</span><span class="badge bg-secondary text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 5 question as percent %}
+                                                {% radio_points quiz.id 5 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">BBC</span><span class="badge bg-secondary text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 6 question as percent %}
+                                                {% radio_points quiz.id 6 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">BC</span><span class="badge bg-secondary text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 7 question as percent %}
+                                                {% radio_points quiz.id 7 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">BCC</span><span class="badge bg-secondary text-light">{{pts}} points</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ul class="list-group">
+                                                {% percentage_choice 8 question as percent %}
+                                                {% radio_points quiz.id 8 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}% <span class="badge bg-light  text-dark">C</span><span class="badge bg-secondary text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 9 question as percent %}
+                                                {% radio_points quiz.id 9 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">CCA</span><span class="badge bg-success text-light">{{pts}} point</span></li>
+                                                {% percentage_choice 10 question as percent %}
+                                                {% radio_points quiz.id 10 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">CA</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                                {% percentage_choice 11 question as percent %}
+                                                {% radio_points quiz.id 11 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}% <span class="badge bg-dark  text-light">CAA</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <ul class="list-group">
+                                                {% percentage_choice 12 question as percent %}
+                                                {% radio_points quiz.id 12 as pts %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}% <span class="badge bg-light  text-dark">D</span><span class="badge bg-success text-light">{{pts}} points</span></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                {% endfor %}
+                                    <div class="row mt-4">
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header bg-success text-white">
+                                                    <span class="badge bg-light text-dark">A</span> Correct
+                                                </div>
+                                                <div class="card-body">
+                                                {{question.correct_answer_label}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header bg-danger text-white">
+                                                    <span class="badge bg-light text-dark">B</span> Incorrect
+                                                </div>
+                                                <div class="card-body">
+                                                Yellow
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header bg-danger text-white">
+                                                    <span class="badge bg-light text-dark">C</span> Incorrect
+                                                </div>
+                                                <div class="card-body">
+                                                Green
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
                     </div>
-                </div>
-            </div>
+                {% endfor %}
+            </section> -->
         </div>
-    </div>
     {% else %}
         <p>No submissions for this quiz yet.</p>
     {% endif %}

@@ -100,7 +100,7 @@ def total_right_answers(question):
 def total_wrong_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
-        if not res.is_correct():
+        if not res.is_correct() and not res.selected_position == 12:
             num += 1
     return num
 

@@ -19,7 +19,10 @@ def radio_points(id, x):
 
 @register.simple_tag
 def submission_max_points(submissions):
-    max_points = 0
+    if not submissions:
+        return None
+
+    max_points = submissions[0].user_points()
     for sub in submissions:
         if sub.user_points() > max_points:
             max_points = sub.user_points()
@@ -28,7 +31,10 @@ def submission_max_points(submissions):
 
 @register.simple_tag
 def submission_min_points(submissions):
-    min_points = 0
+    if not submissions:
+        return None
+
+    min_points = submissions[0].user_points()
     for sub in submissions:
         if sub.user_points() < min_points:
             min_points = sub.user_points()

@@ -62,7 +62,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         self.assertTrue(quiz.randomize)
         self.assertEqual(quiz.scoring_scheme, 2)
 
-        self.assertTrue('<strong>Lorem Ipsum</strong> quiz created'
+        self.assertTrue('Lorem Ipsum quiz created'
                         in response.cookies['messages'].value)
 
 
@@ -156,7 +156,7 @@ class CreateQuestionViewTest(CourseTestMixin, TestCase):
         self.assertTrue(question.marker_set.all()[1].correct)
         self.assertFalse(question.marker_set.all()[2].correct)
 
-        self.assertTrue('<strong>Lorem Ipsum</strong> question created'
+        self.assertTrue('Lorem Ipsum question created'
                         in response.cookies['messages'].value)
 
 

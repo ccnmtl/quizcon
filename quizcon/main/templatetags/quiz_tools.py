@@ -141,10 +141,10 @@ def percentage_choice(x, question):
 
 
 @register.simple_tag
-def right_answers_per_quiz(id):
+def questions_most_correct(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_correct = 0
-    question_most_correct = []
+    questions_most_correct = []
     questions = {}
     for question in quiz.question_set.all():
         if num_of_correct < total_right_answers(question):
@@ -153,15 +153,18 @@ def right_answers_per_quiz(id):
         questions.update({total_right_answers(question): question})
     for key in questions:
         if key == num_of_correct:
-            question_most_correct.append(questions[key])
-    return question_most_correct
+            questions_most_correct.append(questions[key])
+    if num_of_correct == 0:
+        return "No questions answered correctly."
+    else:
+        return questions_most_correct
 
 
 @register.simple_tag
-def wrong_answers_per_quiz(id):
+def questions_most_incorrect(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_incorrect = 0
-    question_least_correct = []
+    questions_most_incorrect = []
     questions = {}
     for question in quiz.question_set.all():
         if num_of_incorrect < total_wrong_answers(question):
@@ -170,12 +173,15 @@ def wrong_answers_per_quiz(id):
         questions.update({total_wrong_answers(question): question})
     for key in questions:
         if key == num_of_incorrect:
-            question_least_correct.append(questions[key])
-    return question_least_correct
+            questions_most_incorrect.append(questions[key])
+    if num_of_incorrect == 0:
+        return "No questions answered incorrectly."
+    else:
+        return questions_most_incorrect
 
 
 @register.simple_tag
-def idk_answers_per_quiz(id):
+def questions_most_idk(id):
     quiz = Quiz.objects.get(pk=id)
     num_of_idk = 0
     questions_most_idk = []
@@ -188,4 +194,6 @@ def idk_answers_per_quiz(id):
     for key in questions:
         if key == num_of_idk:
             questions_most_idk.append(questions[key])
+    if num_of_idk == 0:
+        return "No questions answered 'I don't know.'"
     return questions_most_idk

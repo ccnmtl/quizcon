@@ -144,7 +144,7 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% right_answers_per_quiz quiz.id as question_most_right %}
+                                    {% questions_most_correct quiz.id as question_most_right %}
                                     {% for question in question_most_right %}
                                         <a href="#q{{question.pk}}">{{question.text|safe}}</a>
                                     {% endfor %}
@@ -159,7 +159,7 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
+                                    {% questions_most_incorrect quiz.id as question_most_wrong %}
                                     {% for question in question_most_wrong %}
                                         <a href="#q{{question.pk}}">{{question.text|safe}}</a>
                                     {% endfor %}
@@ -174,7 +174,7 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% idk_answers_per_quiz quiz.id as question_most_idk %}
+                                    {% questions_most_idk quiz.id as question_most_idk %}
                                     {% for question in question_most_idk %}
                                         <a href="#q{{question.pk}}">{{question.text|safe}}</a>
                                     {% endfor %}

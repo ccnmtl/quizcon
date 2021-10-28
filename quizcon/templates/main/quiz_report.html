@@ -27,53 +27,53 @@ Report for {{ quiz.title }}
                 <div class="row mt-4">
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Mean
+                            </div>
                             <div class="card-body">
                                 {% submission_mean submissions as mean %}
                                 <h3 class="card-title display-5">
                                 {{mean}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Mean
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Median
+                            </div>
                             <div class="card-body">
                                 {% submission_median submissions as median %}
                                 <h3 class="card-title display-5">
                                 {{median}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Median
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Mode
+                            </div>
                             <div class="card-body">
                                 {% submission_mode submissions as mode %}
                                 <h3 class="card-title display-5">
                                 {{mode}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Mode
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Standard Deviation
+                            </div>
                             <div class="card-body">
                                 {% submission_standard_dev submissions as stdev %}
                                 <h3 class="card-title display-5">
                                 {{stdev}}
                                 </h3>
-                            </div>
-                            <div class="card-footer bg-dark text-white">
-                            Standard Deviation
                             </div>
                         </div>
                     </div>
@@ -81,51 +81,51 @@ Report for {{ quiz.title }}
                 <div class="row mt-4">
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Total Questions
+                            </div>
                             <div class="card-body">
                                 <h3 class="card-title display-5">
                                 {{quiz.question_set.count}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Total Questions
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Quiz Submissions
+                            </div>
                             <div class="card-body">
                                 <h3 class="card-title display-5">
                                 {{total_submissions}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Quiz Submissions
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Minimum Points Earned
+                            </div>
                             <div class="card-body">
                                 {% submission_min_points submissions as min %}
                                 <h3 class="card-title display-5">
                                 {{min}}
                                 </h3>
                             </div>
-                            <div class="card-footer bg-dark text-white">
-                            Minimum Points Earned
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Maximum Points Earned
+                            </div>
                             <div class="card-body">
                                 {% submission_max_points submissions as max %}
                                 <h3 class="card-title display-5">
                                 {{max}}
                                 </h3>
-                            </div>
-                            <div class="card-footer bg-dark text-white">
-                            Maximum Points Earned
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@ Report for {{ quiz.title }}
                                 <p class="card-text">
                                     {% right_answers_per_quiz quiz.id as question_most_right %}
                                     {% for question in question_most_right %}
-                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                        <a href="#q{{question.pk}}"  class="linked-question">{{question.text|safe}}</a>
                                     {% endfor %}
                                 </p>
                             </div>
@@ -161,7 +161,7 @@ Report for {{ quiz.title }}
                                 <p class="card-text">
                                     {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
                                     {% for question in question_most_wrong %}
-                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                        <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
                                     {% endfor %}
                                 </p>
                             </div>
@@ -176,7 +176,7 @@ Report for {{ quiz.title }}
                                 <p class="card-text">
                                     {% idk_answers_per_quiz quiz.id as question_most_idk %}
                                     {% for question in question_most_idk %}
-                                        <a href="#q{{question.pk}}">{{question.text|safe}}</a>
+                                        <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
                                     {% endfor %}
                                 </p>
                             </div>

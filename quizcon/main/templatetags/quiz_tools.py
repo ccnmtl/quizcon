@@ -143,57 +143,41 @@ def percentage_choice(x, question):
 @register.simple_tag
 def questions_most_correct(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_correct = 0
-    questions_most_correct = []
-    questions = {}
+    num_of_correct = {}
     for question in quiz.question_set.all():
-        if num_of_correct < total_right_answers(question):
-            num_of_correct = total_right_answers(question)
+        num_of_correct.update({question: total_right_answers(question)})
+    max_num_correct = max(num_of_correct.values())
 
-        questions.update({total_right_answers(question): question})
-    for key in questions:
-        if key == num_of_correct:
-            questions_most_correct.append(questions[key])
-    if num_of_correct == 0:
+    if max_num_correct == 0:
         return "No questions answered correctly."
     else:
-        return questions_most_correct
+        return [k for k, v in num_of_correct.items() if v == max_num_correct]
 
 
 @register.simple_tag
 def questions_most_incorrect(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_incorrect = 0
-    questions_most_incorrect = []
-    questions = {}
+    num_of_incorrect = {}
     for question in quiz.question_set.all():
-        if num_of_incorrect < total_wrong_answers(question):
-            num_of_incorrect = total_wrong_answers(question)
+        num_of_incorrect.update({question: total_wrong_answers(question)})
 
-        questions.update({total_wrong_answers(question): question})
-    for key in questions:
-        if key == num_of_incorrect:
-            questions_most_incorrect.append(questions[key])
-    if num_of_incorrect == 0:
+    max_num_incorrect = max(num_of_incorrect.values())
+    if max_num_incorrect == 0:
         return "No questions answered incorrectly."
     else:
-        return questions_most_incorrect
+        return [k for k, v in num_of_incorrect.items()
+                if v == max_num_incorrect]
 
 
 @register.simple_tag
 def questions_most_idk(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_idk = 0
-    questions_most_idk = []
-    questions = {}
+    num_of_idk = {}
     for question in quiz.question_set.all():
-        if num_of_idk < total_idk_answers(question):
-            num_of_idk = total_idk_answers(question)
+        num_of_idk.update({question: total_idk_answers(question)})
 
-        questions.update({total_idk_answers(question): question})
-    for key in questions:
-        if key == num_of_idk:
-            questions_most_idk.append(questions[key])
-    if num_of_idk == 0:
+    max_num_idk = max(num_of_idk.values())
+    if max_num_idk == 0:
         return "No questions answered 'I don't know.'"
-    return questions_most_idk
+    else:
+        return [k for k, v in num_of_idk.items() if v == max_num_idk]

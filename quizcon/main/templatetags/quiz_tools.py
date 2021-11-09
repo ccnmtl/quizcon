@@ -149,7 +149,7 @@ def questions_most_correct(id):
     max_num_correct = max(num_of_correct.values())
 
     if max_num_correct == 0:
-        return "No questions answered correctly."
+        return []
     else:
         return [k for k, v in num_of_correct.items() if v == max_num_correct]
 
@@ -163,7 +163,7 @@ def questions_most_incorrect(id):
 
     max_num_incorrect = max(num_of_incorrect.values())
     if max_num_incorrect == 0:
-        return "No questions answered incorrectly."
+        return []
     else:
         return [k for k, v in num_of_incorrect.items()
                 if v == max_num_incorrect]
@@ -178,6 +178,6 @@ def questions_most_idk(id):
 
     max_num_idk = max(num_of_idk.values())
     if max_num_idk == 0:
-        return "No questions answered 'I don't know.'"
+        return []
     else:
         return [k for k, v in num_of_idk.items() if v == max_num_idk]

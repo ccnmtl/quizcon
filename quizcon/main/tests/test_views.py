@@ -497,9 +497,9 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(questions_most_correct(self.quiz.id),
                          [self.question1])
         self.assertEqual(questions_most_idk(self.quiz.id),
-                         "No questions answered 'I don't know.'")
+                         [])
         self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         "No questions answered incorrectly.")
+                         [])
 
         qres.selected_position = 2
         qres.save()
@@ -507,18 +507,18 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(questions_most_incorrect(self.quiz.id),
                          [self.question1])
         self.assertEqual(questions_most_idk(self.quiz.id),
-                         "No questions answered 'I don't know.'")
+                         [])
         self.assertEqual(questions_most_correct(self.quiz.id),
-                         "No questions answered correctly.")
+                         [])
 
         qres.selected_position = 12
         qres.save()
 
         self.assertEqual(questions_most_idk(self.quiz.id), [self.question1])
         self.assertEqual(questions_most_correct(self.quiz.id),
-                         "No questions answered correctly.")
+                         [])
         self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         "No questions answered incorrectly.")
+                         [])
 
     def test_two_submissions(self):
         # add other questions
@@ -576,7 +576,7 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(questions_most_correct(self.quiz.id),
                          [self.question1, self.question2])
         self.assertEqual(questions_most_idk(self.quiz.id),
-                         "No questions answered 'I don't know.'")
+                         [])
         self.assertEqual(questions_most_incorrect(self.quiz.id),
                          [self.question3])
 

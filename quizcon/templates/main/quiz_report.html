@@ -145,11 +145,12 @@ Report for {{ quiz.title }}
                             <div class="card-body">
                                 <p class="card-text">
                                     {% questions_most_correct quiz.id as question_most_right %}
-                                    {% if question_most_right == "No questions answered correctly." %}
-                                            <b>{{question_most_right}}</b>
+                                    {% if question_most_right|length == 0 %}
+                                            <b>No questions answered correctly.</b>
                                     {% else %}
                                         {% for question in question_most_right %}
                                             <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
                                         {% endfor %}
                                     {% endif %}
                                 </p>
@@ -164,11 +165,12 @@ Report for {{ quiz.title }}
                             <div class="card-body">
                                 <p class="card-text">
                                     {% questions_most_incorrect quiz.id as question_most_wrong %}
-                                    {% if question_most_wrong == "No questions answered incorrectly." %}
-                                            <b>{{question_most_right}}</b>
+                                    {% if question_most_wrong|length == 0 %}
+                                            <b>No questions answered incorrectly.</b>
                                     {% else %}
                                         {% for question in question_most_wrong %}
                                             <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
                                         {% endfor %}
                                     {% endif %}
                                 </p>
@@ -183,11 +185,12 @@ Report for {{ quiz.title }}
                             <div class="card-body">
                                 <p class="card-text">
                                     {% questions_most_idk quiz.id as question_most_idk %}
-                                    {% if question_most_idk == "No questions answered 'I don't know.'" %}
-                                            <b>{{question_most_right}}</b>
+                                    {% if question_most_idk|length == 0 %}
+                                            <b>No questions answered 'I don't know.'</b>
                                     {% else %}
                                         {% for question in question_most_idk %}
                                             <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
                                         {% endfor %}
                                     {% endif %}
                                 </p>

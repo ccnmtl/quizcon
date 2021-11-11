@@ -7,12 +7,16 @@ from django.test.client import RequestFactory
 from django.urls.base import reverse
 from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.tests.factories import (
-    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory
+    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory,
+    UserFactory
 )
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
 from quizcon.main.templatetags.quiz_tools import (
     submission_median, submission_mean, submission_mode,
-    submission_standard_dev, normalize_percent
+    submission_standard_dev, normalize_percent, submission_max_points,
+    submission_min_points, total_right_answers, total_wrong_answers,
+    total_idk_answers, questions_most_idk, questions_most_correct,
+    questions_most_incorrect
 )
 
 
@@ -381,10 +385,10 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.setup_course()
         self.quiz = QuizFactory(course=self.course)
         self.question1 = QuestionFactory(quiz=self.quiz)
-        self.question2 = QuestionFactory(quiz=self.quiz)
         self.submissions = []
 
-    def test_no_submissions(self):
+    def test_mean_median_standdev_mode(self):
+        # no submissions
         self.assertEqual(submission_median(self.submissions),
                          "Cannot calculate median.")
         self.assertEqual(submission_mean(self.submissions),
@@ -393,23 +397,198 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
                          "Not enough data")
         self.assertEqual(submission_mode(self.submissions),
                          "No unique mode.")
-
-    def test_one_submission(self):
+        # one submission
         self.submission = QuizSubmissionFactory(
             quiz=self.quiz, user=self.student)
         self.submissions.append(self.submission)
         self.assertEqual(submission_standard_dev(self.submissions),
                          "Not enough data")
 
+    def test_max_min(self):
+        # no submissions
+        self.assertEqual(submission_max_points(self.submissions),
+                         None)
+        self.assertEqual(submission_min_points(self.submissions),
+                         None)
+        # one submission
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
         qres = self.submission.questionresponse_set.first()
         correct_marker = qres.questionresponsemarker_set.get(
             marker__correct=True)
+
         correct_marker.ordinal = 0
         correct_marker.save()
+
+        self.assertEqual(submission_max_points(self.submissions), 3)
+        self.assertEqual(submission_min_points(self.submissions), 3)
+
+        correct_marker.ordinal = 1
+        correct_marker.save()
+
+        self.assertEqual(submission_max_points(self.submissions), -5)
+        self.assertEqual(submission_min_points(self.submissions), -5)
+
+    def test_normalize_percent(self):
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+
+        correct_marker.ordinal = 0
+        correct_marker.save()
+
         self.assertEqual(normalize_percent(qres), 0)
+
         qres.selected_position = 2
         qres.save()
+
         self.assertEqual(normalize_percent(qres), 2)
+
         correct_marker.ordinal = 2
         correct_marker.save()
+
         self.assertEqual(normalize_percent(qres), 6)
+
+    def test_total_answers(self):
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+
+        correct_marker.ordinal = 0
+        correct_marker.save()
+
+        self.assertEqual(total_right_answers(qres.question), 1)
+        self.assertEqual(total_wrong_answers(qres.question), 0)
+        self.assertEqual(total_idk_answers(qres.question), 0)
+
+        qres.selected_position = 2
+        qres.save()
+
+        self.assertEqual(total_right_answers(qres.question), 0)
+        self.assertEqual(total_wrong_answers(qres.question), 1)
+        self.assertEqual(total_idk_answers(qres.question), 0)
+
+        qres.selected_position = 12
+        qres.save()
+
+        self.assertEqual(total_right_answers(qres.question), 0)
+        self.assertEqual(total_wrong_answers(qres.question), 0)
+        self.assertEqual(total_idk_answers(qres.question), 1)
+
+    def test_questions_most(self):
+        # one submission
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+
+        correct_marker.ordinal = 0
+        correct_marker.save()
+
+        self.assertEqual(questions_most_correct(self.quiz.id),
+                         [self.question1])
+        self.assertEqual(questions_most_idk(self.quiz.id),
+                         [])
+        self.assertEqual(questions_most_incorrect(self.quiz.id),
+                         [])
+
+        qres.selected_position = 2
+        qres.save()
+
+        self.assertEqual(questions_most_incorrect(self.quiz.id),
+                         [self.question1])
+        self.assertEqual(questions_most_idk(self.quiz.id),
+                         [])
+        self.assertEqual(questions_most_correct(self.quiz.id),
+                         [])
+
+        qres.selected_position = 12
+        qres.save()
+
+        self.assertEqual(questions_most_idk(self.quiz.id), [self.question1])
+        self.assertEqual(questions_most_correct(self.quiz.id),
+                         [])
+        self.assertEqual(questions_most_incorrect(self.quiz.id),
+                         [])
+
+    def test_two_submissions(self):
+        # add other questions
+        self.question2 = QuestionFactory(quiz=self.quiz)
+        self.question3 = QuestionFactory(quiz=self.quiz)
+
+        # one submission
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        # two submissions
+        self.student2 = UserFactory()
+        self.submission2 = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student2)
+        self.submissions.append(self.submission2)
+
+        # first submission
+        for qres in self.submission.questionresponse_set.all():
+            correct_marker = qres.questionresponsemarker_set.get(
+                marker__correct=True)
+            correct_marker.ordinal = 0
+            correct_marker.save()
+        res1 = self.submission.questionresponse_set.get(
+                question=self.question1)
+        res2 = self.submission.questionresponse_set.get(
+                question=self.question2)
+        res3 = self.submission.questionresponse_set.get(
+                question=self.question3)
+        res1.selected_position = 0
+        res1.save()
+        res2.selected_position = 0
+        res2.save()
+        res3.selected_position = 2
+        res3.save()
+
+        # second submission
+        for qres2 in self.submission2.questionresponse_set.all():
+            correct_marker2 = qres2.questionresponsemarker_set.get(
+                marker__correct=True)
+            correct_marker2.ordinal = 0
+            correct_marker2.save()
+        res21 = self.submission2.questionresponse_set.get(
+                question=self.question1)
+        res22 = self.submission2.questionresponse_set.get(
+                question=self.question2)
+        res23 = self.submission2.questionresponse_set.get(
+                question=self.question3)
+        res21.selected_position = 0
+        res21.save()
+        res22.selected_position = 0
+        res22.save()
+        res23.selected_position = 2
+        res23.save()
+
+        self.assertEqual(questions_most_correct(self.quiz.id),
+                         [self.question1, self.question2])
+        self.assertEqual(questions_most_idk(self.quiz.id),
+                         [])
+        self.assertEqual(questions_most_incorrect(self.quiz.id),
+                         [self.question3])
+
+        res21.selected_position = 0
+        res21.save()
+        res22.selected_position = 0
+        res22.save()
+        res23.selected_position = 12
+        res23.save()
+
+        self.assertEqual(questions_most_correct(self.quiz.id),
+                         [self.question1, self.question2])
+        self.assertEqual(questions_most_idk(self.quiz.id), [self.question3])
+        self.assertEqual(questions_most_incorrect(self.quiz.id),
+                         [self.question3])

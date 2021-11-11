@@ -100,7 +100,7 @@ def total_right_answers(question):
 def total_wrong_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
-        if not res.is_correct():
+        if not res.is_correct() and not res.selected_position == 12:
             num += 1
     return num
 
@@ -141,51 +141,43 @@ def percentage_choice(x, question):
 
 
 @register.simple_tag
-def right_answers_per_quiz(id):
+def questions_most_correct(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_correct = 0
-    question_most_correct = []
-    questions = {}
+    num_of_correct = {}
     for question in quiz.question_set.all():
-        if num_of_correct < total_right_answers(question):
-            num_of_correct = total_right_answers(question)
+        num_of_correct.update({question: total_right_answers(question)})
+    max_num_correct = max(num_of_correct.values())
 
-        questions.update({total_right_answers(question): question})
-    for key in questions:
-        if key == num_of_correct:
-            question_most_correct.append(questions[key])
-    return question_most_correct
+    if max_num_correct == 0:
+        return []
+    else:
+        return [k for k, v in num_of_correct.items() if v == max_num_correct]
 
 
 @register.simple_tag
-def wrong_answers_per_quiz(id):
+def questions_most_incorrect(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_incorrect = 0
-    question_least_correct = []
-    questions = {}
+    num_of_incorrect = {}
     for question in quiz.question_set.all():
-        if num_of_incorrect < total_wrong_answers(question):
-            num_of_incorrect = total_wrong_answers(question)
+        num_of_incorrect.update({question: total_wrong_answers(question)})
 
-        questions.update({total_wrong_answers(question): question})
-    for key in questions:
-        if key == num_of_incorrect:
-            question_least_correct.append(questions[key])
-    return question_least_correct
+    max_num_incorrect = max(num_of_incorrect.values())
+    if max_num_incorrect == 0:
+        return []
+    else:
+        return [k for k, v in num_of_incorrect.items()
+                if v == max_num_incorrect]
 
 
 @register.simple_tag
-def idk_answers_per_quiz(id):
+def questions_most_idk(id):
     quiz = Quiz.objects.get(pk=id)
-    num_of_idk = 0
-    questions_most_idk = []
-    questions = {}
+    num_of_idk = {}
     for question in quiz.question_set.all():
-        if num_of_idk < total_idk_answers(question):
-            num_of_idk = total_idk_answers(question)
+        num_of_idk.update({question: total_idk_answers(question)})
 
-        questions.update({total_idk_answers(question): question})
-    for key in questions:
-        if key == num_of_idk:
-            questions_most_idk.append(questions[key])
-    return questions_most_idk
+    max_num_idk = max(num_of_idk.values())
+    if max_num_idk == 0:
+        return []
+    else:
+        return [k for k, v in num_of_idk.items() if v == max_num_idk]

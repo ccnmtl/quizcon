@@ -144,10 +144,15 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% right_answers_per_quiz quiz.id as question_most_right %}
-                                    {% for question in question_most_right %}
-                                        <a href="#q{{question.pk}}"  class="linked-question">{{question.text|safe}}</a>
-                                    {% endfor %}
+                                    {% questions_most_correct quiz.id as question_most_right %}
+                                    {% if question_most_right|length == 0 %}
+                                            <b>No questions answered correctly.</b>
+                                    {% else %}
+                                        {% for question in question_most_right %}
+                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
+                                        {% endfor %}
+                                    {% endif %}
                                 </p>
                             </div>
                         </div>
@@ -159,10 +164,15 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% wrong_answers_per_quiz quiz.id as question_most_wrong %}
-                                    {% for question in question_most_wrong %}
-                                        <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
-                                    {% endfor %}
+                                    {% questions_most_incorrect quiz.id as question_most_wrong %}
+                                    {% if question_most_wrong|length == 0 %}
+                                            <b>No questions answered incorrectly.</b>
+                                    {% else %}
+                                        {% for question in question_most_wrong %}
+                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
+                                        {% endfor %}
+                                    {% endif %}
                                 </p>
                             </div>
                         </div>
@@ -174,10 +184,15 @@ Report for {{ quiz.title }}
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    {% idk_answers_per_quiz quiz.id as question_most_idk %}
-                                    {% for question in question_most_idk %}
-                                        <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
-                                    {% endfor %}
+                                    {% questions_most_idk quiz.id as question_most_idk %}
+                                    {% if question_most_idk|length == 0 %}
+                                            <b>No questions answered 'I don't know.'</b>
+                                    {% else %}
+                                        {% for question in question_most_idk %}
+                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
+                                            <br/>
+                                        {% endfor %}
+                                    {% endif %}
                                 </p>
                             </div>
                         </div>

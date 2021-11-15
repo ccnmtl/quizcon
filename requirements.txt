@@ -34,7 +34,7 @@ certifi==2021.10.8  # requests, sentry-sdk
 requests==2.26.0
 djangowind==1.2.4
 
-astroid==2.8.4
+astroid==2.8.5
 pylint==2.11.1
 
 six==1.16.0

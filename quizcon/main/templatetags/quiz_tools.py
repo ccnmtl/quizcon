@@ -89,6 +89,7 @@ def submission_standard_dev(submissions):
     return stdev
 
 
+@register.simple_tag
 def total_right_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -97,6 +98,7 @@ def total_right_answers(question):
     return num
 
 
+@register.simple_tag
 def total_wrong_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -105,6 +107,7 @@ def total_wrong_answers(question):
     return num
 
 
+@register.simple_tag
 def total_idk_answers(question):
     num = 0
     for res in question.questionresponse_set.all():
@@ -138,46 +141,3 @@ def percentage_choice(x, question):
     else:
         percent = 0
     return percent
-
-
-@register.simple_tag
-def questions_most_correct(id):
-    quiz = Quiz.objects.get(pk=id)
-    num_of_correct = {}
-    for question in quiz.question_set.all():
-        num_of_correct.update({question: total_right_answers(question)})
-    max_num_correct = max(num_of_correct.values())
-
-    if max_num_correct == 0:
-        return []
-    else:
-        return [k for k, v in num_of_correct.items() if v == max_num_correct]
-
-
-@register.simple_tag
-def questions_most_incorrect(id):
-    quiz = Quiz.objects.get(pk=id)
-    num_of_incorrect = {}
-    for question in quiz.question_set.all():
-        num_of_incorrect.update({question: total_wrong_answers(question)})
-
-    max_num_incorrect = max(num_of_incorrect.values())
-    if max_num_incorrect == 0:
-        return []
-    else:
-        return [k for k, v in num_of_incorrect.items()
-                if v == max_num_incorrect]
-
-
-@register.simple_tag
-def questions_most_idk(id):
-    quiz = Quiz.objects.get(pk=id)
-    num_of_idk = {}
-    for question in quiz.question_set.all():
-        num_of_idk.update({question: total_idk_answers(question)})
-
-    max_num_idk = max(num_of_idk.values())
-    if max_num_idk == 0:
-        return []
-    else:
-        return [k for k, v in num_of_idk.items() if v == max_num_idk]

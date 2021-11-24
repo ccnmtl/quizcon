@@ -136,67 +136,31 @@ Report for {{ quiz.title }}
                 <h2 class="mt-4">
                 Insights
                 </h2>
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-success text-white">
-                            Most Correct Answers
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    {% questions_most_correct quiz.id as question_most_right %}
-                                    {% if question_most_right|length == 0 %}
-                                            <b>No questions answered correctly.</b>
-                                    {% else %}
-                                        {% for question in question_most_right %}
-                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
-                                            <br/>
-                                        {% endfor %}
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-danger text-white">
-                            Most Incorrect Answers
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    {% questions_most_incorrect quiz.id as question_most_wrong %}
-                                    {% if question_most_wrong|length == 0 %}
-                                            <b>No questions answered incorrectly.</b>
-                                    {% else %}
-                                        {% for question in question_most_wrong %}
-                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
-                                            <br/>
-                                        {% endfor %}
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header bg-secondary text-white">
-                            Most "I Don't Know" Answers
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">
-                                    {% questions_most_idk quiz.id as question_most_idk %}
-                                    {% if question_most_idk|length == 0 %}
-                                            <b>No questions answered 'I don't know.'</b>
-                                    {% else %}
-                                        {% for question in question_most_idk %}
-                                            <a href="#q{{question.pk}}" class="linked-question">{{question.text|safe}}</a>
-                                            <br/>
-                                        {% endfor %}
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <col width="25%"> <col width="8%"> <col width="8%"><col width="8%">
+                        <thead>
+                            <tr>
+                                <th scope="col">Question</th>
+                                <th scope="col"># of Correct Answers</th>
+                                <th scope="col"># of Incorrect Answers</th>
+                                <th scope="col"># of IDK Answers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for question in quiz.question_set.all %}
+                                {% total_right_answers question as total_right %}
+                                {% total_wrong_answers question as total_wrong %}
+                                {% total_idk_answers question as toal_idk %}
+                            <tr>
+                                <th scope="row">{{question.text|safe}}</th>
+                                <td class="text-center">{{total_right}}</td>
+                                <td class="text-center">{{total_wrong}}</td>
+                                <td class="text-center">{{toal_idk}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </section>
             <!-- <section style="margin: 4em 0em 4em 0em;">

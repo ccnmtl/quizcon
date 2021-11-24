@@ -7,16 +7,14 @@ from django.test.client import RequestFactory
 from django.urls.base import reverse
 from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.tests.factories import (
-    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory,
-    UserFactory
+    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory
 )
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
 from quizcon.main.templatetags.quiz_tools import (
     submission_median, submission_mean, submission_mode,
     submission_standard_dev, normalize_percent, submission_max_points,
     submission_min_points, total_right_answers, total_wrong_answers,
-    total_idk_answers, questions_most_idk, questions_most_correct,
-    questions_most_incorrect
+    total_idk_answers
 )
 
 
@@ -481,114 +479,3 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(total_right_answers(qres.question), 0)
         self.assertEqual(total_wrong_answers(qres.question), 0)
         self.assertEqual(total_idk_answers(qres.question), 1)
-
-    def test_questions_most(self):
-        # one submission
-        self.submission = QuizSubmissionFactory(
-            quiz=self.quiz, user=self.student)
-        self.submissions.append(self.submission)
-        qres = self.submission.questionresponse_set.first()
-        correct_marker = qres.questionresponsemarker_set.get(
-            marker__correct=True)
-
-        correct_marker.ordinal = 0
-        correct_marker.save()
-
-        self.assertEqual(questions_most_correct(self.quiz.id),
-                         [self.question1])
-        self.assertEqual(questions_most_idk(self.quiz.id),
-                         [])
-        self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         [])
-
-        qres.selected_position = 2
-        qres.save()
-
-        self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         [self.question1])
-        self.assertEqual(questions_most_idk(self.quiz.id),
-                         [])
-        self.assertEqual(questions_most_correct(self.quiz.id),
-                         [])
-
-        qres.selected_position = 12
-        qres.save()
-
-        self.assertEqual(questions_most_idk(self.quiz.id), [self.question1])
-        self.assertEqual(questions_most_correct(self.quiz.id),
-                         [])
-        self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         [])
-
-    def test_two_submissions(self):
-        # add other questions
-        self.question2 = QuestionFactory(quiz=self.quiz)
-        self.question3 = QuestionFactory(quiz=self.quiz)
-
-        # one submission
-        self.submission = QuizSubmissionFactory(
-            quiz=self.quiz, user=self.student)
-        self.submissions.append(self.submission)
-        # two submissions
-        self.student2 = UserFactory()
-        self.submission2 = QuizSubmissionFactory(
-            quiz=self.quiz, user=self.student2)
-        self.submissions.append(self.submission2)
-
-        # first submission
-        for qres in self.submission.questionresponse_set.all():
-            correct_marker = qres.questionresponsemarker_set.get(
-                marker__correct=True)
-            correct_marker.ordinal = 0
-            correct_marker.save()
-        res1 = self.submission.questionresponse_set.get(
-                question=self.question1)
-        res2 = self.submission.questionresponse_set.get(
-                question=self.question2)
-        res3 = self.submission.questionresponse_set.get(
-                question=self.question3)
-        res1.selected_position = 0
-        res1.save()
-        res2.selected_position = 0
-        res2.save()
-        res3.selected_position = 2
-        res3.save()
-
-        # second submission
-        for qres2 in self.submission2.questionresponse_set.all():
-            correct_marker2 = qres2.questionresponsemarker_set.get(
-                marker__correct=True)
-            correct_marker2.ordinal = 0
-            correct_marker2.save()
-        res21 = self.submission2.questionresponse_set.get(
-                question=self.question1)
-        res22 = self.submission2.questionresponse_set.get(
-                question=self.question2)
-        res23 = self.submission2.questionresponse_set.get(
-                question=self.question3)
-        res21.selected_position = 0
-        res21.save()
-        res22.selected_position = 0
-        res22.save()
-        res23.selected_position = 2
-        res23.save()
-
-        self.assertEqual(questions_most_correct(self.quiz.id),
-                         [self.question1, self.question2])
-        self.assertEqual(questions_most_idk(self.quiz.id),
-                         [])
-        self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         [self.question3])
-
-        res21.selected_position = 0
-        res21.save()
-        res22.selected_position = 0
-        res22.save()
-        res23.selected_position = 12
-        res23.save()
-
-        self.assertEqual(questions_most_correct(self.quiz.id),
-                         [self.question1, self.question2])
-        self.assertEqual(questions_most_idk(self.quiz.id), [self.question3])
-        self.assertEqual(questions_most_incorrect(self.quiz.id),
-                         [self.question3])

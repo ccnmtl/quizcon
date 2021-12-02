@@ -158,7 +158,7 @@ class CreateQuestionViewTest(CourseTestMixin, TestCase):
         self.assertTrue(question.marker_set.all()[1].correct)
         self.assertFalse(question.marker_set.all()[2].correct)
 
-        self.assertTrue('Lorem Ipsum question created'
+        self.assertTrue('Congratulations! New question created!'
                         in response.cookies['messages'].value)
 
 

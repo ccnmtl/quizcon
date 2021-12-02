@@ -186,6 +186,10 @@ class LTICourseSelector(LoginRequiredMixin, View):
 
     def get(self, request, context):
         try:
+            messages.add_message(
+                request, messages.INFO,
+                'Reminder: please log out of Quizzing with Confidence '
+                'after you log out of Courseworks.')
 
             ctx = LTICourseContext.objects.get(lms_course_context=context)
             url = u'/course/{}/'.format(ctx.group.course.id)
@@ -443,10 +447,9 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
                               correct=form.cleaned_data['correct'] == 3,
                               value=1)
 
-        text = form.cleaned_data['text']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '{} question created.'.format(text),
+            'Congratulations! New question created!',
             extra_tags='safe'
         )
 
@@ -475,10 +478,9 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
             marker.label = form.cleaned_data['answer_label_' + str(idx + 1)]
             marker.save()
 
-        text = form.cleaned_data['text']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '{} question updated.'.format(text),
+            'Question updated.',
             extra_tags='safe'
         )
 
@@ -497,8 +499,7 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS,
-            '{} question deleted.'.format(
-                self.object.text),
+            'Question deleted.',
             extra_tags='safe'
         )
 

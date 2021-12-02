@@ -186,10 +186,6 @@ class LTICourseSelector(LoginRequiredMixin, View):
 
     def get(self, request, context):
         try:
-            messages.add_message(
-                request, messages.INFO,
-                'Reminder: please log out of Quizzing with Confidence '
-                'after you log out of Courseworks.')
 
             ctx = LTICourseContext.objects.get(lms_course_context=context)
             url = u'/course/{}/'.format(ctx.group.course.id)

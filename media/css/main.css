@@ -367,3 +367,7 @@ ol { list-style-type: upper-alpha; }
 .ques-text * {
     color: #fff!important
 }
+
+#sortable-table th {
+    cursor: pointer;
+}

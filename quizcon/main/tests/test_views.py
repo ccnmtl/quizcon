@@ -7,14 +7,15 @@ from django.test.client import RequestFactory
 from django.urls.base import reverse
 from quizcon.main.models import Quiz, Question, Marker
 from quizcon.main.tests.factories import (
-    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory
+    CourseTestMixin, QuizFactory, QuestionFactory, QuizSubmissionFactory,
+    UserFactory
 )
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
 from quizcon.main.templatetags.quiz_tools import (
     submission_median, submission_mean, submission_mode,
-    submission_standard_dev, normalize_percent, submission_max_points,
-    submission_min_points, total_right_answers, total_wrong_answers,
-    total_idk_answers
+    submission_standard_dev, submission_max_points, submission_min_points,
+    total_right_answers, total_wrong_answers, total_idk_answers,
+    percentage_choice
 )
 
 
@@ -428,28 +429,44 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.assertEqual(submission_max_points(self.submissions), -5)
         self.assertEqual(submission_min_points(self.submissions), -5)
 
-    def test_normalize_percent(self):
-        self.submission = QuizSubmissionFactory(
-            quiz=self.quiz, user=self.student)
-        self.submissions.append(self.submission)
-        qres = self.submission.questionresponse_set.first()
-        correct_marker = qres.questionresponsemarker_set.get(
-            marker__correct=True)
+    def test_precentage_choice(self):
+        self.question1 = QuestionFactory(quiz=self.quiz)
+        self.question2 = QuestionFactory(quiz=self.quiz)
+        user2 = UserFactory()
+        user3 = UserFactory()
+        self.submission1 = QuizSubmissionFactory(
+                            quiz=self.quiz, user=self.student)
+        self.submission2 = QuizSubmissionFactory(quiz=self.quiz, user=user2)
+        self.submission3 = QuizSubmissionFactory(quiz=self.quiz, user=user3)
+        questions = self.quiz.question_set.all()
+        num_markers = range(13)
+        for idx in enumerate(num_markers):
+            for question in questions:
+                test = percentage_choice(idx, question)
+                import pdb; pdb.set_trace()
 
-        correct_marker.ordinal = 0
-        correct_marker.save()
-
-        self.assertEqual(normalize_percent(qres), 0)
-
-        qres.selected_position = 2
-        qres.save()
-
-        self.assertEqual(normalize_percent(qres), 2)
-
-        correct_marker.ordinal = 2
-        correct_marker.save()
-
-        self.assertEqual(normalize_percent(qres), 6)
+    # def test_normalize_percent(self):
+    #     self.submission = QuizSubmissionFactory(
+    #         quiz=self.quiz, user=self.student)
+    #     self.submissions.append(self.submission)
+    #     qres = self.submission.questionresponse_set.first()
+    #     correct_marker = qres.questionresponsemarker_set.get(
+    #         marker__correct=True)
+    #
+    #     correct_marker.ordinal = 0
+    #     correct_marker.save()
+    #
+    #     self.assertEqual(normalize_percent(qres), 0)
+    #
+    #     qres.selected_position = 2
+    #     qres.save()
+    #
+    #     self.assertEqual(normalize_percent(qres), 2)
+    #
+    #     correct_marker.ordinal = 2
+    #     correct_marker.save()
+    #
+    #     self.assertEqual(normalize_percent(qres), 6)
 
     def test_total_answers(self):
         self.submission = QuizSubmissionFactory(

@@ -1,6 +1,7 @@
 from django import template
 from quizcon.main.models import Quiz
 import statistics
+import math
 
 register = template.Library()
 
@@ -117,23 +118,35 @@ def total_idk_answers(question):
 
 
 @register.simple_tag
-def normalize_percent(qres):
-    normalized_correct = 0
-    selected_pos = qres.selected_position
-    correct_pos = qres.correct_marker_position()
-    distance = abs(selected_pos - correct_pos)
-    normalized_selected = normalized_correct + distance
-
-    return normalized_selected
-
-
-@register.simple_tag
 def percentage_choice(x, question):
+    ord_map = {}
     num = 0
     total = len(question.questionresponse_set.all())
-    for res in question.questionresponse_set.all():
-        normalized_percent = normalize_percent(res)
-        if normalized_percent == x:
+    # iterate thru q's in template
+    correct_marker = question.correct_marker()
+    for qres in question.questionresponse_set.all():
+        correct_qrm = qres.questionresponsemarker_set.get(
+                      marker=correct_marker)
+        qfor = qres.questionresponsemarker_set.exclude(
+               marker=correct_marker).order_by('ordinal')
+        ord_map[correct_qrm] = 0
+        ord_map[qfor.first()] = 1
+        ord_map[qfor.last()] = 2
+
+        selected_pos = qres.selected_position
+
+        prev_vertex_ord = math.floor(selected_pos / 4)
+        prev_marker = qres.questionresponsemarker_set.get(
+                      ordinal=prev_vertex_ord)
+        prev_vertex_pos = prev_vertex_ord * 4
+
+        offset = abs(selected_pos - prev_vertex_pos)
+
+        normalized_prev_vertex = ord_map[prev_marker]
+        normalized_prev_pos = normalized_prev_vertex * 4
+        normalized_position = offset + normalized_prev_pos
+
+        if normalized_position == x:
             num += 1
 
     if total > 0:
@@ -141,3 +154,16 @@ def percentage_choice(x, question):
     else:
         percent = 0
     return percent
+
+
+@register.simple_tag
+def answers_pos(question):
+    correct_marker = question.correct_marker()
+    order_ans = {}
+    qres = question.questionresponse_set.first()
+    qresm = qres.questionresponsemarker_set.exclude(
+           marker=correct_marker).order_by('ordinal')
+    order_ans[1] = qresm.first().marker.label
+    order_ans[2] = qresm.last().marker.label
+
+    return order_ans

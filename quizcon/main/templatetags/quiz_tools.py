@@ -125,29 +125,35 @@ def percentage_choice(x, question):
     # iterate thru q's in template
     correct_marker = question.correct_marker()
     for qres in question.questionresponse_set.all():
-        correct_qrm = qres.questionresponsemarker_set.get(
-                      marker=correct_marker)
-        qfor = qres.questionresponsemarker_set.exclude(
-               marker=correct_marker).order_by('ordinal')
-        ord_map[correct_qrm] = 0
-        ord_map[qfor.first()] = 1
-        ord_map[qfor.last()] = 2
-
         selected_pos = qres.selected_position
+        if selected_pos == 12:
+            if selected_pos == x:
+                num += 1
+            else:
+                continue
 
-        prev_vertex_ord = math.floor(selected_pos / 4)
-        prev_marker = qres.questionresponsemarker_set.get(
-                      ordinal=prev_vertex_ord)
-        prev_vertex_pos = prev_vertex_ord * 4
+        else:
+            correct_qrm = qres.questionresponsemarker_set.get(
+                          marker=correct_marker)
+            qfor = qres.questionresponsemarker_set.exclude(
+                   marker=correct_marker).order_by('ordinal')
+            ord_map[correct_qrm] = 0
+            ord_map[qfor.first()] = 1
+            ord_map[qfor.last()] = 2
 
-        offset = abs(selected_pos - prev_vertex_pos)
+            prev_vertex_ord = math.floor(selected_pos / 4)
+            prev_marker = qres.questionresponsemarker_set.get(
+                          ordinal=prev_vertex_ord)
+            prev_vertex_pos = prev_vertex_ord * 4
 
-        normalized_prev_vertex = ord_map[prev_marker]
-        normalized_prev_pos = normalized_prev_vertex * 4
-        normalized_position = offset + normalized_prev_pos
+            offset = abs(selected_pos - prev_vertex_pos)
 
-        if normalized_position == x:
-            num += 1
+            normalized_prev_vertex = ord_map[prev_marker]
+            normalized_prev_pos = normalized_prev_vertex * 4
+            normalized_position = offset + normalized_prev_pos
+
+            if normalized_position == x:
+                num += 1
 
     if total > 0:
         percent = round((num / total * 100), 1)

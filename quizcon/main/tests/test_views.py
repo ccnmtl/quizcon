@@ -503,3 +503,10 @@ class AnalyticsQuiz2ViewTest(CourseTestMixin, TestCase):
         self.assertEqual(percentage_choice(0, qres.question), 0)
         self.assertEqual(percentage_choice(5, qres.question), 0)
         self.assertEqual(percentage_choice(9, qres.question), 100)
+
+        qres.selected_position = 12
+        qres.save()
+
+        self.assertEqual(percentage_choice(0, qres.question), 0)
+        self.assertEqual(percentage_choice(1, qres.question), 0)
+        self.assertEqual(percentage_choice(12, qres.question), 100)

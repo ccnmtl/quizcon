@@ -119,13 +119,25 @@ def total_idk_answers(question):
 
 @register.simple_tag
 def percentage_choice(x, question):
-    ord_map = {}
+    # Function takes the triangle position and the current question
+    # Iteration through the questions is done in the template
+
+    # Things to note. A position is any point from 0 - 12 on a triangle.
+    # A vertex is a labeled position on a triangle. There are only three
+    # labeled positions aka vertices. 0, 1, or 2
+
+    # Holds the number of times the normalized position is equal to the
+    # traingle position
     num = 0
+
+    ord_map = {}
     total = len(question.questionresponse_set.all())
-    # iterate thru q's in template
     correct_marker = question.correct_marker()
+
     for qres in question.questionresponse_set.all():
         selected_pos = qres.selected_position
+
+        # If selected position is 12 (I don't know), no need to normalize.
         if selected_pos == 12:
             if selected_pos == x:
                 num += 1
@@ -133,28 +145,43 @@ def percentage_choice(x, question):
                 continue
 
         else:
+            # Grab the correct Marker
             correct_qrm = qres.questionresponsemarker_set.get(
                           marker=correct_marker)
+            # Get the incorrect Markers by asc order
             qfor = qres.questionresponsemarker_set.exclude(
                    marker=correct_marker).order_by('ordinal')
+            # Create a normalized map where the correct marker is at ordinal 0
+            # and the incorrect markers are 1 and 2 accoriding to the original
+            # asc order.
             ord_map[correct_qrm] = 0
             ord_map[qfor.first()] = 1
             ord_map[qfor.last()] = 2
 
+            # Based on selected position, find the previous vertex
             prev_vertex_ord = math.floor(selected_pos / 4)
+
+            # Use the previous vertex to find the previous marker
             prev_marker = qres.questionresponsemarker_set.get(
                           ordinal=prev_vertex_ord)
+            # Previous vertex position
             prev_vertex_pos = prev_vertex_ord * 4
 
+            # Use the selected position and previous vertext position to
+            # the offset between the selected pt and the closest vertex pt.
             offset = abs(selected_pos - prev_vertex_pos)
 
+            # Using our normalized map, find where the previous marker is and
+            # grab its normalized vertex. Then calculate the position.
             normalized_prev_vertex = ord_map[prev_marker]
             normalized_prev_pos = normalized_prev_vertex * 4
             normalized_position = offset + normalized_prev_pos
 
+            # If x is equal to the normalized_position, add to the count
             if normalized_position == x:
                 num += 1
 
+    #  Calculate the percent
     if total > 0:
         percent = round((num / total * 100), 1)
     else:

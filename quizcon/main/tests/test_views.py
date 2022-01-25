@@ -12,7 +12,9 @@ from quizcon.main.tests.factories import (
 from quizcon.main.views import LTIAssignmentView, LTISpeedGraderView
 from quizcon.main.templatetags.quiz_tools import (
     submission_median, submission_mean, submission_mode,
-    submission_standard_dev
+    submission_standard_dev, submission_max_points, submission_min_points,
+    total_right_answers, total_wrong_answers, total_idk_answers,
+    percentage_choice
 )
 
 
@@ -62,7 +64,7 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         self.assertTrue(quiz.randomize)
         self.assertEqual(quiz.scoring_scheme, 2)
 
-        self.assertTrue('<strong>Lorem Ipsum</strong> quiz created'
+        self.assertTrue('Lorem Ipsum quiz created'
                         in response.cookies['messages'].value)
 
 
@@ -156,7 +158,7 @@ class CreateQuestionViewTest(CourseTestMixin, TestCase):
         self.assertTrue(question.marker_set.all()[1].correct)
         self.assertFalse(question.marker_set.all()[2].correct)
 
-        self.assertTrue('<strong>Lorem Ipsum</strong> question created'
+        self.assertTrue('Congratulations! New question created!'
                         in response.cookies['messages'].value)
 
 
@@ -381,22 +383,130 @@ class AnalyticsQuizViewTest(CourseTestMixin, TestCase):
         self.setup_course()
         self.quiz = QuizFactory(course=self.course)
         self.question1 = QuestionFactory(quiz=self.quiz)
-        self.question2 = QuestionFactory(quiz=self.quiz)
         self.submissions = []
 
-    def test_no_submissions(self):
+    def test_mean_median_standdev_mode(self):
+        # no submissions
         self.assertEqual(submission_median(self.submissions),
                          "Cannot calculate median.")
         self.assertEqual(submission_mean(self.submissions),
                          "Cannot calculate mean.")
         self.assertEqual(submission_standard_dev(self.submissions),
-                         "Not enough data points")
+                         "Not enough data")
         self.assertEqual(submission_mode(self.submissions),
                          "No unique mode.")
-
-    def test_one_submission(self):
+        # one submission
         self.submission = QuizSubmissionFactory(
             quiz=self.quiz, user=self.student)
         self.submissions.append(self.submission)
         self.assertEqual(submission_standard_dev(self.submissions),
-                         "Not enough data points")
+                         "Not enough data")
+
+    def test_max_min(self):
+        # no submissions
+        self.assertEqual(submission_max_points(self.submissions),
+                         None)
+        self.assertEqual(submission_min_points(self.submissions),
+                         None)
+        # one submission
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+
+        correct_marker.ordinal = 0
+        correct_marker.save()
+
+        self.assertEqual(submission_max_points(self.submissions), 3)
+        self.assertEqual(submission_min_points(self.submissions), 3)
+
+        correct_marker.ordinal = 1
+        correct_marker.save()
+
+        self.assertEqual(submission_max_points(self.submissions), -5)
+        self.assertEqual(submission_min_points(self.submissions), -5)
+
+    def test_total_answers(self):
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+        self.submissions.append(self.submission)
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+
+        correct_marker.ordinal = 0
+        correct_marker.save()
+
+        self.assertEqual(total_right_answers(qres.question), 1)
+        self.assertEqual(total_wrong_answers(qres.question), 0)
+        self.assertEqual(total_idk_answers(qres.question), 0)
+
+        qres.selected_position = 2
+        qres.save()
+
+        self.assertEqual(total_right_answers(qres.question), 0)
+        self.assertEqual(total_wrong_answers(qres.question), 1)
+        self.assertEqual(total_idk_answers(qres.question), 0)
+
+        qres.selected_position = 12
+        qres.save()
+
+        self.assertEqual(total_right_answers(qres.question), 0)
+        self.assertEqual(total_wrong_answers(qres.question), 0)
+        self.assertEqual(total_idk_answers(qres.question), 1)
+
+
+class AnalyticsQuiz2ViewTest(CourseTestMixin, TestCase):
+
+    def setUp(self):
+        self.setup_course()
+        self.quiz = QuizFactory(course=self.course)
+        self.question1 = QuestionFactory(quiz=self.quiz)
+        self.submission = QuizSubmissionFactory(
+            quiz=self.quiz, user=self.student)
+
+    def test_precentage_choice(self):
+        qres = self.submission.questionresponse_set.first()
+        correct_marker = qres.questionresponsemarker_set.get(
+            marker__correct=True)
+        qfor = qres.questionresponsemarker_set.exclude(
+               marker=correct_marker.marker).order_by('ordinal')
+        second_qresmarker = qfor.first()
+        third_qresmarker = qfor.last()
+        correct_marker.ordinal = 0
+        correct_marker.save()
+        second_qresmarker.ordinal = 1
+        second_qresmarker.save()
+        third_qresmarker.ordinal = 2
+        third_qresmarker.save()
+
+        self.assertEqual(percentage_choice(0, qres.question), 100)
+        self.assertEqual(percentage_choice(1, qres.question), 0)
+        self.assertEqual(percentage_choice(5, qres.question), 0)
+
+        qres.selected_position = 5
+        qres.save()
+
+        self.assertEqual(percentage_choice(0, qres.question), 0)
+        self.assertEqual(percentage_choice(1, qres.question), 0)
+        self.assertEqual(percentage_choice(5, qres.question), 100)
+
+        correct_marker.ordinal = 2
+        correct_marker.save()
+        second_qresmarker.ordinal = 0
+        second_qresmarker.save()
+        third_qresmarker.ordinal = 1
+        third_qresmarker.save()
+
+        self.assertEqual(percentage_choice(0, qres.question), 0)
+        self.assertEqual(percentage_choice(5, qres.question), 0)
+        self.assertEqual(percentage_choice(9, qres.question), 100)
+
+        qres.selected_position = 12
+        qres.save()
+
+        self.assertEqual(percentage_choice(0, qres.question), 0)
+        self.assertEqual(percentage_choice(1, qres.question), 0)
+        self.assertEqual(percentage_choice(12, qres.question), 100)

@@ -164,6 +164,10 @@ class Question(models.Model):
     def correct_marker(self):
         return self.marker_set.get(correct=True)
 
+    def correct_answer_label(self):
+        correct_marker = self.correct_marker()
+        return correct_marker.label
+
     def highest_question_points(self):
         scheme = LEVELS[self.quiz.scoring_scheme]
         return scheme['0']

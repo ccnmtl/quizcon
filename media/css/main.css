@@ -35,6 +35,18 @@ a:hover
     text-decoration: underline;
 }
 
+.linked-question *
+{
+    color: #0c6cc5;
+    text-decoration: none!important
+}
+
+.linked-question:hover *
+{
+    color: #0c6cc5;
+    text-decoration: none;
+}
+
 h1
 {
     border-bottom: 1px solid #bbc2c7;
@@ -350,4 +362,12 @@ ol { list-style-type: upper-alpha; }
 {
     right: 160px;
     top: 204px;
+}
+
+.ques-text * {
+    color: #fff!important
+}
+
+#sortable-table th {
+    cursor: pointer;
 }

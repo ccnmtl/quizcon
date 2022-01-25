@@ -62,27 +62,27 @@
                                         <h2 class="logo display-1 align-self-center mb-0" style="border: 0; font-weight: 700; color: #0E78DB; background-color: #033a62;">
                                             QuizCon
                                         </h2>
-                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 280px; width: auto;" class="pb-2" alt="...">
+                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 280px; width: auto;" class="pb-2" alt="confidence weighted triangle">
                                     </div>
                                 </div>
 
                                 <div class="carousel-item">
                                     <div style="height: 350px; width: auto;">
                                         {% if quiz.scoring_scheme == 0 %}
-                                            <img src="{{STATIC_URL}}img/no-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                            <img src="{{STATIC_URL}}img/no-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="question example with no consequence scoring">
                                         {% else %}
-                                            <img src="{{STATIC_URL}}img/moderate-high-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="...">
+                                            <img src="{{STATIC_URL}}img/moderate-high-consequence.png" style="height: 280px; width: auto; margin-top: 20px;" alt="question example with moderate consequence scoring">
                                         {% endif %}
                                     </div>
                                 </div>
 
                                 <div class="carousel-item text-center">
                                     {% if quiz.scoring_scheme == 0 %}
-                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with no consequence scoring">
                                     {% elif quiz.scoring_scheme == 1 %}
-                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with moderate consequence scoring">
                                     {% else %}
-                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="...">
+                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with high consequence scoring">
                                     {% endif %}
                                 </div>
 

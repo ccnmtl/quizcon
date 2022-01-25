@@ -18,6 +18,14 @@
         jQuery("#id_show_answers_date").attr("disabled", true)
     });
 </script>
+{% if quiz.quizsubmission_set.count %}
+    <script type="text/javascript">
+        var warningModal = new bootstrap.Modal(jQuery("#warningModal"), {
+            keyboard: false
+        })
+        warningModal.show()
+    </script>
+{% endif %}
 {% endblock %}
 
 {% block extrahead %}
@@ -96,7 +104,7 @@
             </div>
         </div>
         <div class="col">
-            <button type="submit" class="btn btn-primary">Save Quiz</button>
+            <button type="submit" class="btn btn-primary" aria-label="Save quiz">Save Quiz</button>
             <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
         </div>
         <hr />
@@ -154,16 +162,16 @@
         <input type="hidden" name="course" value="{{course.pk}}" />
         <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary">Create Question</a>
         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-success">Preview Quiz</a>
-        <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Quiz</a>
+        <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
         <div class="clearfix"></div>
     </form>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modals -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+                <h5 class="modal-title" id="deleteModalLabel">
                     Delete
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -175,8 +183,28 @@
                 <form method="POST" action="{% url 'delete-quiz' quiz.id %}">
                 {% csrf_token %}
                 <input class="btn btn-danger" type="submit" value="Delete">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" aria-label="Cancel" data-bs-dismiss="modal">Cancel</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">
+                    Edit
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-center"><b>This quiz already has student submissions!</b></p>
+                <p class="text-center">Are you sure you want to edit?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" href="{% url 'course-detail-view' quiz.course.pk%}">Back to Quizzes</a>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" aria-label="Edit">Edit</button>
             </div>
         </div>
     </div>

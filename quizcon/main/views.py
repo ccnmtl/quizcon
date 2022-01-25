@@ -173,7 +173,7 @@ class LTICourseCreate(LoginRequiredMixin, View):
 
         messages.add_message(
             self.request, messages.INFO,
-            '<strong>Success!</strong> ' +
+            'Success! ' +
             '{} is connected to Quizzing with Confidence.'.format(title))
 
         self.notify_staff(course)
@@ -351,7 +351,7 @@ class CreateQuizView(LoggedInFacultyMixin, CreateView):
         title = form.cleaned_data['title']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> quiz created.'.format(title),
+            '{} quiz created.'.format(title),
             extra_tags='safe'
         )
 
@@ -378,7 +378,7 @@ class UpdateQuizView(UpdateQuizPermissionMixin, UpdateView):
         title = form.cleaned_data['title']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> quiz updated.'.format(title),
+            '{} quiz updated.'.format(title),
             extra_tags='safe'
         )
 
@@ -397,7 +397,7 @@ class DeleteQuizView(UpdateQuizPermissionMixin, DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> quiz deleted.'.format(
+            '{} quiz deleted.'.format(
                 self.object.title),
             extra_tags='safe'
         )
@@ -447,10 +447,9 @@ class CreateQuestionView(UpdateQuizPermissionMixin, CreateView):
                               correct=form.cleaned_data['correct'] == 3,
                               value=1)
 
-        text = form.cleaned_data['text']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> question created.'.format(text),
+            'Congratulations! New question created!',
             extra_tags='safe'
         )
 
@@ -479,10 +478,9 @@ class UpdateQuestionView(UpdateQuestionPermissionMixin, UpdateView):
             marker.label = form.cleaned_data['answer_label_' + str(idx + 1)]
             marker.save()
 
-        text = form.cleaned_data['text']
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> question updated.'.format(text),
+            'Question updated.',
             extra_tags='safe'
         )
 
@@ -501,8 +499,7 @@ class DeleteQuestionView(UpdateQuestionPermissionMixin, DeleteView):
     def get_success_url(self):
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> question deleted.'.format(
-                self.object.text),
+            'Question deleted.',
             extra_tags='safe'
         )
 
@@ -518,7 +515,7 @@ class CloneQuizView(UpdateQuizPermissionMixin, View):
         cloned_quiz = quiz.clone()
         messages.add_message(
             self.request, messages.SUCCESS,
-            '<strong>{}</strong> quiz created.'.format(cloned_quiz.title),
+            '{} quiz created.'.format(cloned_quiz.title),
             extra_tags='safe'
         )
 

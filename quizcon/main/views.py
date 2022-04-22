@@ -63,7 +63,7 @@ class DashboardView(LoginRequiredMixin, View):
                 self.request.user).order_by('title'),
             'page_type': 'dashboard'
         }
-        return render(request, self.template_name, ctx)
+        return render(request, 'main/courses.html', ctx)
 
     def get(self, request, *args, **kwargs) -> HttpResponse:
         ctx = {
@@ -72,7 +72,7 @@ class DashboardView(LoginRequiredMixin, View):
                 self.request.user).order_by('title'),
             'page_type': 'dashboard'
         }
-        return render(request, self.template_name, ctx)
+        return render(request, 'main/courses.html', ctx)
 
 
 class LTICourseCreate(LoginRequiredMixin, View):
@@ -245,7 +245,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             'submission': submission,
             'today': today
         }
-        return self.render_to_response(ctx)
+        return render(request, 'main/lti_assignment.html', ctx)
 
     def get_launch_url(self, submission):
         url = '/lti/?assignment=grade&pk={}'.format(submission.id)

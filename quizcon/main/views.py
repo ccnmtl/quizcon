@@ -15,7 +15,7 @@ from django.contrib.auth.models import Group
 from django.http import (
     HttpResponseRedirect, HttpResponse
 )
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -51,28 +51,17 @@ class IndexView(TemplateView):
             return HttpResponseRedirect(reverse('course-list-view'))
 
 
-class DashboardView(LoginRequiredMixin, View):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'main/courses.html'
     http_method_names = ['get', 'post']
 
-    def post(self, request, *args, **kwargs) -> HttpResponse:
-
-        ctx = {
-            'user': request.user,
+    def get_context_data(self, **kwargs):
+        return {
+            'user': self.request.user,
             'courses': get_courses_for_user(
                 self.request.user).order_by('title'),
             'page_type': 'dashboard'
         }
-        return render(request, 'main/courses.html', ctx)
-
-    def get(self, request, *args, **kwargs) -> HttpResponse:
-        ctx = {
-            'user': request.user,
-            'courses': get_courses_for_user(
-                self.request.user).order_by('title'),
-            'page_type': 'dashboard'
-        }
-        return render(request, 'main/courses.html', ctx)
 
 
 class LTICourseCreate(LoginRequiredMixin, View):
@@ -217,7 +206,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
     template_name = 'main/lti_assignment.html'
     http_method_names = ['get', 'post']
 
-    def get(self, request, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         submission_id = self.kwargs.get('submission_id', -1)
@@ -237,7 +226,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
 
             return HttpResponseRedirect(url)
 
-        ctx = {
+        return {
             'is_student': is_student,
             'is_faculty': is_faculty,
             'quiz': quiz,
@@ -245,7 +234,6 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             'submission': submission,
             'today': today
         }
-        return render(request, 'main/lti_assignment.html', ctx)
 
     def get_launch_url(self, submission):
         url = '/lti/?assignment=grade&pk={}'.format(submission.id)

@@ -1,4 +1,4 @@
-Django>=2.2.13,<3
+Django==3.2.13
 pytz==2022.1
 httplib2==0.20.4
 feedparser==6.0.8
@@ -114,3 +114,4 @@ entrypoints==0.4
 django-courseaffils==2.2.6
 
 mock==4.0.3
+asgiref==3.5.0

@@ -16,6 +16,7 @@ from quizcon.main.templatetags.quiz_tools import (
     total_right_answers, total_wrong_answers, total_idk_answers,
     percentage_choice
 )
+from django.contrib.messages import get_messages
 
 
 class BasicTest(TestCase):
@@ -63,9 +64,8 @@ class CreateQuizTest(CourseTestMixin, TestCase):
         self.assertEqual(quiz.show_answers, 1)
         self.assertTrue(quiz.randomize)
         self.assertEqual(quiz.scoring_scheme, 2)
-
-        self.assertTrue('Lorem Ipsum quiz created'
-                        in response.cookies['messages'].value)
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('Lorem Ipsum quiz created', messages[0])
 
 
 class UpdateQuizTest(CourseTestMixin, TestCase):
@@ -157,9 +157,8 @@ class CreateQuestionViewTest(CourseTestMixin, TestCase):
         self.assertFalse(question.marker_set.all()[0].correct)
         self.assertTrue(question.marker_set.all()[1].correct)
         self.assertFalse(question.marker_set.all()[2].correct)
-
-        self.assertTrue('Congratulations! New question created!'
-                        in response.cookies['messages'].value)
+        messages = [m.message for m in get_messages(response.wsgi_request)]
+        self.assertIn('Congratulations! New question created!', messages[0])
 
 
 class UpdateQuestionTest(CourseTestMixin, TestCase):
@@ -240,10 +239,10 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
     def test_get(self):
         self.view.kwargs['pk'] = self.quiz.id
 
-        response = self.view.get(self.view.request)
-        self.assertFalse(response.context_data['is_faculty'])
-        self.assertEqual(response.context_data['quiz'], self.quiz)
-        self.assertEqual(response.context_data['submission'], None)
+        ctx = self.view.get_context_data()
+        self.assertFalse(ctx['is_faculty'])
+        self.assertEqual(ctx['quiz'], self.quiz)
+        self.assertEqual(ctx['submission'], None)
 
     def test_get_data_submitted(self):
         self.view.kwargs['pk'] = self.quiz.id
@@ -252,10 +251,10 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
         submission = QuizSubmissionFactory(quiz=self.quiz, user=self.student)
         self.view.kwargs['submission_id'] = submission.id
 
-        response = self.view.get(self.view.request)
-        self.assertFalse(response.context_data['is_faculty'])
-        self.assertEqual(response.context_data['quiz'], self.quiz)
-        self.assertEqual(response.context_data['submission'], submission)
+        ctx = self.view.get_context_data()
+        self.assertFalse(ctx['is_faculty'])
+        self.assertEqual(ctx['quiz'], self.quiz)
+        self.assertEqual(ctx['submission'], submission)
 
     # Check behavior if a student has two submissions; different quiz
     def test_get_data_submitted_twice(self):
@@ -268,10 +267,10 @@ class LTIAssignmentViewTest(CourseTestMixin, TestCase):
         QuizSubmissionFactory(quiz=self.quiz2, user=self.student)
         self.view.kwargs['submission_id'] = submission.id
 
-        response = self.view.get(self.view.request)
-        self.assertFalse(response.context_data['is_faculty'])
-        self.assertEqual(response.context_data['quiz'], self.quiz)
-        self.assertEqual(response.context_data['submission'], submission)
+        ctx = self.view.get_context_data()
+        self.assertFalse(ctx['is_faculty'])
+        self.assertEqual(ctx['quiz'], self.quiz)
+        self.assertEqual(ctx['submission'], submission)
 
     def test_post_invalid_kwargs(self):
         # no course or assignment specified

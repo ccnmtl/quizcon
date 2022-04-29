@@ -206,10 +206,26 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
     template_name = 'main/lti_assignment.html'
     http_method_names = ['get', 'post']
 
-    def get_context_data(self, **kwargs):
+    def get(self, *args, **kwargs):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         submission_id = self.kwargs.get('submission_id', -1)
+
+        submission = QuizSubmission.objects.filter(
+            user=self.request.user, quiz=quiz).order_by('-modified_at').first()
+
+        if submission_id == -1 and submission:
+            data = {'pk': self.kwargs.get('pk'),
+                    'submission_id': submission.id}
+            url = reverse('quiz-submission', kwargs=data)
+
+            return HttpResponseRedirect(url)
+
+        return super(LTIAssignmentView, self).get(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        assignment_id = self.kwargs.get('pk')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
         today = date.today()
 
         submission = QuizSubmission.objects.filter(
@@ -218,13 +234,6 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         is_faculty = quiz.course.is_true_faculty(self.request.user)
         is_student = (quiz.course.is_true_member(self.request.user) and
                       not is_faculty)
-
-        if submission_id == -1 and submission:
-            data = {'pk': self.kwargs.get('pk'),
-                    'submission_id': submission.id}
-            url = reverse('quiz-submission', kwargs=data)
-
-            return HttpResponseRedirect(url)
 
         return {
             'is_student': is_student,

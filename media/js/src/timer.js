@@ -43,6 +43,6 @@ const activateTimer = (time) => {
     }, 1000);
 };
 
-document.getElementById('start-quiz').addEventListener('click', (event) => {
+document.getElementById('start-timer').addEventListener('click', (event) => {
     activateTimer(time);
 });

@@ -5,9 +5,6 @@
 
 {% load coursetags static %}
 
-{% block js %}
-<script src="{{STATIC_URL}}js/src/timer.js"></script>
-{% endblock %}
 {% block extrahead %}
     <meta name="time" content="{{quiz.time}}">
 {% endblock %}
@@ -33,6 +30,7 @@
 {% endblock %}
 
 {% block js %}
+    <script src="{{STATIC_URL}}js/src/timer.js"></script>
     <script>
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -111,10 +109,13 @@
 <div class="quiz-container container-fluid">
     {% if is_faculty %}
         <div class="alert alert-warning" role="alert">
-            This is a preview of what your students will see. <br>
+            <h4>This is a preview of what your students will see. <br></h4>
             <!-- {% if quiz.randomize %} Questions are randomized.<br>{% endif %} -->
-            Question answers are always randomized.<br>
-            Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}
+            <ul>
+                <li>Question answers are always randomized.<br></li>
+                <li>Students have <strong>{{quiz.time}} minutes</strong> to complete the quiz.<br></li>
+                <li>Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}</li>
+            </ul>
         </div>
     {% endif %}
     <h1 class="mt-2">
@@ -296,7 +297,6 @@
 
             {% if quiz.time %}
                 <div class="alert alert-danger text-center" role="alert" id="quiz-timer"></div>
-                <button class="btn btn-primary" id="start-quiz">Start</button>
             {% endif %}
             <form action="." method="post">
                 {% for question in quiz.ordered_questions %}

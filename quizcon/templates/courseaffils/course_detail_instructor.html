@@ -46,7 +46,7 @@
                                 </span>
                                 Copy Courseworks Assignment Link
                             </button>
-                            <textarea id="quiz-{{quiz.id}}" style="position:absolute;left:-1000px;top:-1000px;"
+                            <textarea id="quiz-{{quiz.id}}" style="position:absolute;left:-10000px;top:-10000px;"
                                 aria-label="Courseworks assignment url"
                                 aria-hidden="true">https://{{request.get_host}}{% url 'lti-assignment-view' 'quiz' quiz.id %}</textarea>
                         </div>

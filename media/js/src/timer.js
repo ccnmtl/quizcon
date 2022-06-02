@@ -1,6 +1,10 @@
 let time = $('meta[name="time"]').attr('content');
 
-if (time.toString().length > 2) {
+function strLength(num) {
+    return num.toString().length;
+}
+
+if (strLength(time) > 2) {
     $('#quiz-timer').html(`<b>0${time}:00</b> remaining to complete quiz.`);
 
 } else {
@@ -19,12 +23,12 @@ const activateTimer = (time) => {
             seconds = 59;
             minutes --;
         }
-        if (minutes.toString().length < 2) {
+        if (strLength(minutes) < 2) {
             display_minutes = '0' + minutes;
         } else {
             display_minutes = minutes;
         }
-        if (seconds.toString().length < 2) {
+        if (strLength(seconds) < 2) {
             display_secs = '0' + seconds;
         } else {
             display_secs = seconds;
@@ -35,6 +39,8 @@ const activateTimer = (time) => {
                 clearInterval(timer);
                 // alert('Time over');
             }, 500);
+
+            return;
         }
         $('#quiz-timer')
             .html(`<b>${display_minutes}:${display_secs}</b>` +

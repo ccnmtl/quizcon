@@ -18,10 +18,10 @@ zipp==3.8.0  # for flake8
 tornado==6.1
 beautifulsoup4==4.11.1
 cssselect==1.1.0
-lxml==4.8.0
+lxml==4.9.0
 fuzzywuzzy==0.18.0
 sure==2.0.0
-coverage==6.4
+coverage==6.4.1
 pyasn1==0.4.8
 cryptography==37.0.2  # pyOpenSSL
 pyOpenSSL==22.0.0
@@ -34,7 +34,7 @@ requests==2.27.1
 djangowind==1.2.4
 
 astroid==2.11.5
-pylint==2.13.9
+pylint==2.14.0
 
 six==1.16.0
 ipaddress==1.0.23  # faker
@@ -49,7 +49,7 @@ s3transfer==0.5.2
 jmespath==1.0.0
 
 botocore>=1.12.198,<1.28.0
-boto3>=1.9.198,<1.24.0
+boto3>=1.9.198,<1.25.0
 
 python-dateutil==2.8.2
 

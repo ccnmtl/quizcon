@@ -371,3 +371,9 @@ ol { list-style-type: upper-alpha; }
 #sortable-table th {
     cursor: pointer;
 }
+
+.modal-backdrop.show
+{
+   opacity: 3 !important;
+   background-color: #0E78DB;
+}

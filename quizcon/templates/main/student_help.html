@@ -39,12 +39,19 @@
                                 </div>
 
                                 <div class="carousel-item carousel-txt-item align-self-center">
-                                    <h3 class="text-center mt-5">Ready?</h3>
+                                    <h3 class="text-center mt-2">Ready?</h3>
+                                    {% if quiz.time %}
+                                        <p class="text-center">
+                                            You will have <strong>{{quiz.time}} minutes</strong> to complete this quiz. <br />
+                                            <span class="text-muted"><strong>Note:</strong> The time remaining may exceed the Due date. Please make sure to check the Due date for this assignment.</span>
+
+                                        </p>
+                                    {% endif %}
                                     <p class="text-center">When you are ready to take your quiz, <br />click <strong>Start Quiz</strong> below.<br />
                                         <a href="/help/" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-4">
                                             Learn More
                                         </a>
-                                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary mt-4">
+                                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary mt-4" id="{% if quiz.time %}start-timer{% else %}start-quiz{% endif %}">
                                             Start Quiz
                                         </button>
                                     </p>
@@ -113,8 +120,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <a href="#" class="btn btn-warning rounded-pill btn-skip float-start">Skip</a>
                 <a href="#" class="btn btn-secondary rounded-pill btn-prev float-start d-none">Prev</a>
-                <a href="#" class="btn btn-success rounded-pill btn-next float-end d-none">Next</a>
+                <a href="#" class="btn btn-success rounded-pill btn-next float-end">Next</a>
             </div>
         </div>
     </div>

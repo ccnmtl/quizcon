@@ -14,7 +14,7 @@ class QuizForm(forms.ModelForm):
         model = Quiz
         fields = ['title', 'description', 'multiple_attempts',
                   'show_answers', 'randomize', 'course', 'scoring_scheme',
-                  'show_answers_date']
+                  'show_answers_date', 'time']
 
         widgets = {
             'title': forms.TextInput(),
@@ -26,7 +26,9 @@ class QuizForm(forms.ModelForm):
             'show_answers_date': forms.DateInput(
                                 attrs={'class': 'form-control',
                                        'type': 'date',
-                                       'disabled': 'true'})
+                                       'disabled': 'true'}),
+            'time': forms.NumberInput(
+                    attrs={'placeholder': 'Minutes', 'maxlength': '2'})
         }
 
 

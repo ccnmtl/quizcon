@@ -8,10 +8,15 @@
 <div class="quiz-container container-fluid">
     <div class="alert alert-warning" role="alert">
         <button onclick="javascript:window.close('','_parent','');" class="btn btn-warning btn-sm float-end">Close Preview</button>
-        This is a preview of what your students will see. <br>
+        <h4>This is a preview of what your students will see. <br></h4>
         <!-- {% if quiz.randomize %} Questions are randomized.<br>{% endif %} -->
-        Question answers are always randomized.<br>
-        Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}
+        <ul>
+            <li>Question answers are always randomized.<br></li>
+            {% if quiz.time %}
+            <li>Students have <strong>{{quiz.time}} minutes</strong> to complete the quiz.<br></li>
+            {% endif %}
+            <li>Students will be able to see their answers: <strong>{{quiz.show_answers_verbose|lower}} </strong> {% if quiz.show_answers == 2 %}{{quiz.show_answers_date}}{% endif %}</li>
+        </ul>
     </div>
     <h1 class="mt-2">
         {{quiz.title}}

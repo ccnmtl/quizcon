@@ -86,14 +86,12 @@
     {% block extrahead %} {% endblock %}
     </head>
     <body>
-
-        <a id="skippy" class="sr-only sr-only-focusable" href="#content">
-            <div class="container">
-                <span class="skiplink-text">Skip to main content</span>
-            </div>
-        </a>
-
         {% block topnavbar %}
+        <div class="skippy">
+            <div class="container p-0">
+                <a class=" d-inline-block p-2 m-1" href="#maincontent">Skip to main content</a>
+            </div>
+        </div>
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/" title="Home"><strong><span class="text-light">Quizzing With Confidence</span></strong> </a>

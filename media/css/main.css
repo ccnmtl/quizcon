@@ -404,9 +404,12 @@ ol { list-style-type: upper-alpha; }
     border: 0!important;
 }
 
-
 .skippy a {
     color: $black;
     border-radius: 0.25rem;
     font-weight: 500;
+}
+
+#cu-privacy-notice-text {
+    color: white;
 }

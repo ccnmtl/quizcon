@@ -34,7 +34,7 @@ requests==2.28.0
 djangowind==1.2.4
 
 astroid==2.11.6
-pylint==2.14.2
+pylint==2.14.3
 
 six==1.16.0
 ipaddress==1.0.23  # faker

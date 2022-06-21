@@ -129,11 +129,10 @@
         </ol>
         <ol class="dragondrop-container" id="dragondrop-container" aria-labelledby="questions-header">
             {% for question in quiz.ordered_questions %}
-                <li class="list-style-none" data-id="{{question.id}}">
+                <li class="list-style-none" data-id="{{question.id}}" id="question-{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
-                            <button aria-describedby="global-help" type="button" class="handle"
-                                aria-labelledby="question-{{question.id}}" tabindex="0">
+                            <button aria-describedby="global-help" type="button" class="handle" tabindex="0">
                                 <div class="offscreen">Reorder</div>
                             </button>
                             <span class="sr-only">{{question.text|safe}}</span>
@@ -168,7 +167,7 @@
 </div>
 <!-- Modals -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">

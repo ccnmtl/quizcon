@@ -1,4 +1,4 @@
-<div class="container-fluid container-content">
+<div class="container-fluid container-content" id="maincontent">
 <!-- My Quizzes -->
     <h1>
         My Quizzes
@@ -34,7 +34,7 @@
                     <td><p class="fw-normal text-center">{{quiz.quizsubmission_set.count}}</p></td>
                     <td class="text-muted">
                         <div class="input-group mb-3">
-                            <button class="btn btn-sm btn-outline-secondary" type="button" id="button-addon2"
+                            <button class="btn btn-sm btn-outline-secondary" type="button" id="button-{{quiz.id}}"
                                 aria-label="Copy to clipboard"
                                 onclick="copyToClipboard('quiz-{{quiz.id}}')"
                                 >
@@ -47,7 +47,7 @@
                                 Copy Courseworks Assignment Link
                             </button>
                             <textarea id="quiz-{{quiz.id}}" style="position:absolute;left:-10000px;top:-10000px;"
-                                aria-label="Courseworks assignment url"
+                                aria-label="Courseworks assignment url" tabindex="-1"
                                 aria-hidden="true">https://{{request.get_host}}{% url 'lti-assignment-view' 'quiz' quiz.id %}</textarea>
                         </div>
                     </td>
@@ -57,11 +57,11 @@
                         <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>
                         <a href="{% url 'report-quiz' quiz.id %}" class="btn btn-sm btn-dark">Analytics</a>
                         <!-- Modal -->
-                        <div class="modal fade" id="cloneModal-{{quiz.id}}" tabindex="-1" aria-labelledby="clone modal for quiz {{quiz.id}}" aria-hidden="true">
-                            <div class="modal-dialog">
+                        <div class="modal fade" id="cloneModal-{{quiz.id}}" tabindex="-1" aria-labelledby="cloneModal-{{quiz.id}}Label" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">
+                                        <h5 class="modal-title" id="cloneModal-{{quiz.id}}Label">
                                             Clone Quiz
                                         </h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

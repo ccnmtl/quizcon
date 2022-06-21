@@ -66,7 +66,7 @@ Report for {{ quiz.title }}
 
 {% block content %}
     {% if submissions %}
-        <div class="container-fluid container-content">
+        <div class="container-fluid container-content" id="maincontent">
             <h1>
             Analytics for <strong>{{ quiz.title }}</strong>
             </h1>
@@ -235,7 +235,7 @@ Report for {{ quiz.title }}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="{{STATIC_URL}}img/triangle-key.svg" class="rounded" alt="key">
+                                    <img src="{{STATIC_URL}}img/triangle-key.svg" class="rounded" alt="confidence triangle key">
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row">

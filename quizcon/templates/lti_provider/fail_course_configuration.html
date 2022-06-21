@@ -36,9 +36,8 @@
 {% endblock %}
 
 {% block content %}
-
-    {% if not is_instructor and not is_administrator %}
-         <body id="splash" class="text-center">
+    <body id="splash" class="text-center">
+        {% if not is_instructor and not is_administrator %}
              <div id="signin">
                  <h1 class="logo display-1" style="border: 0; font-weight: 700;">
                      QuizCon
@@ -47,10 +46,8 @@
                      Your {{title}} course has not been configured to use Quizzing with Confidence.<br />
                      Contact your instructor for more information.
                  </p>
-             <div>
-         </body>
-    {% else %}
-        <body id="splash" class="text-center">
+             </div>
+        {% else %}
             <div id="signin">
                 <h1 class="logo display-1" style="border: 0; font-weight: 700;">
                     QuizCon
@@ -68,7 +65,7 @@
                         <button type="submit" class="btn btn-lg btn-light">Connect</button>
                     </div>
                 </form>
-            <div>
-        </body>
-    {% endif %}
+            </div>
+        {% endif %}
+    </body>
 {% endblock %}

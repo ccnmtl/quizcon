@@ -17,14 +17,15 @@
                         plugins: 'link',
                         toolbar: 'undo redo | fontsizeselect | removeformat | bold italic underline strikethrough superscript subscript | link',
                         default_link_target: '_blank',
-                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt'
+                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt',
+                        a11y_advanced_options: true
                     });
     });
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid container-content">
+<div class="container-fluid container-content" id="maincontent">
 <!-- Edit Question -->
     <h1>
         Edit Question
@@ -105,11 +106,11 @@
     </form>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteQuestionModal" tabindex="-1" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+                <h5 class="modal-title" id="deleteQuestionModalLabel">
                     Delete
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

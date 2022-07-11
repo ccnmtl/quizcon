@@ -10,7 +10,7 @@
         </ol>
     </nav>
     <div class="table-responsive">
-        <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary">Create Quiz</a>
+        <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary" data-cy="create-quiz">Create Quiz</a>
         <table class="table table-striped">
             <col width="20%"> <col width="20%"> <col width="8%"><col width="20%"><col width="20%">
             <thead>
@@ -25,9 +25,9 @@
             <tbody>
                 {% for quiz in course.quiz_set.all %}
                 <tr>
-                    <th scope="row"><p class="fw-normal">{{quiz.title}}</p></th>
+                    <th scope="row" data-cy="{{quiz.title}}"><p class="fw-normal">{{quiz.title}}</p></th>
                     {% if quiz.description %}
-                        <td>{{quiz.description}}</td>
+                        <td data-cy="{{quiz.description}}">{{quiz.description}}</td>
                     {% else %}
                         <td>No description for this quiz.</td>
                     {% endif %}
@@ -52,7 +52,7 @@
                         </div>
                     </td>
                     <td>
-                        <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'update-quiz' quiz.id %}" data-cy="edit-{{quiz.title}}" class="btn btn-sm btn-warning">Edit</a>
                         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">Preview</a>
                         <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>
                         <a href="{% url 'report-quiz' quiz.id %}" class="btn btn-sm btn-dark">Analytics</a>

@@ -5,14 +5,16 @@
   "license": "GPL-2.0+",
   "scripts": {
     "test": "mocha",
-    "cypress:ffopen": "cypress open --browser firefox",
-    "cypress:ffrun": "cypress run --browser firefox",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
     "cypress:head": "cypress run --headless --browser electron",
-    "cypress:test": "start-server-and-test 'make integrationserver' http-get://localhost:8000 cypress:ffrun",
+    "cypress:test": "start-server-and-test 'make integrationserver' http-get://localhost:8000 cypress:run",
     "cypress:test-headless": "start-server-and-test 'make integrationserver' http-get://localhost:8000 cypress:head"
   },
   "devDependencies": {
+    "axe-core": "^4.1.4",
     "cypress": "^10.0.1",
+    "cypress-axe": "^1.0.0",
     "eslint": "~8.19.0",
     "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-security": "~1.5.0",

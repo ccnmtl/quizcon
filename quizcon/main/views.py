@@ -200,6 +200,19 @@ class CourseDetailView(LoggedInCourseMixin, DetailView):
         }
 
 
+class AddTimeView(LTIAuthMixin, View):
+    http_method_names = ['get']
+
+    def get(self, *args, **kwargs):
+        assignment_id = self.kwargs.get('pk')
+        quiz = get_object_or_404(Quiz, pk=assignment_id)
+        QuizSubmission.objects.create(
+                    quiz=quiz, user=self.request.user, time=time.time())
+
+        return HttpResponseRedirect(reverse('quiz',
+                                    kwargs={'pk': assignment_id}))
+
+
 @method_decorator(xframe_options_exempt, name='dispatch')
 class LTIAssignmentView(LTIAuthMixin, TemplateView):
 
@@ -210,16 +223,17 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         submission_id = self.kwargs.get('submission_id', -1)
-
         submission = QuizSubmission.objects.filter(
             user=self.request.user, quiz=quiz).order_by('-modified_at').first()
 
         if submission_id == -1 and submission:
-            data = {'pk': self.kwargs.get('pk'),
-                    'submission_id': submission.id}
-            url = reverse('quiz-submission', kwargs=data)
+            if submission.submitted:
+                data = {'pk': self.kwargs.get('pk'),
+                        'submission_id': submission.id}
 
-            return HttpResponseRedirect(url)
+                url = reverse('quiz-submission', kwargs=data)
+
+                return HttpResponseRedirect(url)
 
         return super(LTIAssignmentView, self).get(*args, **kwargs)
 
@@ -227,9 +241,17 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         today = date.today()
-
         submission = QuizSubmission.objects.filter(
             user=self.request.user, quiz=quiz).order_by('-modified_at').first()
+        remaining = None
+
+        if submission and submission.time:
+            difference = time.time() - submission.time
+            time_remaining = (quiz.time * 60) - difference
+            if time_remaining <= 0:
+                remaining = 0
+            else:
+                remaining = time_remaining
 
         is_faculty = quiz.course.is_true_faculty(self.request.user)
         is_student = (quiz.course.is_true_member(self.request.user) and
@@ -241,7 +263,8 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             'quiz': quiz,
             'num_markers': range(13),
             'submission': submission,
-            'today': today
+            'today': today,
+            'remaining': remaining
         }
 
     def get_launch_url(self, submission):
@@ -284,14 +307,22 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
-        submission = QuizSubmission.objects.create(
-            quiz=quiz, user=self.request.user)
+        # If a quiz is not timed, create Submission object here
+        sub, created = QuizSubmission.objects.get_or_create(
+            user=self.request.user, quiz=quiz)
+        submission = QuizSubmission.objects.filter(pk=sub.id).first()
 
         for question in quiz.question_set.all():
+            selected_position = None
+            if self.request.POST.get(str(question.pk)):
+                selected_position = self.request.POST.get(str(question.pk))
+            else:
+                selected_position = 12
+
+            # import pdb; pdb.set_trace()
             response = QuestionResponse.objects.create(
                 question=question, submission=submission,
-                selected_position=self.request.POST.get(str(question.pk)))
-
+                selected_position=selected_position)
             key = 'question-{}-markers'.format(question.pk)
             markers = json.loads(self.request.POST.get(key))
             for idx, marker_id in enumerate(markers):

@@ -42,7 +42,7 @@
                                     <h3 class="text-center mt-2">Ready?</h3>
                                     {% if quiz.time %}
                                         <p class="text-center">
-                                            You will have <strong>{{quiz.time}} minutes</strong> to complete this quiz. <br />
+                                            You will have <strong>{{quiz.time}} {% if quiz.time == 1 %}minute{% else %}minutes{% endif %}</strong> to complete this quiz. <br />
                                             <span class="text-muted"><strong>Note:</strong> The time remaining may exceed the Due date. Please make sure to check the Due date for this assignment.</span>
 
                                         </p>
@@ -51,9 +51,9 @@
                                         <a href="/help/" target="_blank" rel="noopener noreferrer" class="btn btn-warning mt-4">
                                             Learn More
                                         </a>
-                                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary mt-4" id="{% if quiz.time %}start-timer{% else %}start-quiz{% endif %}">
+                                        <a href="{% if quiz.time %}{% url 'submission-creation' quiz.id %}{% else %}#{% endif %}" class="btn btn-secondary mt-4" id="start-quiz">
                                             Start Quiz
-                                        </button>
+                                        </a>
                                     </p>
                                 </div>
 

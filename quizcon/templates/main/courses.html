@@ -6,8 +6,8 @@ My Courses | QuizCon
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid container-content">
-    <h1>
+<div class="container-fluid container-content" id="maincontent">
+    <h1 data-cy="dashboard-title">
         My Courses
     </h1>
     <div class="table-responsive">
@@ -24,7 +24,7 @@ My Courses | QuizCon
             <tbody>
                 {% for course in courses %}
                 <tr>
-                    <th scope="row"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
+                    <th scope="row" data-cy="course"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
                     <td>{% if course.quiz_set %}
                             <ul>
                                 {% for quiz in course.quiz_set.all %}

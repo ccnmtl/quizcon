@@ -12,7 +12,8 @@ It reimplements the testserver functionality except that it generates
 test data dynamically using factories
 """
 
-from quizcon.main.tests.factories import UserFactory
+from quizcon.main.tests.factories import (UserFactory, CourseFactory,
+                                          QuizFactory)
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db import connection
@@ -31,19 +32,26 @@ def reset_test_models():
         is_staff=True
     )
 
-    UserFactory.create(
+    faculty = UserFactory.create(
         username='faculty_one',
         first_name='Faculty',
         last_name='One',
         email='faculty_one@example.com'
     )
 
-    UserFactory.create(
+    student = UserFactory.create(
         username='student_one',
         first_name='Student',
         last_name='One',
         email='student_one@example.com'
     )
+    course = CourseFactory.create()
+    course.group.user_set.add(student)
+    course.group.user_set.add(faculty)
+    course.faculty_group.user_set.add(faculty)
+
+    # add test quiz
+    QuizFactory(course=course, title='A Bird Quiz')
 
 
 class Command(BaseCommand):

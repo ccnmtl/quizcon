@@ -17,14 +17,15 @@
                         plugins: 'link',
                         toolbar: 'undo redo | fontsizeselect | removeformat | bold italic underline strikethrough superscript subscript | link',
                         default_link_target: '_blank',
-                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt'
+                        fontsize_formats: '8pt 10pt 12pt 14pt 18pt',
+                        a11y_advanced_options: true
                     });
     });
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid container-content">
+<div class="container-fluid container-content" id="maincontent">
 <!-- Create Question -->
     <h1>
         Create Question
@@ -45,13 +46,13 @@
         {% endif %}
         <div class="row mb-3">
             <label for="text" class="col-sm-2 col-form-label">Question</label>
-            <div class="col-sm-10">
+            <div class="col-sm-10" data-cy="question-text">
                 {% bootstrap_field form.text show_label=False %}
             </div>
         </div>
         <div class="row mb-3">
             <label for="student-feedback" class="col-sm-2 col-form-label">Student Feedback</label>
-            <div class="col-sm-10">
+            <div class="col-sm-10" data-cy="student-feedback">
                 {% bootstrap_field form.explanation show_label=False %}
             </div>
         </div>

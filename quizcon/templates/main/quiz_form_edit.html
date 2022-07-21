@@ -34,9 +34,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid container-content">
+<div class="container-fluid container-content" id="maincontent">
 <!-- Edit Quiz -->
-    <h1>
+    <h1 data-cy="edit-quiz-form">
         Edit Quiz
     </h1>
     <nav aria-label="breadcrumb">
@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="col">
-            <button type="submit" class="btn btn-primary" aria-label="Save quiz">Save Quiz</button>
+            <button type="submit" class="btn btn-primary" aria-label="Save quiz" data-cy="save-quiz-btn">Save Quiz</button>
             <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
         </div>
         <hr />
@@ -131,16 +131,15 @@
         </ol>
         <ol class="dragondrop-container" id="dragondrop-container" aria-labelledby="questions-header">
             {% for question in quiz.ordered_questions %}
-                <li class="list-style-none" data-id="{{question.id}}">
+                <li class="list-style-none" data-id="{{question.id}}" id="question-{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
-                            <button aria-describedby="global-help" type="button" class="handle"
-                                aria-labelledby="question-{{question.id}}" tabindex="0">
+                            <button aria-describedby="global-help" type="button" class="handle" tabindex="0">
                                 <div class="offscreen">Reorder</div>
                             </button>
                             <span class="sr-only">{{question.text|safe}}</span>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" data-cy="{{question.text}}">
                             {{question.text|safe}}
                         </div>
                         <div class="col-sm-5">
@@ -155,14 +154,14 @@
                             {% endfor %}
                         </div>
                         <div class="col-sm-2">
-                            <a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning">Edit Question</a>
+                            <a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning" data-cy="edit-btn-{{question.text}}">Edit Question</a>
                         </div>
                     </div>
                 </li>
             {% endfor %}
         </ol>
         <input type="hidden" name="course" value="{{course.pk}}" />
-        <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary">Create Question</a>
+        <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary" data-cy="create-question">Create Question</a>
         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-success">Preview Quiz</a>
         <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
         <div class="clearfix"></div>
@@ -170,7 +169,7 @@
 </div>
 <!-- Modals -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">
@@ -195,9 +194,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="warningModalLabel">
+                <p class="modal-title fs-5" id="warningModalLabel">
                     Edit
-                </h5>
+                </p>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">

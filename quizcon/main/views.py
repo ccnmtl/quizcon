@@ -204,7 +204,7 @@ class AddTimeView(LTIAuthMixin, View):
     http_method_names = ['get']
 
     def get(self, *args, **kwargs):
-        assignment_id = self.kwargs.get('pk')
+        assignment_id = self.kwargs.get('pk', None)
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         QuizSubmission.objects.create(
                     quiz=quiz, user=self.request.user, time=time.time())
@@ -220,7 +220,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
     http_method_names = ['get', 'post']
 
     def get(self, *args, **kwargs):
-        assignment_id = self.kwargs.get('pk')
+        assignment_id = self.kwargs.get('pk', None)
         quiz = get_object_or_404(Quiz, pk=assignment_id)
         submission_id = self.kwargs.get('submission_id', -1)
         submission = QuizSubmission.objects.filter(

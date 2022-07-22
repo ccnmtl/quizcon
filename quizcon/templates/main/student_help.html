@@ -1,7 +1,10 @@
 {% load quiz_tools %}
-<div class="modal fade" id="studentHelp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentHelp" aria-hidden="true">
+<div class="modal fade" id="studentHelp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentHelpLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="studentHelpLabel">Tutorial</h2>
+            </div>
             <div class="modal-body">
                 <div class="row p-0 m-0">
                     <div class="col-md-5">
@@ -9,18 +12,18 @@
                             <div class="carousel-inner">
 
                                 <div class="carousel-item carousel-txt-item align-self-center active">
-                                    <h2>Tutorial</h2>
-                                    <p class="mt-5">QuizCon is an alternative take on multiple choice quizzes that uses confidence-weighted questions to allow you to more accurately answer based on your understanding of the question. Let’s take a tutorial on how QuizCon works.</p>
+                                    <h3>Overview</h3>
+                                    <p class="mt-3">QuizCon is an alternative take on multiple choice quizzes that uses confidence-weighted questions to allow you to more accurately answer based on your understanding of the question. Let’s take a tutorial on how QuizCon works.</p>
                                 </div>
 
                                 <div class="carousel-item carousel-txt-item align-self-center">
                                     <h2>Taking the Quiz</h2>
-                                    <p class="mt-5">By providing a sliding scale between any two given options, the QuizCon triangle allows you the option to indicate how confident you are about one answer over the other.</p>
+                                    <p class="mt-3">By providing a sliding scale between any two given options, the QuizCon triangle allows you the option to indicate how confident you are about one answer over the other.</p>
                                     <p>If you are completely unsure, you can just say “I don’t know”.</p>
                                 </div>
 
                                 <div class="carousel-item carousel-txt-item align-self-center">
-                                    <h2>Scoring</h2>
+                                    <h3>Scoring</h3>
                                     {% with q=quiz.question_set.first %}
                                         <p>Quizzing with Confidence is unique because you can receive partial credit for your answers instead of guessing the right answer.</p>
                                         <p>Your instructor has configured this quiz so the <b>lowest</b> you can score on a question is <b>{{q.lowest_question_points}}</b> points.</p>
@@ -29,7 +32,7 @@
                                 </div>
 
                                 <div class="carousel-item carousel-txt-item">
-                                    <h2>Try it out!</h2>
+                                    <h3>Try it out!</h3>
                                     <p>The practice question on the right has <b>A</b> as the correct answer. Click on different answer options to see the number of points you would receive if you go with that option.</p>
                                     <ul>
                                         <li>A. Correct Answer</li>

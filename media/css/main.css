@@ -167,6 +167,11 @@ ol { list-style-type: upper-alpha; }
     width: 1px;
     height: 1px;
 }
+.quiz-container .form-check-input:focus
+{
+    border-color: yellow!important;
+    box-shadow: 0 0 0 0.25rem rgb(246 209 31);
+}
 
 .quiz-container .question-text {
     font-size: 1.15rem;

@@ -52,9 +52,9 @@
                         </div>
                     </td>
                     <td>
-                        <a href="{% url 'update-quiz' quiz.id %}" data-cy="edit-{{quiz.title}}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success">Preview</a>
-                        <a href="#" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>
+                        <a href="{% url 'update-quiz' quiz.id %}" data-cy="edit-{{quiz.title}}" class="btn btn-sm btn-warning me-2">Edit</a>
+                        <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success me-2">Preview</a>
+                        <a href="#" class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>
                         <a href="{% url 'report-quiz' quiz.id %}" class="btn btn-sm btn-dark">Analytics</a>
                         <!-- Modal -->
                         <div class="modal fade" id="cloneModal-{{quiz.id}}" tabindex="-1" aria-labelledby="cloneModal-{{quiz.id}}Label" aria-hidden="true">

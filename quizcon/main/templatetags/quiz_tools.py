@@ -200,3 +200,33 @@ def answers_pos(question):
     order_ans[2] = qresm.last().marker.label
 
     return order_ans
+
+
+@register.simple_tag
+def aria_label(x):
+    if x == 0:
+        return 'Your choice is A'
+    if x == 1:
+        return 'Your choice is between A and B, close to A.'
+    if x == 2:
+        return 'Your choice is between A and B.'
+    if x == 3:
+        return 'Your choice is between A and B, close to B.'
+    if x == 4:
+        return 'Your choice is B'
+    if x == 5:
+        return 'Your choice is between B and C, close to B.'
+    if x == 6:
+        return 'Your choice is between B and C.'
+    if x == 7:
+        return 'Your choice is between B and C, close to C.'
+    if x == 8:
+        return 'Your choice is C'
+    if x == 9:
+        return 'Your choice is between C and A, close to C.'
+    if x == 10:
+        return 'Your choice is between C and A.'
+    if x == 11:
+        return 'Your choice is between C and A, close to A.'
+    if x == 12:
+        return "Your choice is I don't know"

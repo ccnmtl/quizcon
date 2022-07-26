@@ -199,6 +199,7 @@ class QuizSubmission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    time = models.IntegerField(blank=True, null=True)
 
     def user_points(self):
         """Add up the all the question points for a given submission"""
@@ -219,6 +220,11 @@ class QuizSubmission(models.Model):
         """All negative values are rounded up to 0"""
         score = round(self.user_points() / self.quiz.total_points(), 2) * 100
         return 0 if score < 0 else score
+
+    def submitted(self):
+        question_count = self.quiz.question_set.count()
+        response_count = self.questionresponse_set.count()
+        return question_count == response_count
 
 
 class QuestionResponse(models.Model):

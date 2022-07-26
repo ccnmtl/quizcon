@@ -6,7 +6,7 @@
 {% load coursetags static %}
 
 {% block extrahead %}
-    <meta name="time" content="{{quiz.time}}">
+    <meta name="time" content="{{remaining}}">
 {% endblock %}
 {% block topnavbar %}
     {% if is_faculty %}
@@ -107,9 +107,12 @@
                             complete = jQuery(selector).is(':checked');
                         }
                     }
-                });
-                return complete;
-            }
+            });
+            return complete;
+        }
+        $("#start-quiz").click(function(){
+           $("#studentHelp").modal('hide');
+       });
     </script>
 {% endblock %}
 
@@ -135,12 +138,6 @@
         <p class="lead text-muted">{{quiz.description}}</p>
     {% endif %}
     {% if is_faculty %}
-        <!-- <div class="alert alert-danger" role="alert">
-            <strong>00:00:00</strong> remaining to complete quiz.
-        </div> -->
-        {% if quiz.time %}
-            <div class="alert alert-danger" role="alert" id="quiz-timer"></div>
-        {% endif %}
         {% for question in quiz.ordered_questions %}
             {% with markers=question.random_markers %}
             <form>
@@ -176,7 +173,7 @@
             {% endwith %}
         {% endfor %}
     {% else %}{% if is_student %}
-        {% if submission %}
+        {% if submission.submitted %}
         <!-- Submitted Interface -->
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
@@ -302,15 +299,13 @@
             <div class="alert alert-danger d-none" id="submission-alert" role="alert">
                 <strong class="alert-danger">Oops!</strong> Please answer all questions before submitting.
             </div>
-            <!-- <div class="alert alert-danger" role="alert">
-                <strong>00:00:00</strong> remaining to complete quiz.
-            </div> -->
-            {% include 'main/student_help.html' %}
-
+            {% if not submission.time %}
+                {% include 'main/student_help.html' %}
+            {% endif %}
             {% if quiz.time %}
                 <div class="alert alert-danger text-center" role="alert" id="quiz-timer"></div>
             {% endif %}
-            <form action="." method="post">
+            <form action="." method="post" id="quiz_form">
                 {% for question in quiz.ordered_questions %}
                     {% with markers=question.random_markers %}
                     <div class="row bg-light mx-0">
@@ -345,7 +340,7 @@
                     </div>
                     {% endwith %}
                 {% endfor %}
-                <input class="btn btn-primary" type="submit" {% if submission %}disabled="disabled" value="submitted"{% else %}value="Submit Answers" {% endif %} />
+                <input class="btn btn-primary" type="submit" {% if submission.submitted %} disabled="disabled" value="Submitted"{% else %}value="Submit Answers" {% endif %} />
             </form>
         {% endif %}
     {% endif %}{% endif %}

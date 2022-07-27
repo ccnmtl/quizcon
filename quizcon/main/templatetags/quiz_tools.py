@@ -206,19 +206,19 @@ def answers_pos(question):
 def aria_label(x):
 
     labels = {
-        0: 'Your choice is A.',
-        1: 'Your choice is between A and B, close to A.',
-        2: 'Your choice is between A and B.',
-        3: 'Your choice is between A and B, close to B.',
-        4: 'Your choice is B.',
-        5: 'Your choice is between B and C, close to B.',
-        6: 'Your choice is between B and C.',
-        7: 'Your choice is between B and C, close to C.',
-        8: 'Your choice is C.',
-        9: 'Your choice is between C and A, close to C.',
-        10: 'Your choice is between C and A.',
-        11: 'Your choice is between C and A, close to A.',
-        12: "Your choice is I don't know."
+        0: 'This choice is A.',
+        1: 'This choice is between A and B, close to A.',
+        2: 'This choice is between A and B.',
+        3: 'This choice is between A and B, close to B.',
+        4: 'This choice is B.',
+        5: 'This choice is between B and C, close to B.',
+        6: 'This choice is between B and C.',
+        7: 'This choice is between B and C, close to C.',
+        8: 'This choice is C.',
+        9: 'This choice is between C and A, close to C.',
+        10: 'This choice is between C and A.',
+        11: 'This choice is between C and A, close to A.',
+        12: "This choice is I don't know."
     }
 
     return labels[x]

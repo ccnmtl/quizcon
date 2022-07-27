@@ -136,12 +136,12 @@
                                 </ol>
                             </div>
                             <div class="col-md-7">
-                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for question {{question.text}}">
+                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for this question">
                                     {% for x in num_markers %}
                                     {% aria_label x as label %}
                                     <div class="form-check answer{{x}}">
                                         <span class="tooltips">
-                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="{% if x == response.selected_position %}{{label}}{% else %}You didn't choose {{x}}{% endif %}"
+                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="{{label}}"
                                                 name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Your choice"
                                                 data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
                                                 {% if x == response.selected_position %}checked{% else %}disabled{% endif %} />
@@ -240,12 +240,12 @@
                                 </ol>
                             </div>
                             <div class="col-md-7">
-                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for question {{question.text}}">
+                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for this question">
                                     {% for x in num_markers %}
                                     {% aria_label x as label %}
                                     <div class="form-check answer{{x}}">
                                         <span class="tooltips">
-                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="{% if x == response.selected_position %}Student chose {{x}}{% else %}Student didn't choose {{x}}{% endif %}"
+                                            <input class="form-check-input" type="radio" data-bs-trigger="manual" aria-label="{{label}}"
                                                 name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Student's choice"
                                                 data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
                                                 {% if x == response.selected_position %}checked{% else %}disabled{% endif %} />

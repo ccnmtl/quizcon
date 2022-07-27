@@ -31,6 +31,8 @@ My Courses | QuizCon
                                     <li>{{quiz.title}}</li>
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                        No Quizzes
                         {% endif %}
                     </td>
                     <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>

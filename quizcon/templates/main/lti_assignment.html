@@ -156,7 +156,7 @@
                                 </ol>
                             </div>
                             <div class="col-md-7">
-                                <div class="choicebox float-end">
+                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for question {{question.text}}" >
                                     {% for x in num_markers %}
                                     {% aria_label x as label %}
                                     <div class="form-check answer{{x}}">
@@ -275,7 +275,7 @@
                                 </ol>
                             </div>
                             <div class="col-md-7">
-                                <div class="choicebox float-end">
+                                <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for question {{question.text}}">
                                     {% for x in num_markers %}
                                     {% aria_label x as label %}
                                     <div class="form-check answer{{x}}">
@@ -283,7 +283,7 @@
                                             <input class="form-check-input" type="radio" aria-label="{% if x == response.selected_position %}{{label}}{% else %}You didn't chose {{x}}{% endif %}"
                                                 name="{{question.pk}}" value="{{x}}" data-bs-toggle="tooltip" title="Your choice" data-bs-trigger="manual"
                                                 data-bs-placement="{% if x == 0 or x == 1 or x == 2 or x == 3 or x == 4 %}right{% elif x == 8 or x == 9 or x == 10 or x == 11 %}left{% else %}bottom{% endif %}"
-                                                {% if x == response.selected_position %}checked{% else %}disabled{% endif %}/>
+                                                {% if x == response.selected_position %}checked{% else %}disabled{% endif %} />
                                         </span>
                                     </div>
                                     {% endfor %}
@@ -325,7 +325,7 @@
                                         value="[{% for marker in markers %}{{marker.pk}}{% if not forloop.last %},{% endif %}{% endfor %}]" />
                                 </div>
                                 <div class="col-md-7">
-                                    <div class="choicebox float-end" role="radiogroup" aria-labelledby="confidence marker choices">
+                                    <div class="choicebox float-end" role="radiogroup" aria-labelledby="marker choices for question {{question.text}}">
                                         {% for x in num_markers %}
                                         {% aria_label x as label %}
                                         <div class="form-check answer{{x}}">

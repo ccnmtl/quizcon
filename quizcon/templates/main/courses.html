@@ -16,21 +16,23 @@ My Courses | QuizCon
             <thead>
                 <tr>
                     <th scope="col">Course Title</th>
-                    <th scope="col">Course Quiz(zes)</th>
+                    <th scope="col">Course Quizzes</th>
                     <th scope="col">Semester</th>
-                    <th scope="col">Author(s)</th>
+                    <th scope="col">Authors</th>
                 </tr>
             </thead>
             <tbody>
                 {% for course in courses %}
                 <tr>
                     <th scope="row" data-cy="course"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
-                    <td>{% if course.quiz_set %}
+                    <td>{% if course.quiz_set.exists %}
                             <ul>
                                 {% for quiz in course.quiz_set.all %}
                                     <li>{{quiz.title}}</li>
                                 {% endfor %}
                             </ul>
+                        {% else %}
+                        No Quizzes
                         {% endif %}
                     </td>
                     <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>

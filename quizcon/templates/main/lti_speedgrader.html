@@ -28,14 +28,14 @@
 
 {% block content %}
 <div class="quiz-container container-fluid" id="maincontent">
-    <h1 class="mt-2">
-        {{quiz.title}}
-    </h1>
-    {% if quiz.description %}
-        <p class="lead text-muted">{{quiz.description}}</p>
-    {% endif %}
     {% if is_student %}
         {% if submission %}
+        <h1 class="mt-2">
+            {{quiz.title}} - Results
+        </h1>
+        {% if quiz.description %}
+            <p class="lead text-muted">{{quiz.description}}</p>
+        {% endif %}
         <!-- Submitted Interface -->
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
@@ -155,10 +155,22 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}}
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <p>No submission available</p>
         {% endif %}
     {% else %}{% if is_faculty %}
         {% if submission %}
+            <h1 class="mt-2">
+                {{quiz.title}} - Student Results
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <div class="alert alert-success" role="alert">
                 Student's score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
                 Review student's answer below.
@@ -259,6 +271,12 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}} - Preview
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <p>No submission available</p>
         {% endif %}
     {% endif %}{% endif %}

@@ -131,13 +131,14 @@
             </ul>
         </div>
     {% endif %}
-    <h1 class="mt-2">
-        {{quiz.title}}
-    </h1>
-    {% if quiz.description %}
-        <p class="lead text-muted">{{quiz.description}}</p>
-    {% endif %}
+
     {% if is_faculty %}
+        <h1 class="mt-2">
+            {{quiz.title}} - Preview
+        </h1>
+        {% if quiz.description %}
+            <p class="lead text-muted">{{quiz.description}}</p>
+        {% endif %}
         {% for question in quiz.ordered_questions %}
             {% with markers=question.random_markers %}
             <form>
@@ -175,6 +176,12 @@
     {% else %}{% if is_student %}
         {% if submission.submitted %}
         <!-- Submitted Interface -->
+            <h1 class="mt-2">
+                {{quiz.title}} - Results
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
@@ -294,6 +301,12 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}}
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <!-- Quiz Response Interface -->
 
             <div class="alert alert-danger d-none" id="submission-alert" role="alert">

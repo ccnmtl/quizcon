@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load quiz_tools %}
 
 {% block title %}
 {{ quiz.title }}: Preview
@@ -24,9 +25,6 @@
     {% if quiz.description %}
         <p class="lead text-muted">{{quiz.description}}</p>
     {% endif %}
-    <!-- <div class="alert alert-danger" role="alert">
-        <strong>00:00:00</strong> remaining to complete quiz.
-    </div> -->
     {% for question in quiz.ordered_questions %}
         {% with markers=question.random_markers %}
         <form>

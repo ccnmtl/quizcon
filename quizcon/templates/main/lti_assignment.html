@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load quiz_tools %}
 
-{% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
+{% block title %}{{quiz.title|truncatewords:3}}: Assignment{% endblock %}
 
 {% load coursetags static %}
 
@@ -131,13 +131,14 @@
             </ul>
         </div>
     {% endif %}
-    <h1 class="mt-2">
-        {{quiz.title}}
-    </h1>
-    {% if quiz.description %}
-        <p class="lead text-muted">{{quiz.description}}</p>
-    {% endif %}
+
     {% if is_faculty %}
+        <h1 class="mt-2">
+            {{quiz.title}} - Preview
+        </h1>
+        {% if quiz.description %}
+            <p class="lead text-muted">{{quiz.description}}</p>
+        {% endif %}
         {% for question in quiz.ordered_questions %}
             {% with markers=question.random_markers %}
             <form>
@@ -175,6 +176,12 @@
     {% else %}{% if is_student %}
         {% if submission.submitted %}
         <!-- Submitted Interface -->
+            <h1 class="mt-2">
+                {{quiz.title}} - Results
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
                 <div class="alert alert-success" role="alert">
@@ -230,15 +237,15 @@
                                         {% with qp=response.user_question_points %}
                                             {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                                 {% if quiz.scoring_scheme == 0 %}
-                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning text-dark{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 1 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 2 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% endif %}
@@ -294,6 +301,12 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}}
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <!-- Quiz Response Interface -->
 
             <div class="alert alert-danger d-none" id="submission-alert" role="alert">

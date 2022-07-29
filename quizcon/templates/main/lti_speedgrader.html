@@ -2,7 +2,7 @@
 {% load quiz_tools %}
 {% load coursetags static %}
 
-{% block title %}{{quiz.title|truncatewords:3}}{% endblock %}
+{% block title %}{{quiz.title|truncatewords:3}}: Speedgrader{% endblock %}
 
 {% block js %}
     <script>
@@ -28,14 +28,14 @@
 
 {% block content %}
 <div class="quiz-container container-fluid" id="maincontent">
-    <h1 class="mt-2">
-        {{quiz.title}}
-    </h1>
-    {% if quiz.description %}
-        <p class="lead text-muted">{{quiz.description}}</p>
-    {% endif %}
     {% if is_student %}
         {% if submission %}
+        <h1 class="mt-2">
+            {{quiz.title}} - Results
+        </h1>
+        {% if quiz.description %}
+            <p class="lead text-muted">{{quiz.description}}</p>
+        {% endif %}
         <!-- Submitted Interface -->
             <!-- if show Immediately -->
             {% if quiz.show_answers == 1 %}
@@ -91,15 +91,15 @@
                                         {% with qp=response.user_question_points %}
                                             {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                                 {% if quiz.scoring_scheme == 0 %}
-                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning text-dark{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 1 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 2 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% endif %}
@@ -155,10 +155,22 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}}
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <p>No submission available</p>
         {% endif %}
     {% else %}{% if is_faculty %}
         {% if submission %}
+            <h1 class="mt-2">
+                {{quiz.title}} - Student Results
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <div class="alert alert-success" role="alert">
                 Student's score is <strong class="alert-success">{{submission.user_points}} out of {{submission.quiz.total_points}}</strong> ({{submission.user_score_percent}}%) points.
                 Review student's answer below.
@@ -197,15 +209,15 @@
                                         {% with qp=response.user_question_points %}
                                             {% if quiz.show_answers == 1 or quiz.show_answers == 2 and quiz.show_answers_date <= today %}
                                                 {% if quiz.scoring_scheme == 0 %}
-                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 5 %}success{% elif qp == 4 or qp == 3 or qp == 1 %}warning text-dark{% elif qp == 0 %}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 1 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -2%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% elif quiz.scoring_scheme == 2 %}
-                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
+                                                    <span class="badge bg-{% if qp == 3 %}success{% elif qp == 2 or qp == 1 %}warning text-dark{% elif qp == -1 or qp == -5%}danger{% else %}secondary{% endif %}">
                                                         {{qp}} of {{question.highest_question_points}} points
                                                     </span>
                                                 {% endif %}
@@ -259,6 +271,12 @@
                 </div>
             {% endfor %}
         {% else %}
+            <h1 class="mt-2">
+                {{quiz.title}} - Preview
+            </h1>
+            {% if quiz.description %}
+                <p class="lead text-muted">{{quiz.description}}</p>
+            {% endif %}
             <p>No submission available</p>
         {% endif %}
     {% endif %}{% endif %}

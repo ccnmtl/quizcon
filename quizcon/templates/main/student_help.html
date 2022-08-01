@@ -1,9 +1,9 @@
 {% load quiz_tools %}
-<div class="modal fade" id="studentHelp" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="studentHelpLabel" aria-hidden="true">
+<div class="modal fade" id="studentHelp" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-labelledby="studentHelpLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="studentHelpLabel">Tutorial</h2>
+                <h2 class="modal-title" id="studentHelpLabel">Tutorial - QuizCon</h2>
             </div>
             <div class="modal-body">
                 <div class="row p-0 m-0">
@@ -69,10 +69,10 @@
 
                                 <div class="carousel-item text-center active">
                                     <div style="height: 350px; width: auto; background-color: #033a62;">
-                                        <h2 class="logo display-1 align-self-center mb-0" style="border: 0; font-weight: 700; color: #0E78DB; background-color: #033a62;">
+                                        <!-- <h2 class="logo display-1 align-self-center mb-0" style="border: 0; font-weight: 700; color: #0E78DB; background-color: #033a62;">
                                             QuizCon
-                                        </h2>
-                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 280px; width: auto;" class="pb-2" alt="confidence weighted triangle">
+                                        </h2> -->
+                                        <img src="{{STATIC_URL}}img/triangle.svg" style="height: 380px; width: auto;" class="pb-2" alt="diagram of confidence weighted triangle">
                                     </div>
                                 </div>
 
@@ -88,11 +88,11 @@
 
                                 <div class="carousel-item text-center">
                                     {% if quiz.scoring_scheme == 0 %}
-                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with no consequence scoring">
+                                        <img src="{{STATIC_URL}}img/no-con-diagram.png" style="height: 350px; width: auto;" alt="triangle diagram with no consequence scoring">
                                     {% elif quiz.scoring_scheme == 1 %}
-                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with moderate consequence scoring">
+                                        <img src="{{STATIC_URL}}img/mod-con-diagram.png" style="height: 350px; width: auto;" alt="triangle diagram with moderate consequence scoring">
                                     {% else %}
-                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="triangle with high consequence scoring">
+                                        <img src="{{STATIC_URL}}img/high-con-diagram.png" style="height: 350px; width: auto;" alt="triangle diagram with high consequence scoring">
                                     {% endif %}
                                 </div>
 

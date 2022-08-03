@@ -46,7 +46,8 @@
                                     {% if quiz.time %}
                                         <p class="text-center">
                                             You will have <strong>{{quiz.time}} minute{{ quiz.time|pluralize }}</strong> to complete this quiz. <br />
-                                            <span class="text-muted"><strong>Note:</strong> The time remaining may exceed the Due date. Please make sure to check the Due date for this assignment.</span>
+                                            If you run out of time, a choice will be automatically made for any unselected question. <br />
+                                            <span class="text-muted"><strong>Note:</strong> The time remaining may exceed the Due date. Please make sure to finish quiz before the Due Date.</span>
 
                                         </p>
                                     {% endif %}

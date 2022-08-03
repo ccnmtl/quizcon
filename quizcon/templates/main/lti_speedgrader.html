@@ -29,7 +29,7 @@
 {% block content %}
 <div class="quiz-container container-fluid" id="maincontent">
     {% if is_student %}
-        {% if submission %}
+        {% if submission.submitted %}
         <h1 class="mt-2">
             {{quiz.title}} - Results
         </h1>
@@ -164,7 +164,7 @@
             <p>No submission available</p>
         {% endif %}
     {% else %}{% if is_faculty %}
-        {% if submission %}
+        {% if submission.submitted %}
             <h1 class="mt-2">
                 {{quiz.title}} - Student Results
             </h1>

@@ -176,6 +176,7 @@ ol { list-style-type: upper-alpha; }
 .quiz-container .question-text {
     font-size: 1.15rem;
     font-weight: bold;
+    color: red!important;
 }
 
 #footer-logo

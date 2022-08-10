@@ -47,12 +47,22 @@
         <div class="row mb-3">
             <label for="id_text" class="col-sm-2 col-form-label">Question</label>
             <div class="col-sm-10" data-cy="question-text">
+                <span class="text-muted small">
+                    <a href="https://www.tiny.cloud/docs/advanced/accessibility/" target="_blank" rel="noopener noreferrer">
+                        Accessibility for text editor
+                    </a>
+                </span>
                 {% bootstrap_field form.text show_label=False %}
             </div>
         </div>
         <div class="row mb-3">
             <label for="student-feedback" class="col-sm-2 col-form-label">Student Feedback</label>
             <div class="col-sm-10" data-cy="student-feedback">
+                <span class="text-muted small">
+                    <a href="https://www.tiny.cloud/docs/advanced/accessibility/" target="_blank" rel="noopener noreferrer">
+                        Accessibility for text editor
+                    </a>
+                </span>
                 {% bootstrap_field form.explanation %}
             </div>
         </div>

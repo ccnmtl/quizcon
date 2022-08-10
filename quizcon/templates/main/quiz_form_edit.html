@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="row mb-3">
-        <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
+        <label for="options" id="show_answers" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
                 <div>
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
@@ -114,7 +114,7 @@
         <ol id="questions-header" aria-labelledby="questions-container">
             <li>
                 <div class="row d-inline-flex w-100 ml-2">
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" id="sort">
                         Sort
                     </div>
                     <div class="col-sm-4">
@@ -134,7 +134,7 @@
                 <li class="list-style-none" data-id="{{question.id}}" id="question-{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
-                            <button aria-describedby="global-help" type="button" class="handle" tabindex="0">
+                            <button aria-describedby="sort" type="button" class="handle" tabindex="0">
                                 <div class="offscreen">Reorder</div>
                             </button>
                             <span class="sr-only">{{question.text|safe}}</span>

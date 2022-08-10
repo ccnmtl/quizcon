@@ -32,11 +32,16 @@ class QuizForm(forms.ModelForm):
             'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
             'multiple_attempts': forms.NumberInput(
                                  attrs={'class': 'form-control'}),
-            'show_answers': forms.RadioSelect(),
+            'show_answers': forms.RadioSelect(
+                                 attrs={'aria-describedby': 'show_answers'}),
             'show_answers_date': forms.DateInput(
-                                attrs={'class': 'form-control',
+                                 attrs={
+                                       'class': 'form-control',
                                        'type': 'date',
-                                       'disabled': 'true'}),
+                                       'disabled': 'true',
+                                       'aria-describedby': 'id_show_answers_2',
+                                       'title': 'calendar'
+                                      }),
             'time': forms.NumberInput(
                     attrs={'placeholder': 'Minutes', 'maxlength': '2'})
         }

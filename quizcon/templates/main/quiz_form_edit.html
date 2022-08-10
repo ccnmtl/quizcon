@@ -134,10 +134,9 @@
                 <li class="list-style-none" data-id="{{question.id}}" id="question-{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
-                            <button aria-describedby="sort" type="button" class="handle" tabindex="0">
-                                <div class="offscreen">Reorder</div>
+                            <button aria-describedby="sort" class="handle" tabindex="0">
+                                <div class="offscreen">Reorder {{question.text|safe}}</div>
                             </button>
-                            <span class="sr-only">{{question.text|safe}}</span>
                         </div>
                         <div class="col-sm-4" data-cy="{{question.text}}">
                             {{question.text|safe}}

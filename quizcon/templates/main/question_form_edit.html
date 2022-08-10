@@ -45,7 +45,7 @@
             </div>
         {% endif %}
         <div class="row mb-3">
-            <label for="text" class="col-sm-2 col-form-label">Question</label>
+            <label for="id_text" class="col-sm-2 col-form-label">Question</label>
             <div class="col-sm-10" data-cy="question-text">
                 {% bootstrap_field form.text show_label=False %}
             </div>
@@ -54,7 +54,7 @@
             <label for="student-feedback" class="col-sm-2 col-form-label">Student Feedback</label>
             <div class="col-sm-10" data-cy="student-feedback">
                 {% autoescape off %}
-                    {% bootstrap_field form.explanation show_label=False %}
+                    {% bootstrap_field form.explanation %}
                 {% endautoescape %}
             </div>
         </div>
@@ -102,7 +102,8 @@
             </div>
         </div>
         <input type="hidden" name="quiz" value="{{question.quiz.pk}}" />
-        <button type="submit" class="btn btn-block btn-primary" data-cy="save-question-btn">Save</button> <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Question</a>
+        <button type="submit" class="btn btn-block btn-primary me-2" data-cy="save-question-btn">Save</button>
+        <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Question</a>
     </form>
 </div>
 <!-- Modal -->

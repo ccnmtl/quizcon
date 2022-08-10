@@ -78,6 +78,11 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['quiz', 'text', 'explanation']
+        labels = {
+                    'quiz': '',
+                    'text': '',
+                    'explanation': ''
+                }
 
         widgets = {
             'text': forms.Textarea(attrs={'rows': 2, 'placeholder': '',

@@ -76,7 +76,7 @@
         </div>
         {% flag "timer" %}
         <div class="row mb-3">
-            <label for="id_time" class="col-sm-2 col-form-label">Time</label>
+            <label for="id_time" class="col-sm-2 col-form-label">Time <span class="text-muted">(minutes)</span></label>
             <div class="col-sm-2">
                 {% bootstrap_field form.time %}
             </div>
@@ -143,15 +143,14 @@
                             {{question.text|safe}}
                         </div>
                         <div class="col-sm-5">
+                            <ul style="list-style-type:disc">
                             {% for marker in question.marker_set.all %}
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
-                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-                                    </svg>
+                                <li>
                                     {{marker.label}}
                                     {% if marker.correct %}<span class="badge rounded-pill bg-secondary">Correct</span>{% endif %}
-                                </div>
+                                </li>
                             {% endfor %}
+                            </ul>
                         </div>
                         <div class="col-sm-2">
                             <a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning" data-cy="edit-btn-{{question.text}}">Edit Question</a>

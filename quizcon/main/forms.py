@@ -32,8 +32,7 @@ class QuizForm(forms.ModelForm):
             'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
             'multiple_attempts': forms.NumberInput(
                                  attrs={'class': 'form-control'}),
-            'show_answers': forms.RadioSelect(
-                                 attrs={'aria-describedby': 'show_answers'}),
+            'show_answers': forms.RadioSelect(),
             'show_answers_date': forms.DateInput(
                                  attrs={
                                        'class': 'form-control',

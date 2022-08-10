@@ -91,7 +91,7 @@
         <div class="row mb-3">
         <label for="options" id="show_answers" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
-                <div>
+                <div role="radiogroup" aria-labelledby="show_answers">
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
                     {% bootstrap_field form.show_answers_date show_label=False %}
                 </div>

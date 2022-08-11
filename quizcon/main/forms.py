@@ -15,18 +15,32 @@ class QuizForm(forms.ModelForm):
         fields = ['title', 'description', 'multiple_attempts',
                   'show_answers', 'randomize', 'course', 'scoring_scheme',
                   'show_answers_date', 'time']
-
+        labels = {
+                    'title': '',
+                    'description': '',
+                    'scoring_scheme': '',
+                    'multiple_attempts': '',
+                    'show_answers': '',
+                    'show_answers_date': '',
+                    'time': '',
+                    'randomize': ''
+                }
         widgets = {
-            'title': forms.TextInput(),
-            'description': forms.Textarea(attrs={'rows': 3}),
+            'title': forms.TextInput(attrs={'placeholder': 'Title'}),
+            'description': forms.Textarea(attrs={'rows': 3,
+                                          'placeholder': 'Description'}),
             'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
             'multiple_attempts': forms.NumberInput(
                                  attrs={'class': 'form-control'}),
             'show_answers': forms.RadioSelect(),
             'show_answers_date': forms.DateInput(
-                                attrs={'class': 'form-control',
+                                 attrs={
+                                       'class': 'form-control',
                                        'type': 'date',
-                                       'disabled': 'true'}),
+                                       'disabled': 'true',
+                                       'aria-describedby': 'id_show_answers_2',
+                                       'title': 'calendar'
+                                      }),
             'time': forms.NumberInput(
                     attrs={'placeholder': 'Minutes', 'maxlength': '2'})
         }
@@ -68,6 +82,11 @@ class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
         fields = ['quiz', 'text', 'explanation']
+        labels = {
+                    'quiz': '',
+                    'text': '',
+                    'explanation': ''
+                }
 
         widgets = {
             'text': forms.Textarea(attrs={'rows': 2, 'placeholder': '',

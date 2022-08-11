@@ -57,28 +57,28 @@
         {% endif %}
 
         <div class="row mb-3">
-            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <label for="id_title" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.title show_label=False %}
+                {% bootstrap_field form.title %}
             </div>
         </div>
         <div class="row mb-3">
-            <label for="description" class="col-sm-2 col-form-label">Description</label>
+            <label for="id_description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.description show_label=False %}
+                {% bootstrap_field form.description %}
             </div>
         </div>
         <div class="row mb-3">
-            <label for="scoring_scheme" class="col-sm-2 col-form-label">Consequence</label>
+            <label for="id_scoring_scheme" class="col-sm-2 col-form-label">Consequence</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.scoring_scheme show_label=False %}
+                {% bootstrap_field form.scoring_scheme %}
             </div>
         </div>
         {% flag "timer" %}
         <div class="row mb-3">
-            <label for="options" class="col-sm-2 col-form-label">Time</label>
+            <label for="id_time" class="col-sm-2 col-form-label">Time <span class="text-muted">(minutes)</span></label>
             <div class="col-sm-2">
-                {% bootstrap_field form.time show_label=False %}
+                {% bootstrap_field form.time %}
             </div>
         </div>
         {% endflag %}
@@ -89,9 +89,9 @@
             </div>
         </div>
         <div class="row mb-3">
-        <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
+        <label for="options" id="show_answers" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
-                <div>
+                <div role="radiogroup" aria-labelledby="show_answers">
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
                     {% bootstrap_field form.show_answers_date show_label=False %}
                 </div>
@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="col">
-            <button type="submit" class="btn btn-primary" aria-label="Save quiz" data-cy="save-quiz-btn">Save Quiz</button>
+            <button type="submit" class="btn btn-primary me-2" aria-label="Save quiz" data-cy="save-quiz-btn">Save Quiz</button>
             <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
         </div>
         <hr />
@@ -114,7 +114,7 @@
         <ol id="questions-header" aria-labelledby="questions-container">
             <li>
                 <div class="row d-inline-flex w-100 ml-2">
-                    <div class="col-sm-1">
+                    <div class="col-sm-1" id="sort">
                         Sort
                     </div>
                     <div class="col-sm-4">
@@ -134,24 +134,22 @@
                 <li class="list-style-none" data-id="{{question.id}}" id="question-{{question.id}}">
                     <div class="row d-inline-flex w-100 ml-2">
                         <div class="col-sm-1">
-                            <button aria-describedby="global-help" type="button" class="handle" tabindex="0">
-                                <div class="offscreen">Reorder</div>
+                            <button aria-describedby="sort" class="handle" tabindex="0">
+                                <div class="offscreen">Reorder {{question.text|safe}}</div>
                             </button>
-                            <span class="sr-only">{{question.text|safe}}</span>
                         </div>
                         <div class="col-sm-4" data-cy="{{question.text}}">
                             {{question.text|safe}}
                         </div>
                         <div class="col-sm-5">
+                            <ul style="list-style-type:disc">
                             {% for marker in question.marker_set.all %}
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
-                                        <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
-                                    </svg>
+                                <li>
                                     {{marker.label}}
                                     {% if marker.correct %}<span class="badge rounded-pill bg-secondary">Correct</span>{% endif %}
-                                </div>
+                                </li>
                             {% endfor %}
+                            </ul>
                         </div>
                         <div class="col-sm-2">
                             <a href="{% url 'update-question' question.id %}" class="btn btn-sm btn-warning" data-cy="edit-btn-{{question.text}}">Edit Question</a>
@@ -161,7 +159,7 @@
             {% endfor %}
         </ol>
         <input type="hidden" name="course" value="{{course.pk}}" />
-        <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary" data-cy="create-question">Create Question</a>
+        <a href="{% url 'create-question' quiz.id %}" class="btn btn-primary me-2" data-cy="create-question">Create Question</a>
         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-success">Preview Quiz</a>
         <a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Quiz</a>
         <div class="clearfix"></div>

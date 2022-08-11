@@ -42,41 +42,41 @@
         {% endif %}
 
         <div class="row mb-3">
-            <label for="title" class="col-sm-2 col-form-label">Title</label>
+            <label for="id_title" class="col-sm-2 col-form-label">Title</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.title show_label=False %}
+                {% bootstrap_field form.title %}
             </div>
         </div>
         <div class="row mb-3">
-            <label for="description" class="col-sm-2 col-form-label">Description</label>
+            <label for="id_description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.description show_label=False %}
+                {% bootstrap_field form.description %}
             </div>
         </div>
         <div class="row mb-3">
-            <label for="scoring_scheme" class="col-sm-2 col-form-label">Consequence</label>
+            <label for="id_scoring_scheme" class="col-sm-2 col-form-label">Consequence</label>
             <div class="col-sm-10">
-                {% bootstrap_field form.scoring_scheme show_label=False %}
+                {% bootstrap_field form.scoring_scheme %}
             </div>
         </div>
         {% flag "timer" %}
         <div class="row mb-3">
-            <label for="options" class="col-sm-2 col-form-label">Time</label>
+            <label for="id_time" class="col-sm-2 col-form-label">Time <span class="text-muted">(minutes)</span></label>
             <div class="col-sm-2">
-                {% bootstrap_field form.time show_label=False %}
+                {% bootstrap_field form.time %}
             </div>
         </div>
         {% endflag %}
         <div class="row mb-3" style="display: none">
             <label for="multiple_attempts" class="col-sm-2 col-form-label">Number of Attempts</label>
             <div class="col-sm-1">
-                {% bootstrap_field form.multiple_attempts show_label=False %}
+                {% bootstrap_field form.multiple_attempts %}
             </div>
         </div>
         <div class="row mb-3">
-        <label for="options" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
+        <label for="options" id="show_answers" class="col-sm-2 col-form-label">Show Students Correct Answers for Each Question</label>
             <div class="col-sm-10">
-                <div>
+                <div role="radiogroup" aria-labelledby="show_answers">
                     {% bootstrap_field form.show_answers show_label=False show_help=False %}
                     {% bootstrap_field form.show_answers_date show_label=False %}
                 </div>
@@ -92,7 +92,7 @@
         </div>
 
         <input type="hidden" name="course" value="{{course.pk}}" />
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary me-2">Save</button>
         <a class="btn btn-secondary" href="{% url 'course-detail-view' course.pk %}">Cancel</a>
     </form>
 

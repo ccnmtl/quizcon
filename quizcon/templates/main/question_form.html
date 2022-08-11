@@ -45,15 +45,25 @@
             </div>
         {% endif %}
         <div class="row mb-3">
-            <label for="text" class="col-sm-2 col-form-label">Question</label>
+            <label for="id_text" class="col-sm-2 col-form-label">Question</label>
             <div class="col-sm-10" data-cy="question-text">
+                <span class="text-muted small">
+                    <a href="https://www.tiny.cloud/docs/advanced/accessibility/" target="_blank" rel="noopener noreferrer">
+                        Accessibility for text editor
+                    </a>
+                </span>
                 {% bootstrap_field form.text show_label=False %}
             </div>
         </div>
         <div class="row mb-3">
             <label for="student-feedback" class="col-sm-2 col-form-label">Student Feedback</label>
             <div class="col-sm-10" data-cy="student-feedback">
-                {% bootstrap_field form.explanation show_label=False %}
+                <span class="text-muted small">
+                    <a href="https://www.tiny.cloud/docs/advanced/accessibility/" target="_blank" rel="noopener noreferrer">
+                        Accessibility for text editor
+                    </a>
+                </span>
+                {% bootstrap_field form.explanation %}
             </div>
         </div>
         <div class="row mt-4">
@@ -100,7 +110,8 @@
             </div>
         </div>
         <input type="hidden" name="quiz" value="{{quiz.pk}}" />
-        <button type="submit" class="btn btn-block btn-primary">Save</button> <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-secondary">Cancel</a>
+        <button type="submit" class="btn btn-block btn-primary me-2">Save</button>
+        <a href="{% url 'update-quiz' quiz.id %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 {% endblock %}

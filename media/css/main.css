@@ -418,3 +418,14 @@ ol { list-style-type: upper-alpha; }
 #cu-privacy-notice-text {
     color: white;
 }
+
+#timerSwitch {
+    width: 2.5em;
+    height: 1.1em;
+}
+
+#id_time {
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    width: 30%;
+}

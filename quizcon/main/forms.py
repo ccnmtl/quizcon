@@ -34,15 +34,17 @@ class QuizForm(forms.ModelForm):
                                  attrs={'class': 'form-control'}),
             'show_answers': forms.RadioSelect(),
             'show_answers_date': forms.DateInput(
-                                 attrs={
-                                       'class': 'form-control',
-                                       'type': 'date',
-                                       'disabled': 'true',
-                                       'aria-describedby': 'id_show_answers_2',
-                                       'title': 'calendar'
-                                      }),
+                               attrs={
+                                     'class': 'form-control-sm ms-3 rounded-3',
+                                     'type': 'date',
+                                     'disabled': 'true',
+                                     'aria-describedby': 'id_show_answers_2',
+                                     'title': 'calendar'
+                                     }),
             'time': forms.NumberInput(
-                    attrs={'placeholder': 'Minutes', 'maxlength': '2'})
+                    attrs={'placeholder': 'mins.',
+                           'disabled': 'true', 'min': '1', 'max': '180',
+                           'class': 'form-control-sm rounded-3'})
         }
 
 

@@ -319,7 +319,6 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
             else:
                 selected_position = 12
 
-            # import pdb; pdb.set_trace()
             response = QuestionResponse.objects.create(
                 question=question, submission=submission,
                 selected_position=selected_position)
@@ -558,9 +557,11 @@ class AnalyticsQuizView(UpdateQuizPermissionMixin, TemplateView):
         quiz_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         submissions = []
-        count = quiz.quizsubmission_set.count()
+        count = 0
         for sub in quiz.quizsubmission_set.all():
-            submissions.append(sub)
+            if sub.submitted:
+                submissions.append(sub)
+                count += 1
 
         return {
             'quiz': quiz,

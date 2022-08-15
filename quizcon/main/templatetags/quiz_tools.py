@@ -1,5 +1,5 @@
 from django import template
-from quizcon.main.models import Quiz
+from quizcon.main.models import Quiz, QuestionResponse
 import statistics
 import math
 
@@ -88,6 +88,19 @@ def submission_standard_dev(submissions):
     except statistics.StatisticsError:
         stdev = "Not enough data"
     return stdev
+
+
+@register.simple_tag
+def average_time_completion(submissions):
+    count = 0
+    for sub in submissions:
+        start = sub.time
+        qr = QuestionResponse.objects.filter(submission=sub).first()
+        end = round(qr.created_at.timestamp())
+        duration = end - start
+        count += duration
+
+    return count / len(submissions)
 
 
 @register.simple_tag

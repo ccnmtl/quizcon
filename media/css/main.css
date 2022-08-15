@@ -418,3 +418,7 @@ ol { list-style-type: upper-alpha; }
 #cu-privacy-notice-text {
     color: white;
 }
+
+.bg-green {
+    background-color: #188150!important;
+}

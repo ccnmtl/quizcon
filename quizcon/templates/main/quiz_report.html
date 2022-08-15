@@ -71,7 +71,13 @@ Analytics for {{ quiz.title }}
             Analytics for <strong>{{ quiz.title }}</strong>
             </h1>
             <p>
-            Scoring Scheme: <strong class="text-success">{{quiz.scoring_scheme_verbose}}</strong> <span class="text-muted">&bull;</span> Student Answer View: <strong class="text-success">{{quiz.show_answers_verbose|lower}}</strong>
+            Scoring Scheme: <strong class="text-success">{{quiz.scoring_scheme_verbose}}</strong>
+            <span class="text-muted">&bull;</span>
+            Student Answer View: <strong class="text-success">{{quiz.show_answers_verbose|lower}}</strong>
+            {% if quiz.time %}
+                <span class="text-muted">&bull;</span>
+                Quiz Time: <strong class="text-success">{{quiz.time}} minute{{ quiz.time|pluralize }}</strong>
+            {% endif %}
             </p>
             <ul class="nav nav-tabs nav-fill mb-4">
                 <li class="nav-item"> <a class="nav-link" href="#statistics">Quiz Statistics</a> </li>
@@ -235,7 +241,7 @@ Analytics for {{ quiz.title }}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="{{STATIC_URL}}img/triangle-key.svg" class="rounded" alt="confidence triangle key">
+                                    <img src="{{STATIC_URL}}img/triangle-key.svg" class="rounded" alt="">
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row">
@@ -245,25 +251,25 @@ Analytics for {{ quiz.title }}
                                                 {% radio_points quiz.id 0 as pts %}
                                                 <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(4, 43, 80);">{{percent}}%
                                                     <span class="badge bg-light  text-dark">A</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 1 question as percent %}
                                                 {% radio_points quiz.id 1 as pts %}
                                                 <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">AAB</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 2 question as percent %}
                                                 {% radio_points quiz.id 2 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">AB</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 3 question as percent %}
                                                 {% radio_points quiz.id 3 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">ABB</span>
-                                                    <span class="badge bg-success text-light">{{pts}} point</span>
+                                                    <span class="badge bg-green text-light">{{pts}} point</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -271,25 +277,25 @@ Analytics for {{ quiz.title }}
                                             <ul class="list-group">
                                                 {% percentage_choice 4 question as percent %}
                                                 {% radio_points quiz.id 4 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(4, 43, 80);">{{percent}}%
                                                     <span class="badge bg-light  text-dark">B</span>
                                                     <span class="badge bg-secondary text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 5 question as percent %}
                                                 {% radio_points quiz.id 5 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">BBC</span>
                                                     <span class="badge bg-secondary text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 6 question as percent %}
                                                 {% radio_points quiz.id 6 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">BC</span>
                                                     <span class="badge bg-secondary text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 7 question as percent %}
                                                 {% radio_points quiz.id 7 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">BCC</span>
                                                     <span class="badge bg-secondary text-light">{{pts}} points</span>
                                                 </li>
@@ -299,27 +305,27 @@ Analytics for {{ quiz.title }}
                                             <ul class="list-group">
                                                 {% percentage_choice 8 question as percent %}
                                                 {% radio_points quiz.id 8 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(4, 43, 80);">{{percent}}%
                                                     <span class="badge bg-light  text-dark">C</span>
                                                     <span class="badge bg-secondary text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 9 question as percent %}
                                                 {% radio_points quiz.id 9 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">CCA</span>
-                                                    <span class="badge bg-success text-light">{{pts}} point</span>
+                                                    <span class="badge bg-green text-light">{{pts}} point</span>
                                                 </li>
                                                 {% percentage_choice 10 question as percent %}
                                                 {% radio_points quiz.id 10 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(15, 121, 220);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">CA</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                                 {% percentage_choice 11 question as percent %}
                                                 {% radio_points quiz.id 11 as pts %}
                                                 <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(15, 121, 220);">{{percent}}%
                                                     <span class="badge bg-dark  text-light">CAA</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -327,9 +333,9 @@ Analytics for {{ quiz.title }}
                                             <ul class="list-group">
                                                 {% percentage_choice 12 question as percent %}
                                                 {% radio_points quiz.id 12 as pts %}
-                                                <li class="list-group-item d-flex justify-content-between align-items-center text-info" style="background-color: rgb(4, 43, 80);">{{percent}}%
+                                                <li class="list-group-item d-flex justify-content-between align-items-center text-light" style="background-color: rgb(4, 43, 80);">{{percent}}%
                                                     <span class="badge bg-light  text-dark">D</span>
-                                                    <span class="badge bg-success text-light">{{pts}} points</span>
+                                                    <span class="badge bg-green text-light">{{pts}} points</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -337,7 +343,7 @@ Analytics for {{ quiz.title }}
                                     <div class="row mt-4">
                                         <div class="col-md-4">
                                             <div class="card">
-                                                <div class="card-header bg-success text-white">
+                                                <div class="card-header bg-green text-white">
                                                     <span class="badge bg-light text-dark">A</span> Correct
                                                 </div>
                                                 <div class="card-body">

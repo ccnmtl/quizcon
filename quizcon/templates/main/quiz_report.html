@@ -189,6 +189,23 @@ Analytics for {{ quiz.title }}
                         </div>
                     </div>
                 </div>
+                {% if quiz.time %}
+                <div class="row mt-4 justify-content-center"">
+                    <div class="col-md-3">
+                        <div class="card text-center">
+                            <div class="card-header bg-dark text-white">
+                            Average Time
+                            </div>
+                            <div class="card-body">
+                                {% average_time_completion submissions as avg %}
+                                <p class="card-title display-5">
+                                {{avg}} seconds
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </section>
             <section style="margin: 4em 0em 4em 0em;">
                 <a name="insights" id="insights"></a>

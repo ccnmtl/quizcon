@@ -14,6 +14,13 @@
     jQuery("#id_show_answers_0").on("click", function() {
         jQuery("#id_show_answers_date").attr("disabled", true)
     });
+    jQuery("#timerSwitch").on("click", function() {
+        if(jQuery("#timerSwitch").is(":checked")){
+            jQuery("#id_time").attr("disabled", false)
+        } else {
+            jQuery("#id_time").attr("disabled", true)
+        }
+    });
 </script>
 {% endblock %}
 
@@ -62,7 +69,9 @@
         {% flag "timer" %}
         <div class="row mb-3">
             <label for="id_time" class="col-sm-2 col-form-label">Time <span class="text-muted">(minutes)</span></label>
-            <div class="col-sm-2">
+            <div class="col-sm-2 form-switch mt-1">
+                <label for="timerSwitch"> Use Timer</label>
+                <input class="form-check-input ms-1" type="checkbox" id="timerSwitch">
                 {% bootstrap_field form.time %}
             </div>
         </div>

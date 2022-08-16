@@ -1,6 +1,7 @@
 from courseaffils.models import Course
 from django.contrib.auth.models import User
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 TRIANGLE_SIDE = 4
 I_DONT_KNOW_POSITION = 12
@@ -92,7 +93,11 @@ class Quiz(models.Model):
         User, null=True, on_delete=models.SET_NULL,
         related_name='quiz_modified_by')
     show_answers_date = models.DateField(blank=True, null=True)
-    time = models.IntegerField(blank=True, null=True)
+    time = models.PositiveSmallIntegerField(blank=True, null=True,
+                                            validators=[
+                                                        MinValueValidator(1),
+                                                        MaxValueValidator(180)
+                                                        ])
 
     display_name = "Quiz"
 

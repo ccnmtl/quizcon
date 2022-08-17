@@ -93,14 +93,18 @@ def submission_standard_dev(submissions):
 @register.simple_tag
 def average_time_completion(submissions):
     count = 0
-    for sub in submissions:
-        start = sub.time
-        qr = QuestionResponse.objects.filter(submission=sub).first()
-        end = round(qr.created_at.timestamp())
-        duration = end - start
-        count += duration
 
-    return count / len(submissions)
+    if len(submissions) == 0:
+        return 0
+    else:
+        for sub in submissions:
+            start = sub.time
+            qr = QuestionResponse.objects.filter(submission=sub).first()
+            end = round(qr.created_at.timestamp())
+            duration = end - start
+            count += duration
+
+        return count / len(submissions)
 
 
 @register.simple_tag

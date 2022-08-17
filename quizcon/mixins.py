@@ -116,11 +116,13 @@ class SubmissionPermissionMixin(UserPassesTestMixin):
             submission = QuizSubmission.objects.get(pk=submission_id)
 
             # course faculty can see all submissions
-            if submission.quiz.course.is_true_faculty(self.request.user):
+            if submission.submitted.quiz.course.is_true_faculty(
+                                                            self.request.user):
                 return True
 
             # non-course students cannot see anything
-            if not submission.quiz.course.is_true_member(self.request.user):
+            if not submission.submitted.quiz.course.is_true_member(
+                                                            self.request.user):
                 return False
 
             # course students can only see their own submissions

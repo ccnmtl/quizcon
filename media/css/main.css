@@ -428,6 +428,7 @@ ol { list-style-type: upper-alpha; }
     margin-left: 1rem;
     margin-top: 0.5rem;
     width: 30%;
+}
 
 .bg-green {
     background-color: #188150!important;

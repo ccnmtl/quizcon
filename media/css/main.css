@@ -433,3 +433,7 @@ ol { list-style-type: upper-alpha; }
 .bg-green {
     background-color: #188150!important;
 }
+
+.bg-secondary {
+    background-color: #4E565A!important;
+}

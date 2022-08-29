@@ -410,7 +410,7 @@ ol { list-style-type: upper-alpha; }
 }
 
 .skippy a {
-    color: $black;
+    color: black;
     border-radius: 0.25rem;
     font-weight: 500;
 }
@@ -436,4 +436,9 @@ ol { list-style-type: upper-alpha; }
 
 .bg-secondary {
     background-color: #4E565A!important;
+}
+
+#quiz-timer {
+    position: sticky;
+    top: 0;
 }

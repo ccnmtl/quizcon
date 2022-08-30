@@ -4,24 +4,7 @@
 {% block title %}Create Quiz{% endblock %}
 
 {% block js %}
-<script type="text/javascript">
-    jQuery("#id_show_answers_2").on("click", function() {
-        jQuery("#id_show_answers_date").attr("disabled", false)
-    });
-    jQuery("#id_show_answers_1").on("click", function() {
-        jQuery("#id_show_answers_date").attr("disabled", true)
-    });
-    jQuery("#id_show_answers_0").on("click", function() {
-        jQuery("#id_show_answers_date").attr("disabled", true)
-    });
-    jQuery("#timerSwitch").on("click", function() {
-        if(jQuery("#timerSwitch").is(":checked")){
-            jQuery("#id_time").attr("disabled", false)
-        } else {
-            jQuery("#id_time").attr("disabled", true)
-        }
-    });
-</script>
+    <script src="{{STATIC_URL}}js/src/utils.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -61,7 +44,15 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label for="id_scoring_scheme" class="col-sm-2 col-form-label">Consequence</label>
+            <label for="id_scoring_scheme" class="col-sm-2 col-form-label">Consequence
+                <a href="/help/#overview-consequences" class="d-inline-block" data-bs-toggle="tooltip" title="The consequence of a quiz determines the grading scheme for each question in the quiz. To learn more about consequences, please click here."
+                    data-bs-original-title="The consequence of a quiz determines the grading scheme for each question in the quiz. To learn more about consequences, please click here."
+                    id="help_icon" target="_blank">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0d6efd" class="bi bi-info-circle-fill" viewBox="0 0 16 16" style="padding-bottom: 2px">
+                        <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                    </svg>
+                </a>
+            </label>
             <div class="col-sm-10">
                 {% bootstrap_field form.scoring_scheme %}
             </div>

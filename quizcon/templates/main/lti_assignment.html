@@ -36,11 +36,8 @@
 
 {% block js %}
     <script src="{{STATIC_URL}}js/src/timer.js"></script>
+    <script src="{{STATIC_URL}}js/src/utils.js"></script>
     <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
         var carLength = jQuery('.carousel-txt-item').length - 1;
         jQuery(window).on('load',function(){
             jQuery('#studentHelp').modal('show');

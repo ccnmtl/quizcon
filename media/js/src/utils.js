@@ -26,6 +26,9 @@ jQuery(document).ready(function() {
     if(jQuery('#id_show_answers_2').is(':checked')) {
         jQuery('#id_show_answers_date').attr('disabled', false);
     }
+    if(jQuery('#timerSwitch').is(':checked')){
+        jQuery('#id_time').attr('disabled', false);
+    }
 });
 jQuery('#timerSwitch').on('click', function() {
     if(jQuery('#timerSwitch').is(':checked')){

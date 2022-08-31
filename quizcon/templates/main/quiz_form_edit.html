@@ -77,7 +77,7 @@
             <label for="id_time" class="col-sm-2 col-form-label">Time</label>
             <div class="col-sm-2 form-switch mt-1">
                 <label for="timerSwitch"> Use Timer <span class="text-muted">(minutes)</span></label>
-                <input class="form-check-input ms-1" {% if quiz.time %}checked{% endif %} {% if not quiz.time and quiz.quizsubmission_set.count %}disabled{% endif %} type="checkbox" id="timerSwitch">
+                <input class="form-check-input ms-1" {% if quiz.time and quiz.quizsubmission_set.count == 0 %}checked{% else %}disabled{% endif %} type="checkbox" id="timerSwitch">
                 {% bootstrap_field form.time %}
             </div>
         </div>

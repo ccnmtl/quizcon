@@ -1,4 +1,5 @@
 let time = $('meta[name="time"]').attr('content');
+let submitted = $('meta[name="submitted"]').attr('content');
 
 function strLength(num) {
     return num.toString().length;
@@ -6,14 +7,22 @@ function strLength(num) {
 
 let minutes = Math.floor(time / 60);
 let seconds = Math.floor(time - minutes * 60);
-if (strLength(time) > 2) {
-    $('#quiz-timer').html(
-        `<b>0${minutes}:${seconds}</b> remaining to complete quiz.`);
-
+let display_secs;
+let display_minutes;
+if (strLength(minutes) < 2) {
+    display_minutes = '0' + minutes;
 } else {
-    $('#quiz-timer').html(
-        `<b>${minutes}:${seconds}</b> remaining to complete quiz.`);
+    display_minutes = minutes;
 }
+if (strLength(seconds) < 2) {
+    display_secs = '0' + seconds;
+} else {
+    display_secs = seconds;
+}
+$('#quiz-timer')
+    .html(`<b>${display_minutes}:${display_secs}</b>` +
+         ' remaining to complete quiz.');
+
 
 const activateTimer = (time) => {
     let minutes = Math.floor(time / 60);
@@ -53,5 +62,7 @@ const activateTimer = (time) => {
     }, 1000);
 };
 window.addEventListener('load', function() {
-    activateTimer(time);
+    if (time && submitted === 'False') {
+        activateTimer(time);
+    }
 });

@@ -29,7 +29,8 @@ class QuizForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'placeholder': 'Title'}),
             'description': forms.Textarea(attrs={'rows': 3,
                                           'placeholder': 'Description'}),
-            'scoring_scheme': forms.Select(attrs={'class': 'form-select'}),
+            'scoring_scheme': forms.Select(attrs={'class': 'form-select',
+                                                  'style': 'width: auto'}),
             'multiple_attempts': forms.NumberInput(
                                  attrs={'class': 'form-control'}),
             'show_answers': forms.RadioSelect(),

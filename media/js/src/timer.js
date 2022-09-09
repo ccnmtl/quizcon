@@ -1,11 +1,8 @@
-let time = $('meta[name="time"]').attr('content');
-let submitted = $('meta[name="submitted"]').attr('content');
-
 const strLength = (num) => {
     return num.toString().length;
 };
 
-const setTimer = () => {
+const setTimer = (time) => {
     let minutes = Math.floor(time / 60);
     let seconds = Math.floor(time - minutes * 60);
     let display_secs;
@@ -28,7 +25,7 @@ const setTimer = () => {
              ' remaining to complete quiz.');
 };
 
-const activateTimer = () => {
+const activateTimer = (time) => {
     let minutes = Math.floor(time / 60);
     let seconds = Math.floor(time - minutes * 60);
     let display_secs;
@@ -67,8 +64,11 @@ const activateTimer = () => {
 };
 
 $(document).ready(function() {
+    let time = $('meta[name="time"]').attr('content');
+    let submitted = $('meta[name="submitted"]').attr('content');
+
     if (time && submitted === 'False') {
-        setTimer();
-        activateTimer();
+        setTimer(time);
+        activateTimer(time);
     }
 });

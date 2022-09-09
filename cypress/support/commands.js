@@ -26,8 +26,8 @@
 Cypress.Commands.add('login', (username, password) => {
     cy.visit('/accounts/logout/?next=/');
     cy.get('#guest-login').click();
-    cy.get('#id_username').type('faculty_one').blur();
-    cy.get('#id_password').type('test').blur();
+    cy.get('#id_username').type(username).blur();
+    cy.get('#id_password').type(password).blur();
     cy.get('#guest-login-submit').click({force: true});
 });
 

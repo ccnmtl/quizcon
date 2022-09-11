@@ -1,19 +1,29 @@
-let time = $('meta[name="time"]').attr('content');
-
-function strLength(num) {
+const strLength = (num) => {
     return num.toString().length;
-}
+};
 
-let minutes = Math.floor(time / 60);
-let seconds = Math.floor(time - minutes * 60);
-if (strLength(time) > 2) {
-    $('#quiz-timer').html(
-        `<b>0${minutes}:${seconds}</b> remaining to complete quiz.`);
+const setTimer = (time) => {
+    let minutes = Math.floor(time / 60);
+    let seconds = Math.floor(time - minutes * 60);
+    let display_secs;
+    let display_minutes;
 
-} else {
-    $('#quiz-timer').html(
-        `<b>${minutes}:${seconds}</b> remaining to complete quiz.`);
-}
+    if (strLength(minutes) < 2) {
+        display_minutes = '0' + minutes;
+    } else {
+        display_minutes = minutes;
+    }
+
+    if (strLength(seconds) < 2) {
+        display_secs = '0' + seconds;
+    } else {
+        display_secs = seconds;
+    }
+
+    $('#quiz-timer')
+        .html(`<strong>${display_minutes}:${display_secs}</strong>` +
+             ' remaining to complete quiz.');
+};
 
 const activateTimer = (time) => {
     let minutes = Math.floor(time / 60);
@@ -21,7 +31,7 @@ const activateTimer = (time) => {
     let display_secs;
     let display_minutes;
     if (time <= 0) {
-        $('#quiz-timer').html('<b>Time is up!</b>');
+        $('#quiz-timer').html('<strong>Time is up!</strong>');
         document.getElementById('quiz_form').submit();
         return;
     }
@@ -42,16 +52,23 @@ const activateTimer = (time) => {
             display_secs = seconds;
         }
         if (minutes === 0 && seconds === 0) {
-            $('#quiz-timer').html('<b>Time is up!</b>');
+            $('#quiz-timer').html('<strong>Time is up!</strong>');
             document.getElementById('quiz_form').submit();
             return;
         }
         $('#quiz-timer')
-            .html(`<b>${display_minutes}:${display_secs}</b>` +
+            .html(`<strong>${display_minutes}:${display_secs}</strong>` +
                  ' remaining to complete quiz.');
 
     }, 1000);
 };
-window.addEventListener('load', function() {
-    activateTimer(time);
+
+$(document).ready(function() {
+    let time = $('meta[name="time"]').attr('content');
+    let submitted = $('meta[name="submitted"]').attr('content');
+
+    if (time && submitted === 'False') {
+        setTimer(time);
+        activateTimer(time);
+    }
 });

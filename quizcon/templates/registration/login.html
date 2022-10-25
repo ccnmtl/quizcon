@@ -30,9 +30,9 @@
 		<a class="navbar-brand" href="/" title="Home"><strong><span class="text-light">Quizzing With Confidence</span></strong> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
 		<div class="collapse navbar-collapse" id="nabarNav">
 			<ul class="navbar-nav">
-				<li class="nav-item"> <a class="nav-link" href="#">About</a> </li>
-				<li class="nav-item"> <a class="nav-link" href="#">Help</a> </li>
-				<li class="nav-item"> <a class="nav-link" href="#">Sign In</a></li>
+				<li class="nav-item"> <a class="nav-link" href="/about/">About</a> </li>
+				<li class="nav-item"> <a class="nav-link" href="/help/">Help</a> </li>
+				<li class="nav-item"> <a class="nav-link" href="/">Sign In</a></li>
 			</ul>
 		</div>
 	</div>
@@ -55,8 +55,11 @@
                     <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
                     <div style="margin: 2em 0 2em 0;">
                     <button class="btn btn-lg btn-light" id="cy-login" data-cy="columbia-login" type="submit">
-                        Sign In With Columbia UNI
+                        Sign In
                     </button>
+					<a href="/help/" class="btn btn-lg btn-secondary">
+						Learn More
+					</a>
                     <input type="hidden" name="next" value="{{ next|urlencode }}" />
                 </div>
             </form>
@@ -102,7 +105,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/01.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/trianglediagram.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Accurate Representation of Knowledge 
@@ -117,7 +120,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/02.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/high-consequence-01.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Partial Credit 
@@ -132,7 +135,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/03.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/quizcon-quiz-creation.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Automatic Feedback 
@@ -147,7 +150,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/04.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/mild-consequence-01.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Vetted by Research 
@@ -162,7 +165,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/05.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/quizcon-assessment-setup.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Canvas Integration 
@@ -177,7 +180,7 @@
 				<div class="card bg-light border-0 h-100 rounded-0 ">
 					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
 						<div class="feature mb-4 mt-4">
-							<img class="img-fluid" src="assets/06.png" /> 
+							<img class="img-fluid" src="{{STATIC_URL}}/img/no-consequence-01.png" alt="" /> 
 						</div>
 						<h2 class="fs-4 fw-bold">
 							Advanced Analytics 

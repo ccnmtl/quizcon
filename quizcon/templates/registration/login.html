@@ -1,59 +1,76 @@
 {% extends "base.html" %}
 
 {% block title %}Sign In | QuizCon{% endblock %}
-{% block topnavbar %}
-{% endblock %}
+
+{% block topnavbar %}{% endblock %}
+
 {% block css %}
 <style>
-    html,body {
-        height: 100%;
-    }
 
-    body, .container
-    {
-        display: flex;
-        align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #032b50;
-        justify-content: center;
-    }
-
-    h1 {
-        color: #0E78DB;
-    }
+	body, .container
+	{
+		align-items: center;
+		background-color: #F0F0F0;
+		justify-content: center;
+	}
+	
+	h1
+	{
+		color: #0E78DB;
+		padding-top: 1em;
+	}
+	
 </style>
 {% endblock %}
+
 {% block content %}
-<body id="splash" class="text-center" id="maincontent">
-    <div id="signin">
-        <h1 class="logo display-1" style="border: 0; font-weight: 700;">
-            QuizCon
-        </h1>
-        <p class="lead text-light">
-            Built for creating confident choices<br />
-            for testing in CourseWorks.
-        </p>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/" title="Home"><strong><span class="text-light">Quizzing With Confidence</span></strong> </a> <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button> 
+		<div class="collapse navbar-collapse" id="nabarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item"> <a class="nav-link" href="/about/">About</a> </li>
+				<li class="nav-item"> <a class="nav-link" href="/help/">Help</a> </li>
+				<li class="nav-item"> <a class="nav-link" href="/">Sign In</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<header class="text-center">
+
+
+	<h1 class="display-4" style="border: 0; font-weight: 900;">
+		Quizzing With Confidence 
+	</h1>
+	
+	
+	<p class="lead text-dark text-center">
+		Utilize confidence weighted multiple choice questions to enhance learning through assessment and to more accurately represent student understanding. 
+	</p>
+
         {% if CAS_BASE %}
-
             <form class="text-center" method="get" action="{{CAS_BASE}}cas/login">
-
                     <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
                     <div style="margin: 2em 0 2em 0;">
                     <button class="btn btn-lg btn-light" id="cy-login" data-cy="columbia-login" type="submit">
-                        Sign In With Columbia UNI
+                        Sign In
                     </button>
+					<a href="/help/" class="btn btn-lg btn-secondary">
+						Learn More
+					</a>
                     <input type="hidden" name="next" value="{{ next|urlencode }}" />
                 </div>
             </form>
         {% endif %}
+        
         {% if debug %}
             {% if form.errors %}
                 <div class="alert alert-danger" id="guest-login-error" role="alert">
                     <div><strong>Invalid username or password</strong></div>
                 </div>
             {% endif %}
-
             <p>If you have a guest account</p>
             <form class="text-center" name="login_local" method="post" action=".">
                 {% csrf_token %}
@@ -76,8 +93,111 @@
                 <input type="hidden" name="next" value="{{ next|urlencode }}" />
             </form>
         {% endif %}
-    </div>
+
+</header>
+
+
+<section class="pt-4">
+	<div class="container px-lg-5">
+<!-- Page Features-->
+		<div class="row gx-lg-5">
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/trianglediagram.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Accurate Representation of Knowledge 
+						</h2>
+						<p class="mb-0">
+							The triangle intervals allow students to be more specific in showing understanding. 
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/high-consequence-01.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Partial Credit 
+						</h2>
+						<p class="mb-0">
+							With the opportunity to earn partial credit, students enjoy lower anxiety levels. 
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/quizcon-quiz-creation.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Automatic Feedback 
+						</h2>
+						<p class="mb-0">
+							After taking the quiz students can be told their score and provided with feedback, depending on instructor settings. 
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/mild-consequence-01.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Vetted by Research 
+						</h2>
+						<p class="mb-0">
+							This pedagogical approach is more effective for learning than traditional multiple choice quizzes. 
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/quizcon-assessment-setup.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Canvas Integration 
+						</h2>
+						<p class="mb-0">
+							Quickly integrate quizzes into Courseworks with grades going into the Gradebook. 
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-xxl-4 mb-5">
+				<div class="card bg-light border-0 h-100 rounded-0 ">
+					<div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+						<div class="feature mb-4 mt-4">
+							<img class="img-fluid" src="{{STATIC_URL}}img/no-consequence-01.png" alt="" /> 
+						</div>
+						<h2 class="fs-4 fw-bold">
+							Advanced Analytics 
+						</h2>
+						<p class="mb-0">
+							Easily see where there are misconceptions and use data to plan your next lesson. 
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+    
 </body>
 {% endblock %}
+
 {% block footer %}
 {% endblock %}

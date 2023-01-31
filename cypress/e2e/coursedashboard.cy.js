@@ -1,5 +1,5 @@
 describe('Courses dashboard', function() {
-    before(() => {
+    beforeEach(() => {
         cy.login('faculty_one', 'test');
     });
 
@@ -10,7 +10,7 @@ describe('Courses dashboard', function() {
         cy.get('[data-cy="dashboard-title"]').should('contain', 'My Courses');
         cy.get('[data-cy="course"] > a').click();
     });
-    it('Tests a11y on login page', function() {
+    it('Tests a11y on Courses dashboard', function() {
         cy.checkPageA11y();
     });
 

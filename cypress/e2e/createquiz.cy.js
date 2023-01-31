@@ -1,5 +1,5 @@
 describe('Creating a quiz', function() {
-    before(() => {
+    beforeEach(() => {
         cy.login('faculty_one', 'test');
         cy.get('[data-cy="course"] > a').click();
     });

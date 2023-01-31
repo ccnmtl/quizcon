@@ -14,7 +14,8 @@ describe('Sign-In Stories', function() {
         cy.get('#guest-login').should('exist');
         cy.get('#guest-login').click();
 
-        cy.title().should('equal', 'Quizzing With Confidence: Sign In | QuizCon');
+        cy.title().should('equal',
+            'Quizzing With Confidence: Sign In | QuizCon');
         cy.url().should('contain', '/accounts/login/?next=/');
         //cy.wait(500); // wait for jQuery to load
 

@@ -1,5 +1,5 @@
 describe('Quizzes dashboard', function() {
-    before(() => {
+    beforeEach(() => {
         cy.login('faculty_one', 'test');
     });
 

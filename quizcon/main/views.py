@@ -3,7 +3,7 @@ import re
 import time
 from datetime import date
 
-from courseaffils.columbia import WindTemplate, CanvasTemplate
+from courseaffils.columbia import CourseStringTemplate, CanvasTemplate
 from courseaffils.models import Course
 from courseaffils.views import get_courses_for_user
 from django.conf import settings
@@ -92,12 +92,12 @@ class LTICourseCreate(LoginRequiredMixin, View):
 
     def groups_from_sis_course_id(self, attrs):
         user = self.request.user
-        st_affil = WindTemplate.to_string(attrs)
+        st_affil = CourseStringTemplate.to_string(attrs)
         group, created = Group.objects.get_or_create(name=st_affil)
         user.groups.add(group)
 
         attrs['member'] = 'fc'
-        fc_affil = WindTemplate.to_string(attrs)
+        fc_affil = CourseStringTemplate.to_string(attrs)
         faculty_group, created = Group.objects.get_or_create(name=fc_affil)
         user.groups.add(faculty_group)
         return (group, faculty_group)

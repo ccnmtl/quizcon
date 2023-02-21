@@ -8,8 +8,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:head": "cypress run --headless --browser electron",
-    "cypress:test": "start-server-and-test 'make integrationserver' http-get://localhost:8000 cypress:run",
-    "cypress:test-headless": "start-server-and-test 'make integrationserver' http-get://localhost:8000 cypress:head"
+    "cypress:test": "start-server-and-test 'make integrationserver' http://127.0.0.1:8000 cypress:run",
+    "cypress:test-headless": "start-server-and-test 'make integrationserver' http://127.0.0.1:8000 cypress:head"
   },
   "devDependencies": {
     "axe-core": "^4.1.4",

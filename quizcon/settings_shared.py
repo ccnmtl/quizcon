@@ -25,6 +25,8 @@ INSTALLED_APPS += [  # noqa
     'quizcon.main',
 ]
 
+ALLOWED_HOSTS += ['127.0.0.1']  # noqa
+
 MIDDLEWARE += [ # noqa
     'quizcon.main.middleware.WhoDidItMiddleware'
 ]

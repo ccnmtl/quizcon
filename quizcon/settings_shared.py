@@ -23,6 +23,7 @@ INSTALLED_APPS += [  # noqa
     'courseaffils',
     'lti_provider',
     'quizcon.main',
+    'waffle',
 ]
 
 ALLOWED_HOSTS += ['127.0.0.1']  # noqa

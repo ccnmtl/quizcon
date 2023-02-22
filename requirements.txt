@@ -111,7 +111,7 @@ django-contact-us==1.1.0
 
 entrypoints==0.4
 
-django-courseaffils==2.2.7
+django-courseaffils==2.3.0
 
 mock==5.0.1
 asgiref==3.6.0

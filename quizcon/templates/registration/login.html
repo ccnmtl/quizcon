@@ -50,20 +50,18 @@
 		Utilize confidence weighted multiple choice questions to enhance learning through assessment and to more accurately represent student understanding. 
 	</p>
 
-        {% if CAS_BASE %}
-            <form class="text-center" method="get" action="{{CAS_BASE}}cas/login">
-                    <input type="hidden" name="destination" value="http{% if request.is_secure %}s{% endif %}://{{ request.get_host }}/accounts/caslogin/?next={{ next }}" />
-                    <div style="margin: 2em 0 2em 0;">
-                    <button class="btn btn-lg btn-light" id="cy-login" data-cy="columbia-login" type="submit">
+		<form class="text-center" method="get" action="/cas/login">
+			<input type="hidden" name="next" value="/" />
+            <div style="margin: 2em 0 2em 0;">
+                <button class="btn btn-lg btn-light" id="cy-login" data-cy="columbia-login" type="submit">
                         Sign In
-                    </button>
-					<a href="/help/" class="btn btn-lg btn-secondary">
+                </button>
+				<a href="/help/" class="btn btn-lg btn-secondary">
 						Learn More
-					</a>
-                    <input type="hidden" name="next" value="{{ next|urlencode }}" />
-                </div>
-            </form>
-        {% endif %}
+				</a>
+                <input type="hidden" name="next" value="{{ next|urlencode }}" />
+            </div>
+        </form>
         
         {% if debug %}
             {% if form.errors %}

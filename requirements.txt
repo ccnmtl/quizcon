@@ -31,7 +31,8 @@ chardet==5.1.0  # requests
 idna==3.4  # requests
 certifi==2022.12.7  # requests, sentry-sdk
 requests==2.28.2
-djangowind==1.2.5
+python-cas==1.6.0
+git+https://github.com/django-cas-ng/django-cas-ng.git
 
 astroid==2.15.0
 pylint==2.17.1

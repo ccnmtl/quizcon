@@ -74,7 +74,7 @@ class LTICourseCreate(LoginRequiredMixin, View):
         send_template_email(
             'Quizzing with Confidence Course Connected',
             'main/notify_lti_course_connect.txt',
-            data, settings.SERVER_EMAIL)
+            data, settings.CONTACT_US_EMAIL)
 
     def thank_faculty(self, course):
         user = self.request.user

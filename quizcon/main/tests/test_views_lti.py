@@ -69,7 +69,7 @@ class LTICourseCreateTest(TestCase):
             self.assertEqual(mail.outbox[0].from_email,
                              settings.SERVER_EMAIL)
             self.assertEqual(mail.outbox[0].to,
-                             [settings.SERVER_EMAIL])
+                             [settings.CONTACT_US_EMAIL])
 
             self.assertEqual(mail.outbox[1].subject,
                              'Quizzing with Confidence Course Connected')

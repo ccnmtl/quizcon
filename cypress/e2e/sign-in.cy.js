@@ -1,7 +1,7 @@
 describe('Sign-In Stories', function() {
     beforeEach(() => {
         cy.visit('/accounts/logout/?next=/');
-        cy.clearCookies();
+
     });
 
     it('Sign In', function() {

@@ -4,19 +4,22 @@ from django.contrib import admin
 from django.conf import settings
 from django.views.generic import TemplateView
 from django.views.static import serve
+from django_cas_ng import views as cas_views
 from quizcon.main import views
 
 admin.autodiscover()
 
 auth_urls = url(r'^accounts/', include('django.contrib.auth.urls'))
-if hasattr(settings, 'CAS_BASE'):
-    auth_urls = url(r'^accounts/', include('djangowind.urls'))
 
 urlpatterns = [
     auth_urls,
     path('admin/', admin.site.urls),
 
     path('accounts/', include('django.contrib.auth.urls')),
+    path('cas/login', cas_views.LoginView.as_view(),
+         name='cas_ng_login'),
+    path('cas/logout', cas_views.LogoutView.as_view(),
+         name='cas_ng_logout'),
 
     path(r'lti/', include('lti_provider.urls')),
     path(r'course/lti/create/',

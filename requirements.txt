@@ -116,5 +116,5 @@ entrypoints==0.4
 
 django-courseaffils==2.3.0
 
-mock==5.0.1
+mock==5.0.2
 asgiref==3.6.0

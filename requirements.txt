@@ -36,7 +36,7 @@ python-cas==1.6.0
 git+https://github.com/django-cas-ng/django-cas-ng.git
 
 astroid==2.15.4
-pylint==2.17.2
+pylint==2.17.3
 
 six==1.16.0
 ipaddress==1.0.23  # faker

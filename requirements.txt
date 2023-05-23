@@ -31,7 +31,7 @@ urllib3==1.26.15  # requests, sentry-sdk
 chardet==5.1.0  # requests
 idna==3.4  # requests
 certifi==2023.5.7  # requests, sentry-sdk
-requests==2.30.0
+requests==2.31.0
 python-cas==1.6.0
 git+https://github.com/django-cas-ng/django-cas-ng.git
 

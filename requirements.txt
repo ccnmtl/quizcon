@@ -35,7 +35,7 @@ requests==2.31.0
 python-cas==1.6.0
 git+https://github.com/django-cas-ng/django-cas-ng.git
 
-astroid==3.0.0
+astroid==3.0.1
 pylint==3.0.1
 
 six==1.16.0

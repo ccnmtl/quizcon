@@ -4,7 +4,6 @@
   "description": "quizcon",
   "license": "GPL-2.0+",
   "scripts": {
-    "test": "mocha",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "cypress:head": "cypress run --headless --browser electron",
@@ -18,7 +17,6 @@
     "eslint": "~8.52.0",
     "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-security": "~1.7.0",
-    "mocha": "~10.2.0",
     "requirejs": "~2.3.2",
     "sinon": "~17.0.0",
     "start-server-and-test": "^2.0.0"

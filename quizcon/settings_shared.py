@@ -1,7 +1,7 @@
 # Django settings for quizcon project.
 import os.path
 import sys
-from ccnmtlsettings.shared import common
+from ctlsettings.shared import common
 from courseaffils.columbia import CourseStringMapper
 
 project = 'quizcon'
@@ -15,21 +15,6 @@ PROJECT_APPS = [
 
 USE_TZ = True
 
-CAS_SERVER_URL = 'https://cas.columbia.edu/cas/'
-CAS_VERSION = '3'
-CAS_ADMIN_REDIRECT = False
-CAS_MAP_AFFILIATIONS = True
-
-# Translate CUIT's CAS user attributes to the Django user model.
-# https://cuit.columbia.edu/content/cas-3-ticket-validation-response
-CAS_APPLY_ATTRIBUTES_TO_USER = True
-CAS_RENAME_ATTRIBUTES = {
-    'givenName': 'first_name',
-    'lastName': 'last_name',
-    'mail': 'email',
-}
-
-INSTALLED_APPS.remove('djangowind') # noqa
 INSTALLED_APPS += [  # noqa
     'bootstrap4',
     'infranil',
@@ -38,8 +23,6 @@ INSTALLED_APPS += [  # noqa
     'courseaffils',
     'lti_provider',
     'quizcon.main',
-    'waffle',
-    'django_cas_ng',
 ]
 
 ALLOWED_HOSTS += ['127.0.0.1']  # noqa
@@ -61,9 +44,6 @@ AUTHENTICATION_BACKENDS = [
     'lti_provider.auth.LTIBackend',
     'django_cas_ng.backends.CASBackend',
 ]
-
-TEMPLATES[0]['OPTIONS']['context_processors'].remove(  # noqa
-    'djangowind.context.context_processor')
 
 LTI_TOOL_CONFIGURATION = {
     'title': 'Quizzing With Confidence',

@@ -1,8 +1,5 @@
 from quizcon.settings_shared import *  # noqa: F403
 from ctlsettings.staging import common
-from django.conf import settings
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 locals().update(
     common(
@@ -18,14 +15,6 @@ locals().update(
     ))
 
 try:
-    from quizcon.local_settings import *  # noqa: F403
+    from quizcon.local_settings import *  # noqa: F403 F401
 except ImportError:
     pass
-
-# Define SENTRY_DSN in local_settings.py
-if hasattr(settings, 'SENTRY_DSN'):
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,  # noqa: F405
-        integrations=[DjangoIntegration()],
-        debug=True,
-    )

@@ -23,7 +23,7 @@ fuzzywuzzy==0.18.0
 sure==2.0.1
 coverage==7.4.0
 pyasn1==0.5.1
-cryptography==41.0.7  # pyOpenSSL
+cryptography==42.0.0  # pyOpenSSL
 cffi==1.16.0
 pyOpenSSL==23.3.0
 ndg-httpsclient==0.5.1

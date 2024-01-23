@@ -98,3 +98,8 @@ updates:
   - dependency-name: "@babel/cli"
     versions:
     - 7.12.16
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "10:00"

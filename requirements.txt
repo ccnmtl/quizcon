@@ -23,9 +23,9 @@ fuzzywuzzy==0.18.0
 sure==2.0.1
 coverage==7.4.0
 pyasn1==0.5.1
-cryptography==41.0.7  # pyOpenSSL
+cryptography==42.0.0  # pyOpenSSL
 cffi==1.16.0
-pyOpenSSL==23.3.0
+pyOpenSSL==24.0.0
 ndg-httpsclient==0.5.1
 urllib3==2.1.0  # requests, sentry-sdk
 chardet==5.2.0  # requests
@@ -39,7 +39,7 @@ astroid==3.0.2
 pylint==3.0.3
 
 six==1.16.0
-faker==22.4.0  # factory_boy
+faker==22.5.1  # factory_boy
 factory_boy==3.3.0
 
 ldap3==2.9.1
@@ -99,7 +99,7 @@ rich==13.7.0 # bandit
 pbr==6.0.0 # bandit
 pyyaml==6.0.1 # bandit
 stevedore==5.1.0  # bandit
-bandit==1.7.6
+bandit==1.7.7
 
 django-smtp-ssl==1.0
 django-contact-us==1.1.0

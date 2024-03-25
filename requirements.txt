@@ -13,7 +13,7 @@ configparser==6.0.1
 flake8==7.0.0
 pycodestyle==2.11.1
 typing_extensions==4.10.0
-importlib-metadata<7.1  # for flake8
+importlib-metadata<7.2  # for flake8
 zipp==3.18.1  # for flake8
 tornado==6.4
 beautifulsoup4==4.12.3

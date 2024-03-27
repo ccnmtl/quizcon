@@ -17,13 +17,11 @@ USE_TZ = True
 
 INSTALLED_APPS += [  # noqa
     'bootstrap4',
-    'infranil',
     'contactus',
     'django_extensions',
     'courseaffils',
     'lti_provider',
     'quizcon.main',
-    'django_markwhat',
 ]
 
 ALLOWED_HOSTS += ['127.0.0.1']  # noqa

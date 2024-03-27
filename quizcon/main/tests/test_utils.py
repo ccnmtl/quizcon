@@ -14,6 +14,6 @@ class UtilTest(TestCase):
                                 {'user': user}, 'abc123@columbia.edu')
             self.assertEqual(len(mail.outbox), 1)
             self.assertEqual(mail.outbox[0].subject, 'foo')
-            self.assertEquals(mail.outbox[0].from_email,
-                              'quizcon@example.com')
+            self.assertEqual(mail.outbox[0].from_email,
+                             'quizcon@example.com')
             self.assertTrue(mail.outbox[0].to, ['abc123@columbia.edu'])

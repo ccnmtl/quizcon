@@ -14,7 +14,7 @@
     "axe-core": "^4.1.4",
     "cypress": "^13.1.0",
     "cypress-axe": "^1.0.0",
-    "eslint": "~8.57.0",
+    "eslint": "~9.2.0",
     "eslint-plugin-cypress": "^3.0.0",
     "eslint-plugin-security": "~3.0.0",
     "requirejs": "~2.3.2",

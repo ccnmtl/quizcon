@@ -18,7 +18,7 @@
     "eslint-plugin-cypress": "^3.0.0",
     "eslint-plugin-security": "~3.0.0",
     "requirejs": "~2.3.2",
-    "sinon": "~17.0.0",
+    "sinon": "~18.0.0",
     "start-server-and-test": "^2.0.0"
   }
 }

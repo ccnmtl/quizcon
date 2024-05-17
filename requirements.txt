@@ -35,7 +35,7 @@ requests==2.31.0
 python-cas==1.6.0
 django-cas-ng==5.0.1
 
-astroid==3.2.0
+astroid==3.2.1
 pylint==3.2.0
 
 six==1.16.0

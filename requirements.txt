@@ -70,7 +70,7 @@ typing==3.7.4.1; python_version < '3.5'
 django-extensions==3.2.3
 django-stagingcontext==0.1.0
 django-ga-context==0.1.0
-django-impersonate==1.9.2
+django-impersonate==1.9.3
 django-markwhat==1.6.2
 gunicorn==22.0.0
 django-flatblocks==1.0.0

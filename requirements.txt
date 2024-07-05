@@ -62,7 +62,7 @@ django-appconf==1.0.6
 django-statsd-mozilla==0.4.0
 sentry-sdk==2.7.1
 django-bootstrap4==24.3
-django-debug-toolbar==4.4.2
+django-debug-toolbar==4.4.3
 
 django-smoketest==1.2.1
 # For django-extensions

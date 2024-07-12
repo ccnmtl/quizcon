@@ -1,4 +1,5 @@
 /* eslint-env node */
+var process = require('process');
 
 var requirejs = require('requirejs');
 requirejs.config({
@@ -20,8 +21,9 @@ var path = require('path');
 var basePath = './media/js/tests';
 var mocha = new Mocha();
 
-// eslint-disable-next-line security/detect-non-literal-fs-filename
+
 fs.readdirSync(basePath).filter(function(file) {
+    // eslint-disable-next-line no-undef
     return file !== __filename && file.substr(-3) === '.js';
 }).forEach(function(file) {
     mocha.addFile(path.join(basePath, file));

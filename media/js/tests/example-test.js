@@ -2,6 +2,8 @@
 
 var assert = require('assert');
 var requirejs = require('requirejs');
+var describe = require('mocha').describe;
+var it = require('mocha').it; // Add this line to import the 'it' function
 
 describe('Array', function() {
     describe('#indexOf()', function() {

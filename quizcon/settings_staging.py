@@ -1,5 +1,7 @@
+from django.conf import settings
+from ctlsettings.staging import common, init_sentry
 from quizcon.settings_shared import *  # noqa: F403
-from ctlsettings.staging import common
+
 
 locals().update(
     common(
@@ -18,3 +20,7 @@ try:
     from quizcon.local_settings import *  # noqa: F403 F401
 except ImportError:
     pass
+
+
+if hasattr(settings, 'SENTRY_DSN'):
+    init_sentry(SENTRY_DSN)  # noqa F405

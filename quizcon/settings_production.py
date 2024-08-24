@@ -1,6 +1,6 @@
 from django.conf import settings
-from ctlsettings.production import common
 from quizcon.settings_shared import *  # noqa: F403
+from ctlsettings.production import common
 
 
 locals().update(

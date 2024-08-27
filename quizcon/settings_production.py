@@ -1,6 +1,6 @@
 from django.conf import settings
 from quizcon.settings_shared import *  # noqa: F403
-from ctlsettings.production import common
+from ctlsettings.production import common, init_sentry
 
 
 locals().update(

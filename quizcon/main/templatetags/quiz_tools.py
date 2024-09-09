@@ -100,6 +100,8 @@ def average_time_completion(submissions):
         for sub in submissions:
             start = sub.time
             qr = QuestionResponse.objects.filter(submission=sub).first()
+            if qr is None:
+                continue
             end = round(qr.created_at.timestamp())
             duration = end - start
             count += duration

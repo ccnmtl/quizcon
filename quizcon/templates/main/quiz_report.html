@@ -205,7 +205,7 @@ Analytics for {{ quiz.title }}
                             <div class="card-body">
                                 {% average_time_completion submissions as avg %}
                                 <p class="card-title display-5">
-                                {{avg}} seconds
+                                {{avg|floatformat:2}} seconds
                                 </p>
                             </div>
                         </div>

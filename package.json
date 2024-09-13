@@ -21,7 +21,7 @@
     "eslint-plugin-security": "~3.0.0",
     "globals": "^15.8.0",
     "requirejs": "~2.3.2",
-    "sinon": "~18.0.0",
+    "sinon": "~19.0.0",
     "start-server-and-test": "^2.0.0"
   }
 }

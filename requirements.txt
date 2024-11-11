@@ -14,7 +14,7 @@ flake8==7.1.1
 pycodestyle==2.12.1
 typing_extensions==4.12.2
 importlib-metadata<8.6  # for flake8
-zipp==3.20.2  # for flake8
+zipp==3.21.0  # for flake8
 tornado==6.4.1
 beautifulsoup4==4.12.3
 cssselect==1.2.0

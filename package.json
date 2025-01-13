@@ -11,8 +11,6 @@
     "cypress:test-headless": "start-server-and-test 'make integrationserver' http://127.0.0.1:8000 cypress:head"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.7.0",
     "axe-core": "^4.1.4",
     "cypress": "^13.1.0",
     "cypress-axe": "^1.0.0",

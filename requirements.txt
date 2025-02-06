@@ -94,7 +94,7 @@ django-lti-provider==1.0.0
 pyparsing==3.2.1
 
 rich==13.9.4 # bandit
-pbr==6.1.0 # bandit
+pbr==6.1.1 # bandit
 pyyaml==6.0.2 # bandit
 stevedore==5.4.0  # bandit
 bandit==1.8.2

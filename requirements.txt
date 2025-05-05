@@ -36,7 +36,7 @@ python-cas==1.6.0
 django-cas-ng==5.0.1
 
 astroid==3.3.9
-pylint==3.3.6
+pylint==3.3.7
 
 six==1.17.0
 faker==37.1.0  # factory_boy

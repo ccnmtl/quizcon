@@ -113,7 +113,7 @@
         </div>
         <input type="hidden" name="quiz" value="{{question.quiz.pk}}" />
         <button type="submit" class="btn btn-block btn-primary me-2" data-cy="save-question-btn">Save</button>
-        <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete Question</a>
+        <a href="{% url 'update-quiz' object.quiz.id %}" class="btn btn-secondary">Cancel</a><a href="#" class="btn btn-danger float-end" data-bs-toggle="modal" data-bs-target="#deleteQuestionModal">Delete Question</a>
     </form>
 </div>
 <!-- Modal -->

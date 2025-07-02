@@ -35,7 +35,7 @@ LOGIN_REDIRECT_URL = "/"
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-CONTACT_US_EMAIL = 'ctl-dev@columbia.edu'
+CONTACT_US_EMAIL = 'ctl-quizcon@columbia.edu'
 SERVER_EMAIL = 'automated@mail.ctl.columbia.edu'
 
 AUTHENTICATION_BACKENDS = [

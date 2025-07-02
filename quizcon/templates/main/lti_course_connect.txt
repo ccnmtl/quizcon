@@ -4,7 +4,7 @@ You have successfully created a new Quizzing with Confidence connection for {{co
 
 The Center for Teaching and Learning (CTL) offers instructors a range of support for using weighted multiple choice questions effectively.
 
-CTL learning designers can help you conceptualize and set up your quizzes. We are also happy to offer in-person training sessions for your class. Please email us at ctl-dev@columbia.edu to request a consultation or training.
+CTL learning designers can help you conceptualize and set up your quizzes. We are also happy to offer in-person training sessions for your class. Please email us at ctl-quizcon@columbia.edu to request a consultation or training.
 
 Quizzing with Confidence is designed and maintained here at the CTL, and we are always eager to receive ideas from the Columbia community – please let us know how it goes! We hope you have a successful semester using Quizzing with Confidence.
 

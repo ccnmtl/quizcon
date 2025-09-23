@@ -133,7 +133,8 @@ class Quiz(models.Model):
                     multiple_attempts=self.multiple_attempts,
                     scoring_scheme=self.scoring_scheme,
                     show_answers=self.show_answers,
-                    randomize=self.randomize
+                    randomize=self.randomize,
+                    time=self.time,
                 )
         for q in self.question_set.all():
             question = Question.objects.create(

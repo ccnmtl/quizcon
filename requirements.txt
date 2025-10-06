@@ -107,5 +107,5 @@ entrypoints==0.4
 django-courseaffils==2.4.0
 
 mock==5.2.0
-asgiref==3.9.2
+asgiref==3.10.0
 backports.zoneinfo;python_version<"3.9"

@@ -10,7 +10,6 @@ local_settings.py
 .project
 .pydevproject
 .settings
-.coverage
 media/CACHE
 node_modules
 uploads

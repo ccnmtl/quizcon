@@ -1,6 +1,7 @@
-# VERSION=1.9.0
+# VERSION=1.10.0
 
 # CHANGES:
+# 1.10.0 - 2025-10-16 - Removed coverage, updated dependencies.
 # 1.9.0              - Use coverage tool directly to generate coverage
 #                      reports.
 #                    - wheel and pip updates
@@ -32,7 +33,6 @@ PY_DIRS ?= $(APP)
 BANDIT ?= $(VE)/bin/bandit
 FLAKE8 ?= $(VE)/bin/flake8
 PIP ?= $(VE)/bin/pip
-COVERAGE ?= $(VE)/bin/coverage
 
 jenkins: check flake8 test eslint bandit
 
@@ -46,8 +46,7 @@ $(PY_SENTINAL): $(REQUIREMENTS)
 	touch $@
 
 test: $(PY_SENTINAL)
-	$(COVERAGE) run --source='.' --omit=$(VE)/* $(MANAGE) test $(APP)
-	$(COVERAGE) xml -o reports/coverage.xml
+	$(MANAGE) test $(APP)
 
 parallel-tests: $(PY_SENTINAL)
 	$(MANAGE) test --parallel
@@ -75,7 +74,6 @@ clean:
 	rm -rf media/CACHE
 	rm -rf reports
 	rm -f celerybeat-schedule
-	rm -f .coverage
 	rm -rf node_modules
 	find . -name '*.pyc' -exec rm {} \;
 

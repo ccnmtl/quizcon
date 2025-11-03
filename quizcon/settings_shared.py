@@ -22,12 +22,14 @@ INSTALLED_APPS += [  # noqa
     'courseaffils',
     'lti_provider',
     'quizcon.main',
+    'debug_toolbar',
 ]
 
 ALLOWED_HOSTS += ['127.0.0.1']  # noqa
 
 MIDDLEWARE += [ # noqa
-    'quizcon.main.middleware.WhoDidItMiddleware'
+    'quizcon.main.middleware.WhoDidItMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 THUMBNAIL_SUBDIR = "thumbs"

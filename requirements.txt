@@ -32,7 +32,7 @@ idna==3.11  # requests
 certifi==2025.11.12  # requests, sentry-sdk
 requests==2.32.5
 python-cas==1.7.1
-django-cas-ng==5.0.1
+django-cas-ng==5.1.0
 
 astroid==4.0.2
 pylint==4.0.3

@@ -21,6 +21,6 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Build with Makefile
         run: make

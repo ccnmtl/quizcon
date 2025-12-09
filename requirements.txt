@@ -103,7 +103,7 @@ django-contact-us==1.1.0
 
 entrypoints==0.4
 
-django-courseaffils==2.4.0
+django-courseaffils==2.5.0
 
 mock==5.2.0
 asgiref==3.11.0

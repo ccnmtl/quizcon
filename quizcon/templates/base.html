@@ -119,8 +119,15 @@
                             {{request.user.first_name}} {{request.user.last_name}}
                             {% else %}
                             {{ request.user.username }}
-                            {% endif %}
-                        <a href="/accounts/logout/?next=/" id="logout" class="text-decoration-underline" title="Log Out">(logout)</a>
+                        {% endif %}
+
+                        <form action="/accounts/logout/?next=/" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" id="logout" class="btn text-decoration-underline" title="Log Out">
+                                (logout)
+                            </button>
+                        </form>
+
                         {% endif %}
                         </span>
                     </li>

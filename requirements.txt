@@ -34,6 +34,10 @@ requests==2.32.5
 python-cas==1.7.1
 django-cas-ng==5.1.0
 
+pylti1p3==2.0.0  # django-lti-provider
+pyjwt==2.10.1  # pylti1p3
+jwcrypto==1.5.6  # pylti1p3
+
 astroid==4.0.2
 pylint==4.0.4
 

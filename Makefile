@@ -1,7 +1,7 @@
 APP=quizcon
 JS_FILES=media/js/src
 
-all: jenkins cypress-headless
+all: jenkins cypress
 
 include *.mk
 

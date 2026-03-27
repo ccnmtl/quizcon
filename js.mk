@@ -35,7 +35,7 @@ endif
 $(JS_SENTINAL): package.json
 	rm -rf $(NODE_MODULES)
 	npm install $(NPM_OPTS)
-	touch $(JS_SENTINAL)
+	[ -d $(NODE_MODULES) ] && touch $(JS_SENTINAL)
 
 eslint: $(JS_SENTINAL)
 	$(ESLINT) $(JS_FILES)

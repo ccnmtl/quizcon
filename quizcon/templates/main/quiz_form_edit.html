@@ -3,12 +3,14 @@
 {% block title %}Edit Quiz{% endblock %}
 {% block js %}
     <script
-         data-main="{{STATIC_URL}}js/src/main.js"
-         src="{{STATIC_URL}}js/lib/require/require.js"></script>
+        data-main="{{STATIC_URL}}js/src/main.js"
+        src="{{STATIC_URL}}js/lib/require/require.js"
+        crossorigin="anonymous"></script>
 
-    <script src="{{STATIC_URL}}js/src/utils.js"></script>
+    <script src="{{STATIC_URL}}js/src/utils.js"
+            crossorigin="anonymous"></script>
 {% if quiz.quizsubmission_set.count %}
-    <script type="text/javascript">
+    <script>
         var warningModal = new bootstrap.Modal(jQuery("#warningModal"), {
             keyboard: false
         })

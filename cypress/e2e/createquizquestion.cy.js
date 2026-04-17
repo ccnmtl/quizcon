@@ -22,7 +22,7 @@ describe('Creating a question', function() {
         cy.get('#id_answer_label_2').type('Toucan');
         cy.get('#id_answer_label_3').type('Puffin');
         cy.get('#answer-label-two').click();
-        cy.get('form.create-question-form').submit();
+        cy.get('form').submit();
     });
     it('Should show question on quiz edit page', function() {
         cy.get('[data-cy="A Bird Quiz"]').click();

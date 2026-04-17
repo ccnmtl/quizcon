@@ -64,6 +64,9 @@ LTI_TOOL_CONFIGURATION = {
 COURSEAFFILS_COURSESTRING_MAPPER = CourseStringMapper
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
+SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SAMESITE = 'None'
+
 if 'integrationserver' in sys.argv:
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False

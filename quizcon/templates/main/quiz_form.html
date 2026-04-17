@@ -21,7 +21,7 @@
         </ol>
     </nav>
 
-    <form action="." method="post">{% csrf_token %}
+    <form class="create-quiz-form" action="." method="post">{% csrf_token %}
         {% if form.errors|length %}
             <div class="alert alert-danger">
               <strong>Please correct errors before continuing</strong><br /><br />

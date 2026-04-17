@@ -11,7 +11,7 @@ describe('Creating a quiz', function() {
         cy.get('#id_title').type('Test Quiz');
         cy.get('#id_description').type('A test quiz.')
         cy.get('select').select('1');
-        cy.get('form').submit();
+        cy.get('form.create-quiz-form').submit();
     });
     it('Should show quiz on quizzes dashboard', function() {
         cy.get('[data-cy="Test Quiz"]').should('exist');

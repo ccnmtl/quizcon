@@ -308,9 +308,11 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         quiz = get_object_or_404(Quiz, pk=assignment_id)
 
         # If a quiz is not timed, create Submission object here
-        sub, created = QuizSubmission.objects.get_or_create(
-            user=self.request.user, quiz=quiz)
-        submission = QuizSubmission.objects.filter(pk=sub.id).first()
+        submission = QuizSubmission.objects.filter(
+            user=self.request.user, quiz=quiz).order_by('-modified_at').first()
+        if not submission:
+            submission = QuizSubmission.objects.create(
+                user=self.request.user, quiz=quiz)
 
         for question in quiz.question_set.all():
             selected_position = None
@@ -323,7 +325,7 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
                 question=question, submission=submission,
                 selected_position=selected_position)
             key = 'question-{}-markers'.format(question.pk)
-            markers = json.loads(self.request.POST.get(key))
+            markers = json.loads(self.request.POST.get(key, '[]'))
             for idx, marker_id in enumerate(markers):
                 marker = get_object_or_404(Marker, pk=marker_id)
                 QuestionResponseMarker.objects.create(

@@ -316,6 +316,7 @@
                 <div class="alert alert-danger text-center" role="alert" id="quiz-timer"></div>
             {% endif %}
             <form action="." method="post" id="quiz_form">
+                {% csrf_token %}
                 {% for question in quiz.ordered_questions %}
                     {% with markers=question.random_markers %}
                     <div class="row bg-light mx-0">

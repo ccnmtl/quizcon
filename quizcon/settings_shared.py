@@ -27,8 +27,7 @@ INSTALLED_APPS += [  # noqa
 ALLOWED_HOSTS += ['127.0.0.1']  # noqa
 
 MIDDLEWARE += [ # noqa
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'quizcon.main.middleware.WhoDidItMiddleware',
+    'quizcon.main.middleware.WhoDidItMiddleware'
 ]
 
 THUMBNAIL_SUBDIR = "thumbs"

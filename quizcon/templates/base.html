@@ -113,31 +113,17 @@
 
             {% block usernav %}
                 <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
-                    <li class="nav-item d-flex align-items-center">
+                    <li class="nav-item"><span class="nav-link">
                         {% if not request.user.is_anonymous %}
-
-                        <span class="nav-link">
-                            Logged in as
+                        Logged in as
                             {% if request.user.last_name %}
                             {{request.user.first_name}} {{request.user.last_name}}
                             {% else %}
                             {{ request.user.username }}
                             {% endif %}
-                        </span>
-
-                        <form action="/accounts/logout/?next=/"
-                              id="logout-form"
-                              method="post" class="d-inline">
-                            {% csrf_token %}
-                            <button
-                                type="submit" id="logout"
-                                class="btn text-decoration-underline"
-                                title="Log Out">
-                                (logout)
-                            </button>
-                        </form>
-
+                        <a href="/accounts/logout/?next=/" id="logout" class="text-decoration-underline" title="Log Out">(logout)</a>
                         {% endif %}
+                        </span>
                     </li>
                     {% if request.user.is_superuser %}
                     <li class="nav-item">

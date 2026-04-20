@@ -1,8 +1,8 @@
 import json
+import logging
 import re
 import time
 from datetime import date
-
 from courseaffils.columbia import CourseStringTemplate, CanvasTemplate
 from courseaffils.models import Course
 from courseaffils.views import get_courses_for_user
@@ -34,6 +34,8 @@ from quizcon.main.utils import send_template_email
 from quizcon.mixins import (
     LoggedInCourseMixin, LoggedInFacultyMixin, UpdateQuizPermissionMixin,
     UpdateQuestionPermissionMixin)
+
+logger = logging.getLogger(__name__)
 
 
 class IndexView(TemplateView):
@@ -284,23 +286,52 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         """
         score = submission.user_score()
         launch_url = self.get_launch_url(submission)
-        print(launch_url)
+
+        outcome_url = self.lti.lis_outcome_service_url(self.request)
+        sourcedid = self.lti.lis_result_sourcedid(self.request)
+        consumer_key = self.lti.oauth_consumer_key(self.request)
+
+        logger.info(
+            'post_score: submission=%s score=%s outcome_url=%s '
+            'sourcedid=%s consumer_key=%s launch_url=%s',
+            submission.pk, score, outcome_url,
+            sourcedid, consumer_key, launch_url
+        )
+
+        if not outcome_url:
+            logger.error(
+                'post_score failed: lis_outcome_service_url is missing '
+                'from session for submission %s', submission.pk
+            )
+
+        if not sourcedid:
+            logger.error(
+                'post_score failed: lis_result_sourcedid is missing '
+                'from session for submission %s', submission.pk
+            )
 
         xml = self.lti.generate_request_xml(
             self.message_identifier(), 'replaceResult',
-            self.lti.lis_result_sourcedid(self.request), score, launch_url)
+            sourcedid, score, launch_url)
 
         if post_message(self.lti.consumers(),
-                        self.lti.oauth_consumer_key(self.request),
-                        self.lti.lis_outcome_service_url(self.request), xml):
+                        consumer_key,
+                        outcome_url, xml):
+            logger.info(
+                'post_score succeeded for submission %s', submission.pk
+            )
             return True
         else:
+            logger.error(
+                'post_score failed for submission %s. '
+                'LTI consumer rejected the grade post.',
+                submission.pk
+            )
             msg = ('An error occurred while saving your score. '
                    'Please try again.')
             messages.add_message(self.request, messages.ERROR, msg)
 
             # Something went wrong, display an error.
-            # Is 500 the right thing to do here?
             raise LTIPostMessageException('Post grade failed')
 
     def post(self, *args, **kwargs):

@@ -329,7 +329,10 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
                 QuestionResponseMarker.objects.create(
                     response=response, marker=marker, ordinal=idx)
 
-        self.post_score(submission)
+        try:
+            self.post_score(submission)
+        except LTIPostMessageException:
+            pass  # Error message already added via messages framework
 
         data = {'pk': self.kwargs.get('pk'), 'submission_id': submission.id}
         url = reverse('quiz-submission', kwargs=data)

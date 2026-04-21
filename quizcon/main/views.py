@@ -337,7 +337,9 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
     def post(self, *args, **kwargs):
         assignment_id = self.kwargs.get('pk')
         quiz = get_object_or_404(Quiz, pk=assignment_id)
-
+        username = None
+        if self.request.user:
+            username = self.request.user.username
         # If a quiz is not timed, create Submission object here
         sub, created = QuizSubmission.objects.get_or_create(
             user=self.request.user, quiz=quiz)
@@ -363,7 +365,11 @@ class LTIAssignmentView(LTIAuthMixin, TemplateView):
         try:
             self.post_score(submission)
         except LTIPostMessageException:
-            pass  # Error message already added via messages framework
+            logger.error(
+                'LTI grade post failed for submission %s, quiz %s, user %s',
+                submission.pk, quiz.pk, username,
+                exc_info=True
+            )
 
         data = {'pk': self.kwargs.get('pk'), 'submission_id': submission.id}
         url = reverse('quiz-submission', kwargs=data)

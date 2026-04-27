@@ -24,7 +24,7 @@ sure==3.0a2
 pyasn1==0.6.3
 cryptography==47.0.0  # pyOpenSSL
 cffi==2.0.0
-pyOpenSSL==26.0.0
+pyOpenSSL==26.1.0
 ndg-httpsclient==0.5.1
 urllib3==2.6.3  # requests, sentry-sdk
 chardet==7.4.3  # requests

@@ -32,7 +32,7 @@ idna==3.13  # requests
 certifi==2026.4.22  # requests, sentry-sdk
 requests==2.33.1
 python-cas==1.7.2
-django-cas-ng==5.1.0
+django-cas-ng==5.1.1
 
 pylti1p3==2.0.0  # django-lti-provider
 pyjwt==2.12.1  # pylti1p3

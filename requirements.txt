@@ -36,7 +36,7 @@ django-cas-ng==5.1.1
 
 pylti1p3next==2.0.2  # django-lti-provider
 pyjwt==2.13.0  # pylti1p3next
-jwcrypto==1.5.7  # pylti1p3next
+jwcrypto==1.5.8  # pylti1p3next
 
 astroid==4.1.2
 pylint==4.0.6

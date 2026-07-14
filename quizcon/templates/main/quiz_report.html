@@ -219,7 +219,7 @@ Analytics for {{ quiz.title }}
                 Insights
                 </h2>
                 <div class="table-responsive">
-                    <table class="table table-striped" id="sortable-table">
+                    <table class="table table-striped table-stack" id="sortable-table">
                         <col width="25%"> <col width="8%"> <col width="8%"><col width="8%">
                         <thead>
                             <tr>
@@ -235,10 +235,10 @@ Analytics for {{ quiz.title }}
                                 {% total_wrong_answers question as total_wrong %}
                                 {% total_idk_answers question as toal_idk %}
                             <tr>
-                                <th scope="row">{{question.text|safe}}</th>
-                                <td class="text-center">{{total_right}}</td>
-                                <td class="text-center">{{total_wrong}}</td>
-                                <td class="text-center">{{toal_idk}}</td>
+                                <th scope="row" data-label="Question">{{question.text|safe}}</th>
+                                <td class="text-center" data-label="# of Correct Answers">{{total_right}}</td>
+                                <td class="text-center" data-label="# of Incorrect Answers">{{total_wrong}}</td>
+                                <td class="text-center" data-label="# of IDK Answers">{{toal_idk}}</td>
                             </tr>
                             {% endfor %}
                         </tbody>

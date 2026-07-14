@@ -11,8 +11,9 @@ My Courses | QuizCon
         My Courses
     </h1>
     <div class="table-responsive">
-        <table class="table table-striped">
-            <col width="30%"> <col width="30%"> <col width="10%"><col width="30%">
+        <table class="table table-striped table-stack" aria-describedby="courses-caption">
+            <caption id="courses-caption" class="visually-hidden">List of your courses with their quizzes, semester, and authors.</caption>
+            <col width="38%"> <col width="14%"> <col width="14%"><col width="34%">
             <thead>
                 <tr>
                     <th scope="col">Course Title</th>
@@ -24,23 +25,55 @@ My Courses | QuizCon
             <tbody>
                 {% for course in courses %}
                 <tr>
-                    <th scope="row" data-cy="course"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
-                    <td>{% if course.quiz_set.exists %}
-                            <ul>
-                                {% for quiz in course.quiz_set.all %}
-                                    <li>{{quiz.title}}</li>
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                        No Quizzes
-                        {% endif %}
+                    <th scope="row" data-cy="course" data-label="Course Title"><a href="{% url 'course-detail-view' course.pk %}">{{ course.title }}</a></th>
+                    <td data-label="Course Quizzes">
+                        <div class="course-quizzes-cell">
+                        {% with quizzes=course.quiz_set.all %}
+                            {% if quizzes %}
+                                {% with count=quizzes|length %}
+                                <button type="button" class="quiz-count"
+                                        aria-expanded="false"
+                                        aria-controls="quiz-links-{{ course.pk }}"
+                                        data-cy="quiz-count">
+                                    <span class="quiz-count__label">{{ count }} quiz{{ count|pluralize:"zes" }}</span>
+                                    <span class="quiz-count__caret" aria-hidden="true">&#9656;</span>
+                                </button>
+                                <ul class="quiz-links" id="quiz-links-{{ course.pk }}" hidden>
+                                    {% for quiz in quizzes %}
+                                        <li><a href="{% url 'quiz-detail' quiz.id %}">{{ quiz.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                                {% endwith %}
+                            {% else %}
+                                <span class="quiz-empty">No quizzes</span>
+                            {% endif %}
+                        {% endwith %}
+                        </div>
                     </td>
-                    <td>{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
-                    <td>{{ course|course_faculty_string }}</td>
+                    <td data-label="Semester">{% if course.info.termyear %}{{ course.info.termyear }}{% else %} &ndash; {% endif %}</td>
+                    <td data-label="Authors">{{ course|course_faculty_string }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.quiz-count');
+        if (!btn) {
+            return;
+        }
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        var list = document.getElementById(
+            btn.getAttribute('aria-controls'));
+        if (list) {
+            list.hidden = expanded;
+        }
+    });
+</script>
 {% endblock %}

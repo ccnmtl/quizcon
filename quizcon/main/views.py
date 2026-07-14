@@ -58,10 +58,12 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     http_method_names = ['get', 'post']
 
     def get_context_data(self, **kwargs):
+        courses = get_courses_for_user(self.request.user).order_by(
+            'title'
+        ).prefetch_related('quiz_set')
         return {
             'user': self.request.user,
-            'courses': get_courses_for_user(
-                self.request.user).order_by('title'),
+            'courses': courses,
             'page_type': 'dashboard'
         }
 

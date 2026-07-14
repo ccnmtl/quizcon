@@ -11,7 +11,7 @@
     </nav>
     <div class="table-responsive">
         <a href="{% url 'create-quiz' course.id %}" class="btn btn-sm btn-primary" data-cy="create-quiz">Create Quiz</a>
-        <table class="table table-striped">
+        <table class="table table-striped table-stack">
             <col width="20%"> <col width="20%"> <col width="8%"><col width="20%"><col width="20%">
             <thead>
                 <tr>
@@ -31,14 +31,14 @@
             <tbody>
                 {% for quiz in course.quiz_set.all %}
                 <tr>
-                    <th scope="row" data-cy="{{quiz.title}}"><p class="fw-normal">{{quiz.title}}</p></th>
+                    <th scope="row" data-cy="{{quiz.title}}" data-label="Quiz Title"><p class="fw-normal">{{quiz.title}}</p></th>
                     {% if quiz.description %}
-                        <td data-cy="{{quiz.description}}">{{quiz.description}}</td>
+                        <td data-cy="{{quiz.description}}" data-label="Quiz Description">{{quiz.description}}</td>
                     {% else %}
-                        <td>No description for this quiz.</td>
+                        <td data-label="Quiz Description">No description for this quiz.</td>
                     {% endif %}
-                    <td><p class="fw-normal text-center">{{quiz.quizsubmission_set.count}}</p></td>
-                    <td class="text-muted">
+                    <td data-label="Submissions"><p class="fw-normal text-center">{{quiz.quizsubmission_set.count}}</p></td>
+                    <td class="text-muted" data-label="Assignment Url">
                         <div class="input-group mb-3">
                             <button class="btn btn-sm btn-outline-secondary" type="button" id="button-{{quiz.id}}"
                                 aria-label="Copy to clipboard"
@@ -57,7 +57,7 @@
                                 aria-hidden="true">https://{{request.get_host}}{% url 'lti-assignment-view' 'quiz' quiz.id %}</textarea>
                         </div>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                         <a href="{% url 'update-quiz' quiz.id %}" data-cy="edit-{{quiz.title}}" class="btn btn-sm btn-warning me-2">Edit</a>
                         <a href="{% url 'quiz-detail' quiz.id %}" target="_blank" class="btn btn-sm btn-success me-2">Preview</a>
                         <a href="#" class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#cloneModal-{{quiz.id}}">Clone</a>

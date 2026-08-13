@@ -39,7 +39,7 @@ pyjwt==2.13.0  # pylti1p3next
 jwcrypto==1.5.8  # pylti1p3next
 
 astroid==4.3.0
-pylint==4.0.6
+pylint==4.0.7
 
 six==1.17.0
 faker==40.36.0  # factory_boy

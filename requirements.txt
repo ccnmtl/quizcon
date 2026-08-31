@@ -36,7 +36,7 @@ django-cas-ng==5.1.1
 
 pylti1p3next==2.0.2  # django-lti-provider
 pyjwt==2.13.0  # pylti1p3next
-jwcrypto==1.5.8  # pylti1p3next
+jwcrypto==1.5.9  # pylti1p3next
 
 six==1.17.0
 faker==40.37.0  # factory_boy

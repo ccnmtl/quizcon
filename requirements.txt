@@ -102,7 +102,7 @@ bandit==1.9.4
 django-smtp-ssl==1.0
 django-contact-us==1.1.0
 
-entrypoints==0.4
+entrypoints==0.4.2
 
 django-courseaffils==2.5.1
 
